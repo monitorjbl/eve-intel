@@ -13,7 +13,7 @@
     <script src="assets/vendor/bootstrap/js/bootstrap.js"></script>
     <script src="assets/vendor/angular/angular.js"></script>
     <script src="assets/vendor/angular/angular-route.js"></script>
-    <script src="assets/vendor/angular/angular-animate.js"></script>
+    <!--<script src="assets/vendor/angular/angular-animate.js"></script>-->
     <script src="assets/vendor/angular/angular-bootstrap.js"></script>
     <script src="assets/js/app.js"></script>
 </head>
@@ -49,9 +49,11 @@
 
                             <p>Quickly get information about an enemy pilot. See who he tends to fight, who his friends are,
                                 and what he tends to fly.</p>
-                            <input type="text" class="form-control" ng-model="pilot" ng-enter="getSinglePilot()" placeholder="Look up pilot"
+                            <input type="text" class="form-control" ng-model="pilot" ng-disabled="loading" ng-enter="getSinglePilot()" placeholder="Look up pilot"
                                    style="width:300px;display:inline-block;"/>
-                            <span class="btn btn-primary" style="top: -1px;position: relative;">Search</span>
+                            <span class="btn btn-primary" ng-click="getSinglePilot()" ng-disabled="loading" style="top: -1px;position: relative;">
+                                Search <i ng-show="loading" class="fa fa-spinner fa-spin"></i>
+                            </span>
                         </div>
                     </div>
                 </div>

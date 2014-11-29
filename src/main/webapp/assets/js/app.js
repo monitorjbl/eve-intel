@@ -1,4 +1,4 @@
-var app = angular.module('eveintel', ['ngRoute', 'ngAnimate', 'ui.bootstrap']).config(function ($routeProvider) {
+var app = angular.module('eveintel', ['ngRoute', 'ui.bootstrap']).config(function ($routeProvider) {
     $routeProvider.when('/', {
         templateUrl: 'root.html'
     }).otherwise({
@@ -8,12 +8,13 @@ var app = angular.module('eveintel', ['ngRoute', 'ngAnimate', 'ui.bootstrap']).c
 
 app.controller('RecentActivity', function ($scope, $http, $timeout) {
     $scope.getSinglePilot = function () {
-        $scope.recentActivity = undefined;
-        $scope.error = undefined;
+        delete $scope.recentActivity;
+        delete $scope.error;
+        $scope.loading = true;
         $http.get('api/activity/' + $scope.pilot).success(function (data) {
             if (data != '') {
                 $scope.recentActivity = data;
-                //morris needs the div to be visible
+                //morris needs the div to be visible before it renders
                 $timeout(function () {
                     $scope.killedAlliances = convertToGraph(data.killedAlliances);
                     $scope.assistedAlliances = convertToGraph(data.assistedAlliances);
@@ -21,9 +22,13 @@ app.controller('RecentActivity', function ($scope, $http, $timeout) {
                     $scope.killedShips = convertToGraph(data.killedShips);
                     $scope.regions = convertToGraph(data.regions);
                 }, 100);
+            } else {
+                $scope.recentActivity={};
             }
+            $scope.loading = false;
         }).error(function (data) {
             $scope.error = data;
+            $scope.loading = false;
         });
     };
 
