@@ -11,12 +11,14 @@ public class Killmail {
   private Long id;
   private Date date;
   private Ship victim;
+  private SolarSystem solarSystem;
   private List<Ship> attackers = new ArrayList<>();
 
   private Killmail(Builder builder) {
     setId(builder.id);
     setDate(builder.date);
     setVictim(builder.victim);
+    setSolarSystem(builder.solarSystem);
     setAttackers(builder.attackers);
   }
 
@@ -48,6 +50,14 @@ public class Killmail {
     this.victim = victim;
   }
 
+  public SolarSystem getSolarSystem() {
+    return solarSystem;
+  }
+
+  public void setSolarSystem(SolarSystem solarSystem) {
+    this.solarSystem = solarSystem;
+  }
+
   public List<Ship> getAttackers() {
     return attackers;
   }
@@ -61,6 +71,7 @@ public class Killmail {
     private Long id;
     private Date date;
     private Ship victim;
+    private SolarSystem solarSystem;
     private List<Ship> attackers;
 
     private Builder() {
@@ -78,6 +89,11 @@ public class Killmail {
 
     public Builder victim(Ship victim) {
       this.victim = victim;
+      return this;
+    }
+
+    public Builder solarSystem(SolarSystem solarSystem) {
+      this.solarSystem = solarSystem;
       return this;
     }
 

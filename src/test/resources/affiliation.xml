@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<eveapi version="2">
+  <currentTime>2014-11-25 01:40:19</currentTime>
+  <result>
+    <rowset name="characters" key="characterID" columns="characterID,characterName,corporationID,corporationName,allianceID,allianceName,factionID,factionName">
+      <row characterID="1943298947" characterName="Ryshar" corporationID="109788662" corporationName="Merch Industrial" allianceID="1354830081" allianceName="Goonswarm Federation" factionID="0" factionName="" />
+    </rowset>
+  </result>
+  <cachedUntil>2014-11-25 02:40:19</cachedUntil>
+</eveapi>

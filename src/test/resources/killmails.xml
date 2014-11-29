@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eveapi version="2" zkbapi="1">
+  <currentTime>2014-11-25 07:24:45</currentTime>
+  <result>
+    <rowset name="kills" key="killID" columns="killID,solarSystemID,killTime,moonID">
+      <row killID="42202551" solarSystemID="30005189" killTime="2014-11-04 04:13:00" moonID="0">
+        <victim characterID="1084489795" characterName="Major Scythe" corporationID="994783381" corporationName="Duty." allianceID="1695357456"
+                allianceName="Circle-Of-Two" factionID="0" factionName="" damageTaken="460" shipTypeID="670"/>
+        <rowset name="attackers"
+                columns="characterID,characterName,corporationID,corporationName,allianceID,allianceName,factionID,factionName,securityStatus,damageDone,finalBlow,weaponTypeID,shipTypeID">
+          <row characterID="1249083035" characterName="Kirith Vespira" corporationID="1431056470" corporationName="Origin." allianceID="99001861"
+               allianceName="Black Legion." factionID="0" factionName="" securityStatus="-7.7598240788756" damageDone="350" finalBlow="1" weaponTypeID="3082"
+               shipTypeID="29984"/>
+          <row characterID="1769100421" characterName="SFM Hobb3s" corporationID="1125088545" corporationName="Wrecking Shots" allianceID="99001861"
+               allianceName="Black Legion." factionID="0" factionName="" securityStatus="1.5" damageDone="110" finalBlow="0" weaponTypeID="29984"
+               shipTypeID="29984"/>
+          <row characterID="1108956528" characterName="Smeghammer" corporationID="1184675423" corporationName="Amok." allianceID="1354830081"
+               allianceName="Goonswarm Federation" factionID="0" factionName="" securityStatus="5" damageDone="0" finalBlow="0" weaponTypeID="22778"
+               shipTypeID="0"/>
+          <row characterID="1943298947" characterName="Ryshar" corporationID="109788662" corporationName="Merch Industrial" allianceID="1354830081"
+               allianceName="Goonswarm Federation" factionID="0" factionName="" securityStatus="3.4" damageDone="0" finalBlow="0" weaponTypeID="22778"
+               shipTypeID="22456"/>
+        </rowset>
+        <rowset name="items" columns="typeID,flag,qtyDropped,qtyDestroyed">
+          <row typeID="13237" flag="89" qtyDropped="0" qtyDestroyed="1"/>
+        </rowset>
+      </row>
+      <row killID="42202486" solarSystemID="30005189" killTime="2014-11-04 04:11:00" moonID="0">
+        <victim characterID="1084489795" characterName="Major Scythe" corporationID="994783381" corporationName="Duty." allianceID="1695357456"
+                allianceName="Circle-Of-Two" factionID="0" factionName="" damageTaken="981" shipTypeID="12038"/>
+        <rowset name="attackers"
+                columns="characterID,characterName,corporationID,corporationName,allianceID,allianceName,factionID,factionName,securityStatus,damageDone,finalBlow,weaponTypeID,shipTypeID">
+          <row characterID="94056780" characterName="Idra Alduin" corporationID="98161667" corporationName="Dixon Cox Butte Preservation Society"
+               allianceID="99001861" allianceName="Black Legion." factionID="0" factionName="" securityStatus="0.032041799863312" damageDone="349" finalBlow="1"
+               weaponTypeID="3082" shipTypeID="29984"/>
+          <row characterID="90943056" characterName="Snugglebare" corporationID="98161667" corporationName="Dixon Cox Butte Preservation Society"
+               allianceID="99001861" allianceName="Black Legion." factionID="0" factionName="" securityStatus="-4.2" damageDone="564" finalBlow="0"
+               weaponTypeID="3082" shipTypeID="29984"/>
+          <row characterID="1650414821" characterName="deadlydog5" corporationID="98161667" corporationName="Dixon Cox Butte Preservation Society"
+               allianceID="99001861" allianceName="Black Legion." factionID="0" factionName="" securityStatus="-2.2" damageDone="68" finalBlow="0"
+               weaponTypeID="29984" shipTypeID="29984"/>
+          <row characterID="1657073548" characterName="NateFriese10" corporationID="1431056470" corporationName="Origin." allianceID="99001861"
+               allianceName="Black Legion." factionID="0" factionName="" securityStatus="0.3" damageDone="0" finalBlow="0" weaponTypeID="3082"
+               shipTypeID="29984"/>
+          <row characterID="92842289" characterName="Zuxcav Benam" corporationID="561395926" corporationName="The Suicide Kings" allianceID="99001861"
+               allianceName="Black Legion." factionID="0" factionName="" securityStatus="-8.3" damageDone="0" finalBlow="0" weaponTypeID="3082"
+               shipTypeID="29984"/>
+          <row characterID="91363951" characterName="Henrayyyyy Andven" corporationID="1431056470" corporationName="Origin." allianceID="99001861"
+               allianceName="Black Legion." factionID="0" factionName="" securityStatus="-1" damageDone="0" finalBlow="0" weaponTypeID="3082"
+               shipTypeID="29984"/>
+          <row characterID="1602578578" characterName="raknor bile" corporationID="98043801" corporationName="Higher Than Everest" allianceID="99001861"
+               allianceName="Black Legion." factionID="0" factionName="" securityStatus="-1.4" damageDone="0" finalBlow="0" weaponTypeID="5320"
+               shipTypeID="29984"/>
+          <row characterID="623085839" characterName="Max Khaos" corporationID="98324401" corporationName="Positive Failure" allianceID="99001861"
+               allianceName="Black Legion." factionID="0" factionName="" securityStatus="3.7" damageDone="0" finalBlow="0" weaponTypeID="3082"
+               shipTypeID="29984"/>
+          <row characterID="403531276" characterName="Miss MX" corporationID="1125088545" corporationName="Wrecking Shots" allianceID="99001861"
+               allianceName="Black Legion." factionID="0" factionName="" securityStatus="0.8" damageDone="0" finalBlow="0" weaponTypeID="3082"
+               shipTypeID="29984"/>
+          <row characterID="1139543105" characterName="bloodmoonfire" corporationID="1431056470" corporationName="Origin." allianceID="99001861"
+               allianceName="Black Legion." factionID="0" factionName="" securityStatus="-9" damageDone="0" finalBlow="0" weaponTypeID="3082"
+               shipTypeID="29984"/>
+          <row characterID="93468524" characterName="Tiber Maricadie" corporationID="1431056470" corporationName="Origin." allianceID="99001861"
+               allianceName="Black Legion." factionID="0" factionName="" securityStatus="-4.7" damageDone="0" finalBlow="0" weaponTypeID="3082"
+               shipTypeID="29984"/>
+          <row characterID="307957349" characterName="Nardkick" corporationID="561395926" corporationName="The Suicide Kings" allianceID="99001861"
+               allianceName="Black Legion." factionID="0" factionName="" securityStatus="-0.6" damageDone="0" finalBlow="0" weaponTypeID="3082"
+               shipTypeID="29984"/>
+          <row characterID="94657666" characterName="Daniel Salamanca" corporationID="98287908" corporationName="Nanashi no Geemu" allianceID="99004542"
+               allianceName="FOX.HOUND" factionID="0" factionName="" securityStatus="2.1" damageDone="0" finalBlow="0" weaponTypeID="3082" shipTypeID="24702"/>
+          <row characterID="1257581568" characterName="Bluetippedflyer" corporationID="1431056470" corporationName="Origin." allianceID="99001861"
+               allianceName="Black Legion." factionID="0" factionName="" securityStatus="1.9" damageDone="0" finalBlow="0" weaponTypeID="3082"
+               shipTypeID="29984"/>
+          <row characterID="454150108" characterName="Elite Desolator" corporationID="1431056470" corporationName="Origin." allianceID="99001861"
+               allianceName="Black Legion." factionID="0" factionName="" securityStatus="2.5" damageDone="0" finalBlow="0" weaponTypeID="3082"
+               shipTypeID="29984"/>
+          <row characterID="805497444" characterName="LOBI" corporationID="1125088545" corporationName="Wrecking Shots" allianceID="99001861"
+               allianceName="Black Legion." factionID="0" factionName="" securityStatus="-9.8" damageDone="0" finalBlow="0" weaponTypeID="3082"
+               shipTypeID="29984"/>
+          <row characterID="111238762" characterName="De'Veldrin" corporationID="98324401" corporationName="Positive Failure" allianceID="99001861"
+               allianceName="Black Legion." factionID="0" factionName="" securityStatus="-1.7" damageDone="0" finalBlow="0" weaponTypeID="5320"
+               shipTypeID="29984"/>
+          <row characterID="1769100421" characterName="SFM Hobb3s" corporationID="1125088545" corporationName="Wrecking Shots" allianceID="99001861"
+               allianceName="Black Legion." factionID="0" factionName="" securityStatus="1.5" damageDone="0" finalBlow="0" weaponTypeID="3082"
+               shipTypeID="29984"/>
+          <row characterID="1249083035" characterName="Kirith Vespira" corporationID="1431056470" corporationName="Origin." allianceID="99001861"
+               allianceName="Black Legion." factionID="0" factionName="" securityStatus="-7.8" damageDone="0" finalBlow="0" weaponTypeID="3082"
+               shipTypeID="29984"/>
+          <row characterID="950538141" characterName="EXILIANT" corporationID="98043801" corporationName="Higher Than Everest" allianceID="99001861"
+               allianceName="Black Legion." factionID="0" factionName="" securityStatus="-5.2" damageDone="0" finalBlow="0" weaponTypeID="3082"
+               shipTypeID="29984"/>
+          <row characterID="294498157" characterName="rabidrayb" corporationID="1431056470" corporationName="Origin." allianceID="99001861"
+               allianceName="Black Legion." factionID="0" factionName="" securityStatus="3" damageDone="0" finalBlow="0" weaponTypeID="3082"
+               shipTypeID="29984"/>
+          <row characterID="1031914375" characterName="Nicodymus" corporationID="98200075" corporationName="Dissidence Dawn" allianceID="99001861"
+               allianceName="Black Legion." factionID="0" factionName="" securityStatus="-2.3" damageDone="0" finalBlow="0" weaponTypeID="3082"
+               shipTypeID="29984"/>
+          <row characterID="90688833" characterName="Godan Toluen" corporationID="98161667" corporationName="Dixon Cox Butte Preservation Society"
+               allianceID="99001861" allianceName="Black Legion." factionID="0" factionName="" securityStatus="0.6" damageDone="0" finalBlow="0"
+               weaponTypeID="5320" shipTypeID="29984"/>
+          <row characterID="1511725012" characterName="Elo Knight" corporationID="1431056470" corporationName="Origin." allianceID="99001861"
+               allianceName="Black Legion." factionID="0" factionName="" securityStatus="-9.9" damageDone="0" finalBlow="0" weaponTypeID="3082"
+               shipTypeID="29984"/>
+          <row characterID="1758423214" characterName="juggzy" corporationID="1431056470" corporationName="Origin." allianceID="99001861"
+               allianceName="Black Legion." factionID="0" factionName="" securityStatus="1" damageDone="0" finalBlow="0" weaponTypeID="3082"
+               shipTypeID="29984"/>
+          <row characterID="92410979" characterName="Kris Sirober" corporationID="677030165" corporationName="Boob Heads" allianceID="99001861"
+               allianceName="Black Legion." factionID="0" factionName="" securityStatus="3" damageDone="0" finalBlow="0" weaponTypeID="3082"
+               shipTypeID="29984"/>
+          <row characterID="1889182045" characterName="Admiral Griggs" corporationID="1431056470" corporationName="Origin." allianceID="99001861"
+               allianceName="Black Legion." factionID="0" factionName="" securityStatus="-9.6" damageDone="0" finalBlow="0" weaponTypeID="3082"
+               shipTypeID="29984"/>
+          <row characterID="91013225" characterName="Nystoriel" corporationID="98200075" corporationName="Dissidence Dawn" allianceID="99001861"
+               allianceName="Black Legion." factionID="0" factionName="" securityStatus="0.3" damageDone="0" finalBlow="0" weaponTypeID="3082"
+               shipTypeID="29984"/>
+          <row characterID="1108000900" characterName="Baine Reynolds" corporationID="98161667" corporationName="Dixon Cox Butte Preservation Society"
+               allianceID="99001861" allianceName="Black Legion." factionID="0" factionName="" securityStatus="-0.2" damageDone="0" finalBlow="0"
+               weaponTypeID="3082" shipTypeID="29984"/>
+          <row characterID="90457357" characterName="Starbuck Arkaral" corporationID="1431056470" corporationName="Origin." allianceID="99001861"
+               allianceName="Black Legion." factionID="0" factionName="" securityStatus="-9.1" damageDone="0" finalBlow="0" weaponTypeID="5320"
+               shipTypeID="29984"/>
+          <row characterID="1046480871" characterName="Leo Nim" corporationID="1431056470" corporationName="Origin." allianceID="99001861"
+               allianceName="Black Legion." factionID="0" factionName="" securityStatus="-9.7" damageDone="0" finalBlow="0" weaponTypeID="3082"
+               shipTypeID="29984"/>
+          <row characterID="106178670" characterName="Hythloday" corporationID="98161667" corporationName="Dixon Cox Butte Preservation Society"
+               allianceID="99001861" allianceName="Black Legion." factionID="0" factionName="" securityStatus="-6.3" damageDone="0" finalBlow="0"
+               weaponTypeID="19946" shipTypeID="584"/>
+          <row characterID="94368463" characterName="Grace Syne" corporationID="98287908" corporationName="Nanashi no Geemu" allianceID="99004542"
+               allianceName="FOX.HOUND" factionID="0" factionName="" securityStatus="-0.3" damageDone="0" finalBlow="0" weaponTypeID="8091" shipTypeID="11186"/>
+          <row characterID="91187443" characterName="Anderron Shi" corporationID="1431056470" corporationName="Origin." allianceID="99001861"
+               allianceName="Black Legion." factionID="0" factionName="" securityStatus="-9.4" damageDone="0" finalBlow="0" weaponTypeID="14262"
+               shipTypeID="11961"/>
+          <row characterID="1953782986" characterName="Iku'turso" corporationID="561395926" corporationName="The Suicide Kings" allianceID="99001861"
+               allianceName="Black Legion." factionID="0" factionName="" securityStatus="-0.9" damageDone="0" finalBlow="0" weaponTypeID="3082"
+               shipTypeID="29984"/>
+          <row characterID="1943298947" characterName="Ryshar" corporationID="109788662" corporationName="Merch Industrial" allianceID="1354830081"
+               allianceName="Goonswarm Federation" factionID="0" factionName="" securityStatus="3.4" damageDone="0" finalBlow="0" weaponTypeID="22778"
+               shipTypeID="22456"/>
+          <row characterID="90823876" characterName="Zaitoun Somalian" corporationID="1125088545" corporationName="Wrecking Shots" allianceID="99001861"
+               allianceName="Black Legion." factionID="0" factionName="" securityStatus="-8.5" damageDone="0" finalBlow="0" weaponTypeID="3082"
+               shipTypeID="29984"/>
+          <row characterID="1640786631" characterName="Khur'ok" corporationID="98200075" corporationName="Dissidence Dawn" allianceID="99001861"
+               allianceName="Black Legion." factionID="0" factionName="" securityStatus="-7" damageDone="0" finalBlow="0" weaponTypeID="2937"
+               shipTypeID="11971"/>
+          <row characterID="916314997" characterName="Zandithious" corporationID="98200075" corporationName="Dissidence Dawn" allianceID="99001861"
+               allianceName="Black Legion." factionID="0" factionName="" securityStatus="0.1" damageDone="0" finalBlow="0" weaponTypeID="3082"
+               shipTypeID="29984"/>
+          <row characterID="420096875" characterName="Notsheep" corporationID="1431056470" corporationName="Origin." allianceID="99001861"
+               allianceName="Black Legion." factionID="0" factionName="" securityStatus="3.1" damageDone="0" finalBlow="0" weaponTypeID="3082"
+               shipTypeID="29984"/>
+          <row characterID="91986478" characterName="Dog0fWaRR" corporationID="1431056470" corporationName="Origin." allianceID="99001861"
+               allianceName="Black Legion." factionID="0" factionName="" securityStatus="-9" damageDone="0" finalBlow="0" weaponTypeID="3082"
+               shipTypeID="29984"/>
+          <row characterID="92024373" characterName="Ned Jensons" corporationID="561395926" corporationName="The Suicide Kings" allianceID="99001861"
+               allianceName="Black Legion." factionID="0" factionName="" securityStatus="3.5" damageDone="0" finalBlow="0" weaponTypeID="3082"
+               shipTypeID="29984"/>
+          <row characterID="890275644" characterName="Pixnator" corporationID="561395926" corporationName="The Suicide Kings" allianceID="99001861"
+               allianceName="Black Legion." factionID="0" factionName="" securityStatus="-1.3" damageDone="0" finalBlow="0" weaponTypeID="3082"
+               shipTypeID="29984"/>
+          <row characterID="1772275729" characterName="Graycor" corporationID="98303242" corporationName="Rolled Out" allianceID="99001861"
+               allianceName="Black Legion." factionID="0" factionName="" securityStatus="0.7" damageDone="0" finalBlow="0" weaponTypeID="3082"
+               shipTypeID="29984"/>
+          <row characterID="1266187016" characterName="Major Bang" corporationID="98303242" corporationName="Rolled Out" allianceID="99001861"
+               allianceName="Black Legion." factionID="0" factionName="" securityStatus="-1.5" damageDone="0" finalBlow="0" weaponTypeID="4027"
+               shipTypeID="11961"/>
+        </rowset>
+        <rowset name="items" columns="typeID,flag,qtyDropped,qtyDestroyed">
+          <row typeID="2605" flag="12" qtyDropped="0" qtyDestroyed="1"/>
+          <row typeID="27914" flag="28" qtyDropped="1" qtyDestroyed="0"/>
+          <row typeID="8117" flag="31" qtyDropped="0" qtyDestroyed="1"/>
+          <row typeID="31153" flag="93" qtyDropped="0" qtyDestroyed="1"/>
+          <row typeID="27920" flag="5" qtyDropped="0" qtyDestroyed="2"/>
+          <row typeID="2605" flag="11" qtyDropped="0" qtyDestroyed="1"/>
+          <row typeID="27339" flag="30" qtyDropped="0" qtyDestroyed="18"/>
+          <row typeID="8117" flag="30" qtyDropped="0" qtyDestroyed="1"/>
+          <row typeID="27920" flag="28" qtyDropped="0" qtyDestroyed="1"/>
+          <row typeID="31153" flag="92" qtyDropped="0" qtyDestroyed="1"/>
+          <row typeID="27339" flag="31" qtyDropped="18" qtyDestroyed="0"/>
+          <row typeID="22291" flag="13" qtyDropped="1" qtyDestroyed="0"/>
+          <row typeID="8117" flag="29" qtyDropped="1" qtyDestroyed="0"/>
+          <row typeID="11578" flag="27" qtyDropped="1" qtyDestroyed="0"/>
+          <row typeID="6003" flag="19" qtyDropped="1" qtyDestroyed="0"/>
+          <row typeID="3244" flag="21" qtyDropped="1" qtyDestroyed="0"/>
+          <row typeID="19814" flag="20" qtyDropped="0" qtyDestroyed="1"/>
+          <row typeID="27339" flag="29" qtyDropped="18" qtyDestroyed="0"/>
+          <row typeID="27339" flag="5" qtyDropped="0" qtyDestroyed="473"/>
+        </rowset>
+      </row>
+    </rowset>
+  </result>
+  <cachedUntil>2014-11-25 08:24:45</cachedUntil>
+</eveapi>

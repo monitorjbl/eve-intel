@@ -21,6 +21,8 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +40,15 @@ public class ApiUtils {
       return response.getEntity().getContent();
     } else {
       throw new IOException("Got [" + code + "] response from GET request to [" + uri + "]");
+    }
+  }
+
+  public static String sanitize(String str) {
+    try {
+      return URLEncoder.encode(str, "UTF-8");
+    } catch (UnsupportedEncodingException e) {
+      //this should never happen at runtime
+      throw new RuntimeException(e);
     }
   }
 

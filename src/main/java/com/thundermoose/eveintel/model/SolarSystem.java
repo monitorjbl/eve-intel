@@ -3,13 +3,15 @@ package com.thundermoose.eveintel.model;
 /**
  * Created by thundermoose on 11/24/14.
  */
-public class Region {
+public class SolarSystem {
   private Long id;
   private String name;
+  private Region region;
 
-  private Region(Builder builder) {
+  private SolarSystem(Builder builder) {
     setId(builder.id);
     setName(builder.name);
+    setRegion(builder.region);
   }
 
   public static Builder builder() {
@@ -32,10 +34,18 @@ public class Region {
     this.name = name;
   }
 
+  public Region getRegion() {
+    return region;
+  }
+
+  public void setRegion(Region region) {
+    this.region = region;
+  }
 
   public static final class Builder {
     private Long id;
     private String name;
+    private Region region;
 
     private Builder() {
     }
@@ -50,8 +60,13 @@ public class Region {
       return this;
     }
 
-    public Region build() {
-      return new Region(this);
+    public Builder region(Region region) {
+      this.region = region;
+      return this;
+    }
+
+    public SolarSystem build() {
+      return new SolarSystem(this);
     }
   }
 }
