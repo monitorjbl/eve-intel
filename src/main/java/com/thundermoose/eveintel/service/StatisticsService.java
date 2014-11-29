@@ -23,7 +23,4 @@ public class StatisticsService {
     return dao.getRecentActivity(name);
   }
 
-  public void zap(String key){
-    dao.zap(key);
-  }
 }

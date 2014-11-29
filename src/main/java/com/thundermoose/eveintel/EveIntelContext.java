@@ -70,7 +70,7 @@ public class EveIntelContext extends WebMvcConfigurerAdapter {
   public ObjectMapper objectMapper() {
     ObjectMapper o = new ObjectMapper();
     o.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-    o.enable(SerializationFeature.INDENT_OUTPUT);
+//    o.enable(SerializationFeature.INDENT_OUTPUT);
     return o;
   }
 }

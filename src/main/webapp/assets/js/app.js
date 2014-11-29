@@ -6,56 +6,6 @@ var app = angular.module('eveintel', ['ngRoute', 'ui.bootstrap']).config(functio
     });
 });
 
-app.controller('RecentActivity', function ($scope, $http, $timeout) {
-    $scope.getSinglePilot = function () {
-        delete $scope.recentActivity;
-        delete $scope.error;
-        $scope.loading = true;
-        $http.get('api/activity/' + $scope.pilot).success(function (data) {
-            if (data != '') {
-                $scope.recentActivity = data;
-                //morris needs the div to be visible before it renders
-                $timeout(function () {
-                    $scope.killedAlliances = convertToGraph(data.killedAlliances);
-                    $scope.assistedAlliances = convertToGraph(data.assistedAlliances);
-                    $scope.usedShips = convertToGraph(data.usedShips);
-                    $scope.killedShips = convertToGraph(data.killedShips);
-                    $scope.regions = convertToGraph(data.regions);
-                }, 100);
-            } else {
-                $scope.recentActivity={};
-            }
-            $scope.loading = false;
-        }).error(function (data) {
-            $scope.error = data;
-            $scope.loading = false;
-        });
-    };
-
-    var convertToGraph = function (data) {
-        return $.map(data, function (v) {
-            return {
-                value: v.count,
-                label: v.value.name
-            }
-        });
-    };
-});
-
-app.directive('ngEnter', function () {
-    return function (scope, element, attrs) {
-        element.bind("keydown keypress", function (event) {
-            if (event.which === 13) {
-                scope.$apply(function () {
-                    scope.$eval(attrs.ngEnter);
-                });
-
-                event.preventDefault();
-            }
-        });
-    };
-});
-
 app.directive('graphDoughnut', function () {
     return {
         restrict: 'E',
@@ -69,7 +19,6 @@ app.directive('graphDoughnut', function () {
                     $(chart).attr(v, attrs[v]);
                 }
             });
-            //$(element).remove();
             scope.$watch('data', function (newValue, oldValue) {
                 if (newValue) {
                     $(chart).children().remove();
@@ -83,5 +32,55 @@ app.directive('graphDoughnut', function () {
 
         }
     }
+});
 
+app.directive('graphLine', function ($filter) {
+    return {
+        restrict: 'E',
+        scope: {
+            data: '='
+        },
+        link: function (scope, element, attrs) {
+            var chart = $('<div class="graph graph-line"></div>').appendTo(element);
+            $.each(attrs.$attr, function (i, v) {
+                if (v != 'data') {
+                    $(chart).attr(v, attrs[v]);
+                }
+            });
+            scope.$watch('data', function (newValue, oldValue) {
+                if (newValue) {
+                    $(chart).children().remove();
+                    Morris.Line({
+                        element: chart,
+                        data: scope.data.data,
+                        xkey: 'x',
+                        ykeys: ['y'],
+                        labels: [scope.data.title],
+                        dateFormat: function (x) {
+                            return $filter('date')(x);
+                        }
+                    });
+                }
+            }, false);
+
+        }
+    }
+});
+
+app.directive('scrollOnTrue', function ($log) {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attributes) {
+            console.log(scope.scrollOnTrue);
+            var id = 'scroll';
+            $(element).attr('id', id);
+            scope.$watch(attributes.scrollOnTrue, function (newValue) {
+                console.log(newValue);
+                if (newValue) {
+                    $log.debug("scrolling");
+                    $("body").animate({scrollTop: element.offset().top}, "slow");
+                }
+            });
+        }
+    }
 });

@@ -1,17 +1,21 @@
 package com.thundermoose.eveintel.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+
 /**
  * Created by thundermoose on 11/24/14.
  */
+@JsonDeserialize(builder = Ship.Builder.class)
 public class Ship {
   private Long id;
   private Pilot pilot;
   private ShipType type;
 
   private Ship(Builder builder) {
-    setId(builder.id);
-    setPilot(builder.pilot);
-    setType(builder.type);
+    this.id = builder.id;
+    this.pilot = builder.pilot;
+    this.type = builder.type;
   }
 
   public static Builder builder() {
@@ -22,27 +26,15 @@ public class Ship {
     return id;
   }
 
-  public void setId(Long id) {
-    this.id = id;
-  }
-
   public Pilot getPilot() {
     return pilot;
-  }
-
-  public void setPilot(Pilot pilot) {
-    this.pilot = pilot;
   }
 
   public ShipType getType() {
     return type;
   }
 
-  public void setType(ShipType type) {
-    this.type = type;
-  }
-
-
+  @JsonPOJOBuilder(buildMethodName = "build", withPrefix = "")
   public static final class Builder {
     private Long id;
     private Pilot pilot;

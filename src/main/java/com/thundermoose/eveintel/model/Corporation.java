@@ -1,17 +1,21 @@
 package com.thundermoose.eveintel.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+
 /**
  * Created by thundermoose on 11/24/14.
  */
+@JsonDeserialize(builder = Corporation.Builder.class)
 public class Corporation {
   private Long id;
   private String name;
   private Alliance alliance;
 
   private Corporation(Builder builder) {
-    setId(builder.id);
-    setName(builder.name);
-    setAlliance(builder.alliance);
+    this.id = builder.id;
+    this.name = builder.name;
+    this.alliance = builder.alliance;
   }
 
   public static Builder builder() {
@@ -22,27 +26,15 @@ public class Corporation {
     return id;
   }
 
-  public void setId(Long id) {
-    this.id = id;
-  }
-
   public String getName() {
     return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
   }
 
   public Alliance getAlliance() {
     return alliance;
   }
 
-  public void setAlliance(Alliance alliance) {
-    this.alliance = alliance;
-  }
-
-
+  @JsonPOJOBuilder(buildMethodName = "build", withPrefix = "")
   public static final class Builder {
     private Long id;
     private String name;

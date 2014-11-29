@@ -4,45 +4,43 @@ import com.thundermoose.eveintel.api.EveApiClient;
 import com.thundermoose.eveintel.api.ZKillApiClient;
 import com.thundermoose.eveintel.model.Killmail;
 import com.thundermoose.eveintel.model.Pilot;
-import com.thundermoose.eveintel.model.Ship;
-import net.sf.ehcache.CacheManager;
-import net.sf.ehcache.Ehcache;
-import net.sf.ehcache.constructs.blocking.CacheEntryFactory;
-import net.sf.ehcache.constructs.blocking.SelfPopulatingCache;
+import org.joda.time.DateTime;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 /**
- * Created by thundermoose on 11/25/14.
+ * Created by thundermoose on 11/29/14.
  */
 @Named
 public class PilotDao {
-  private final Ehcache pilotCache;
   private final EveApiClient eveApiClient;
   private final ZKillApiClient zKillApiClient;
 
   @Inject
-  public PilotDao(CacheManager cacheManager, EveApiClient eveApiClient, ZKillApiClient zKillApiClient) {
+  public PilotDao(EveApiClient eveApiClient, ZKillApiClient zKillApiClient) {
     this.eveApiClient = eveApiClient;
     this.zKillApiClient = zKillApiClient;
-    this.pilotCache = new SelfPopulatingCache(cacheManager.getCache(CacheNames.PILOT_CACHE), new PilotCacheEntryFactory());
   }
 
-  public Pilot getPilotByName(String name) {
-    return (Pilot) pilotCache.get(name.toLowerCase()).getObjectValue();
-  }
-
-  class PilotCacheEntryFactory implements CacheEntryFactory {
-    public Object createEntry(Object key) throws Exception {
-      Pilot p = eveApiClient.findPilotByName((String) key);
-      p.setKills(zKillApiClient.getKillmailsForPilot(p.getId()));
-      for(Killmail km : p.getKills()){
-        for(Ship s : km.getAttackingShips()){
-//          System.out.println(s.getPilot().getCorporation().getAlliance().getName());
-        }
+  Pilot getPilotData(String name, DateTime start) {
+    Pilot p = eveApiClient.findPilotByName(name);
+    List<Killmail> killmails = zKillApiClient.getKillmailsForPilot(p.getId(), start);
+    Collections.sort(killmails, new Comparator<Killmail>() {
+      @Override
+      public int compare(Killmail o1, Killmail o2) {
+        return o1.getDate().compareTo(o2.getDate());
       }
-      return p;
-    }
+    });
+
+    return Pilot.builder()
+        .id(p.getId())
+        .name(p.getName())
+        .corporation(p.getCorporation())
+        .kills(killmails)
+        .build();
   }
 }

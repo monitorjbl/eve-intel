@@ -1,15 +1,19 @@
 package com.thundermoose.eveintel.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+
 /**
  * Created by thundermoose on 11/24/14.
  */
-public class Region implements NamedItem{
+@JsonDeserialize(builder = Region.Builder.class)
+public class Region implements NamedItem {
   private Long id;
   private String name;
 
   private Region(Builder builder) {
-    setId(builder.id);
-    setName(builder.name);
+    id = builder.id;
+    name = builder.name;
   }
 
   public static Builder builder() {
@@ -20,19 +24,11 @@ public class Region implements NamedItem{
     return id;
   }
 
-  public void setId(Long id) {
-    this.id = id;
-  }
-
   public String getName() {
     return name;
   }
 
-  public void setName(String name) {
-    this.name = name;
-  }
-
-
+  @JsonPOJOBuilder(buildMethodName = "build", withPrefix = "")
   public static final class Builder {
     private Long id;
     private String name;

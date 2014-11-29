@@ -1,11 +1,15 @@
 package com.thundermoose.eveintel.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by thundermoose on 11/25/14.
  */
+@JsonDeserialize(builder = RecentActivity.Builder.class)
 public class RecentActivity {
   private Integer killCount;
   private Double costIn;
@@ -24,25 +28,27 @@ public class RecentActivity {
   private List<WeightedData<ShipType>> killedShips = new ArrayList<>();
   private ShipType tendencyKilledShip;
   private ShipType recentKilledShip;
+  private TimeGraph killsPerDay;
 
   private RecentActivity(Builder builder) {
-    setKillCount(builder.killCount);
-    setCostIn(builder.costIn);
-    setRegions(builder.regions);
-    setTendencyRegion(builder.tendencyRegion);
-    setRecentRegion(builder.recentRegion);
-    setKilledAlliances(builder.killedAlliances);
-    setTendencyKilledAlliance(builder.tendencyKilledAlliance);
-    setRecentKilledAlliance(builder.recentKilledAlliance);
-    setAssistedAlliances(builder.assistedAlliances);
-    setTendencyAssistedAlliance(builder.tendencyAssistedAlliance);
-    setRecentAssistedAlliance(builder.recentAssistedAlliance);
-    setUsedShips(builder.usedShips);
-    setTendencyUsedShip(builder.tendencyUsedShip);
-    setRecentUsedShip(builder.recentUsedShip);
-    setKilledShips(builder.killedShips);
-    setTendencyKilledShip(builder.tendencyKilledShip);
-    setRecentKilledShip(builder.recentKilledShip);
+    killCount = builder.killCount;
+    costIn = builder.costIn;
+    regions = builder.regions;
+    tendencyRegion = builder.tendencyRegion;
+    recentRegion = builder.recentRegion;
+    killedAlliances = builder.killedAlliances;
+    tendencyKilledAlliance = builder.tendencyKilledAlliance;
+    recentKilledAlliance = builder.recentKilledAlliance;
+    assistedAlliances = builder.assistedAlliances;
+    tendencyAssistedAlliance = builder.tendencyAssistedAlliance;
+    recentAssistedAlliance = builder.recentAssistedAlliance;
+    usedShips = builder.usedShips;
+    tendencyUsedShip = builder.tendencyUsedShip;
+    recentUsedShip = builder.recentUsedShip;
+    killedShips = builder.killedShips;
+    tendencyKilledShip = builder.tendencyKilledShip;
+    recentKilledShip = builder.recentKilledShip;
+    killsPerDay = builder.killsPerDay;
   }
 
   public static Builder builder() {
@@ -53,139 +59,75 @@ public class RecentActivity {
     return killCount;
   }
 
-  public void setKillCount(Integer killCount) {
-    this.killCount = killCount;
-  }
-
   public Double getCostIn() {
     return costIn;
-  }
-
-  public void setCostIn(Double costIn) {
-    this.costIn = costIn;
   }
 
   public List<WeightedData<Region>> getRegions() {
     return regions;
   }
 
-  public void setRegions(List<WeightedData<Region>> regions) {
-    this.regions = regions;
-  }
-
   public Region getTendencyRegion() {
     return tendencyRegion;
-  }
-
-  public void setTendencyRegion(Region tendencyRegion) {
-    this.tendencyRegion = tendencyRegion;
   }
 
   public Region getRecentRegion() {
     return recentRegion;
   }
 
-  public void setRecentRegion(Region recentRegion) {
-    this.recentRegion = recentRegion;
-  }
-
   public List<WeightedData<Alliance>> getKilledAlliances() {
     return killedAlliances;
-  }
-
-  public void setKilledAlliances(List<WeightedData<Alliance>> killedAlliances) {
-    this.killedAlliances = killedAlliances;
   }
 
   public Alliance getTendencyKilledAlliance() {
     return tendencyKilledAlliance;
   }
 
-  public void setTendencyKilledAlliance(Alliance tendencyKilledAlliance) {
-    this.tendencyKilledAlliance = tendencyKilledAlliance;
-  }
-
   public Alliance getRecentKilledAlliance() {
     return recentKilledAlliance;
-  }
-
-  public void setRecentKilledAlliance(Alliance recentKilledAlliance) {
-    this.recentKilledAlliance = recentKilledAlliance;
   }
 
   public List<WeightedData<Alliance>> getAssistedAlliances() {
     return assistedAlliances;
   }
 
-  public void setAssistedAlliances(List<WeightedData<Alliance>> assistedAlliances) {
-    this.assistedAlliances = assistedAlliances;
-  }
-
   public Alliance getTendencyAssistedAlliance() {
     return tendencyAssistedAlliance;
-  }
-
-  public void setTendencyAssistedAlliance(Alliance tendencyAssistedAlliance) {
-    this.tendencyAssistedAlliance = tendencyAssistedAlliance;
   }
 
   public Alliance getRecentAssistedAlliance() {
     return recentAssistedAlliance;
   }
 
-  public void setRecentAssistedAlliance(Alliance recentAssistedAlliance) {
-    this.recentAssistedAlliance = recentAssistedAlliance;
-  }
-
   public List<WeightedData<ShipType>> getUsedShips() {
     return usedShips;
-  }
-
-  public void setUsedShips(List<WeightedData<ShipType>> usedShips) {
-    this.usedShips = usedShips;
   }
 
   public ShipType getTendencyUsedShip() {
     return tendencyUsedShip;
   }
 
-  public void setTendencyUsedShip(ShipType tendencyUsedShip) {
-    this.tendencyUsedShip = tendencyUsedShip;
-  }
-
   public ShipType getRecentUsedShip() {
     return recentUsedShip;
-  }
-
-  public void setRecentUsedShip(ShipType recentUsedShip) {
-    this.recentUsedShip = recentUsedShip;
   }
 
   public List<WeightedData<ShipType>> getKilledShips() {
     return killedShips;
   }
 
-  public void setKilledShips(List<WeightedData<ShipType>> killedShips) {
-    this.killedShips = killedShips;
-  }
-
   public ShipType getTendencyKilledShip() {
     return tendencyKilledShip;
-  }
-
-  public void setTendencyKilledShip(ShipType tendencyKilledShip) {
-    this.tendencyKilledShip = tendencyKilledShip;
   }
 
   public ShipType getRecentKilledShip() {
     return recentKilledShip;
   }
 
-  public void setRecentKilledShip(ShipType recentKilledShip) {
-    this.recentKilledShip = recentKilledShip;
+  public TimeGraph getKillsPerDay() {
+    return killsPerDay;
   }
 
-
+  @JsonPOJOBuilder(buildMethodName = "build", withPrefix = "")
   public static final class Builder {
     private Integer killCount;
     private Double costIn;
@@ -204,6 +146,7 @@ public class RecentActivity {
     private List<WeightedData<ShipType>> killedShips;
     private ShipType tendencyKilledShip;
     private ShipType recentKilledShip;
+    private TimeGraph killsPerDay;
 
     private Builder() {
     }
@@ -290,6 +233,11 @@ public class RecentActivity {
 
     public Builder recentKilledShip(ShipType recentKilledShip) {
       this.recentKilledShip = recentKilledShip;
+      return this;
+    }
+
+    public Builder killsPerDay(TimeGraph killsPerDay) {
+      this.killsPerDay = killsPerDay;
       return this;
     }
 

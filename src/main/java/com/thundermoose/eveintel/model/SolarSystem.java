@@ -3,15 +3,20 @@ package com.thundermoose.eveintel.model;
 /**
  * Created by thundermoose on 11/24/14.
  */
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+
+@JsonDeserialize(builder = SolarSystem.Builder.class)
 public class SolarSystem {
   private Long id;
   private String name;
   private Region region;
 
   private SolarSystem(Builder builder) {
-    setId(builder.id);
-    setName(builder.name);
-    setRegion(builder.region);
+    id = builder.id;
+    name = builder.name;
+    region = builder.region;
   }
 
   public static Builder builder() {
@@ -22,26 +27,15 @@ public class SolarSystem {
     return id;
   }
 
-  public void setId(Long id) {
-    this.id = id;
-  }
-
   public String getName() {
     return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
   }
 
   public Region getRegion() {
     return region;
   }
 
-  public void setRegion(Region region) {
-    this.region = region;
-  }
-
+  @JsonPOJOBuilder(buildMethodName = "build", withPrefix = "")
   public static final class Builder {
     private Long id;
     private String name;

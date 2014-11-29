@@ -1,10 +1,14 @@
 package com.thundermoose.eveintel.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+
 import java.util.List;
 
 /**
  * Created by thundermoose on 11/24/14.
  */
+@JsonDeserialize(builder = Pilot.Builder.class)
 public class Pilot {
   private Long id;
   private String name;
@@ -12,55 +16,40 @@ public class Pilot {
   private List<Killmail> kills;
 
   private Pilot(Builder builder) {
-    setId(builder.id);
-    setName(builder.name);
-    setCorporation(builder.corporation);
-    setKills(builder.kills);
+    id = builder.id;
+    name = builder.name;
+    corporation = builder.corporation;
+    kills = builder.kills;
+  }
+
+  public static Builder builder() {
+    return new Builder();
   }
 
   public Long getId() {
     return id;
   }
 
-  public void setId(Long id) {
-    this.id = id;
-  }
-
   public String getName() {
     return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
   }
 
   public Corporation getCorporation() {
     return corporation;
   }
 
-  public void setCorporation(Corporation corporation) {
-    this.corporation = corporation;
-  }
-
   public List<Killmail> getKills() {
     return kills;
   }
 
-  public void setKills(List<Killmail> kills) {
-    this.kills = kills;
-  }
-
-  public static Builder builder(){
-    return new Builder();
-  }
-
+  @JsonPOJOBuilder(buildMethodName = "build", withPrefix = "")
   public static final class Builder {
     private Long id;
     private String name;
     private Corporation corporation;
     private List<Killmail> kills;
 
-    public Builder() {
+    private Builder() {
     }
 
     public Builder id(Long id) {

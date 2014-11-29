@@ -57,7 +57,6 @@ public class EveApiClient {
   }
 
   public static final String BASE_URI = "https://api.eveonline.com";
-  //  public static final String BASE_URI = "http://localhost:8090";
   public static final String CHARACTER_URI = BASE_URI + "/Eve/CharacterID.xml.aspx?names=#";
   public static final String CHARACTER_AFFIL_URI = BASE_URI + "/Eve/CharacterAffiliation.xml.aspx?ids=#";
 

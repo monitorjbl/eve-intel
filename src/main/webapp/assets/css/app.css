@@ -7,14 +7,18 @@
 /* Global Styles */
 
 body {
-    margin-top: 100px;
+    /*margin-top: 100px;*/
     /*background-color: #222;*/
 }
 
 @media(min-width:768px) {
     body {
-        margin-top: 50px;
+        /*margin-top: 50px;*/
     }
+}
+
+nav.navbar{
+    border-radius: 0px;
 }
 
 #wrapper {

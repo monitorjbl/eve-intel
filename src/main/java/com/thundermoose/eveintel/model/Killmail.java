@@ -1,11 +1,15 @@
 package com.thundermoose.eveintel.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+
 import java.util.Date;
 import java.util.List;
 
 /**
  * Created by thundermoose on 11/24/14.
  */
+@JsonDeserialize(builder = Killmail.Builder.class)
 public class Killmail {
   private Long id;
   private Date date;
@@ -14,11 +18,11 @@ public class Killmail {
   private SolarSystem solarSystem;
 
   private Killmail(Builder builder) {
-    setId(builder.id);
-    setDate(builder.date);
-    setVictim(builder.victim);
-    setAttackingShips(builder.attackingShips);
-    setSolarSystem(builder.solarSystem);
+    id = builder.id;
+    date = builder.date;
+    victim = builder.victim;
+    attackingShips = builder.attackingShips;
+    solarSystem = builder.solarSystem;
   }
 
   public static Builder builder() {
@@ -29,43 +33,23 @@ public class Killmail {
     return id;
   }
 
-  public void setId(Long id) {
-    this.id = id;
-  }
-
   public Date getDate() {
     return date;
-  }
-
-  public void setDate(Date date) {
-    this.date = date;
   }
 
   public Ship getVictim() {
     return victim;
   }
 
-  public void setVictim(Ship victim) {
-    this.victim = victim;
-  }
-
   public List<Ship> getAttackingShips() {
     return attackingShips;
-  }
-
-  public void setAttackingShips(List<Ship> attackingShips) {
-    this.attackingShips = attackingShips;
   }
 
   public SolarSystem getSolarSystem() {
     return solarSystem;
   }
 
-  public void setSolarSystem(SolarSystem solarSystem) {
-    this.solarSystem = solarSystem;
-  }
-
-
+  @JsonPOJOBuilder(buildMethodName = "build", withPrefix = "")
   public static final class Builder {
     private Long id;
     private Date date;
