@@ -68,142 +68,177 @@
 
                 <div ng-show="recentActivity.killCount">
                     <div class="row">
-                        <div class="col-lg-3">
+                        <div class="col-lg-12 stats-row">
+                            <div scroll-on-true="loadComplete"></div>
                             <div class="panel panel-default">
                                 <div class="panel-heading">
-                                    <h3 class="panel-title"><i class="fa fa-long-arrow-right fa-fw"></i> Victim Alliances</h3>
+                                    <h3 class="panel-title"><i class="fa fa-long-arrow-right fa-fw"></i> Pilot Stats</h3>
                                 </div>
                                 <div class="panel-body">
-                                    <div class="text-right">
-                                        <a href="#" ng-click="tableKilledAlliances = !tableKilledAlliances">Switch View <i class="fa fa-arrow-circle-right"></i></a>
-                                    </div>
-                                    <graph-doughnut data="killedAlliances" ng-show="!tableKilledAlliances"></graph-doughnut>
-                                    <table class="table table-striped" ng-show="tableKilledAlliances">
+                                    <table class="table">
                                         <thead>
                                         <tr>
-                                            <th>Name</th>
-                                            <th>Count</th>
-                                            <th>Percentage</th>
+                                            <th>Kills in Past Month</th>
+                                            <th>Average Fleet Size</th>
+                                            <th>Commonly Flown Ship</th>
+                                            <th>Commonly Killed Ship</th>
+                                            <th>Typically Killed Alliance</th>
+                                            <th>Typically Assisted Alliance</th>
+                                            <th>Most Common Region</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr ng-repeat="alliance in recentActivity.killedAlliances">
-                                            <td>{{alliance.value.name}}</td>
-                                            <td>{{alliance.count}}</td>
-                                            <td>{{alliance.weight * 100}}</td>
+                                        <tr>
+                                            <td>{{recentActivity.killCount}}</td>
+                                            <td>{{recentActivity.averageFleetSize}}</td>
+                                            <td>{{recentActivity.tendencyUsedShip.name}}</td>
+                                            <td>{{recentActivity.tendencyKilledShip.name}}</td>
+                                            <td>{{recentActivity.tendencyKilledAlliance.name}}</td>
+                                            <td>{{recentActivity.tendencyAssistedAlliance.name}}</td>
+                                            <td>{{recentActivity.tendencyRegion.name}}</td>
                                         </tr>
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-3">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title"><i class="fa fa-long-arrow-right fa-fw"></i> Friend Alliances</h3>
-                                </div>
-                                <div class="panel-body">
-                                    <div class="text-right">
-                                        <a href="#" ng-click="tableAssistedAlliances = !tableAssistedAlliances">Switch View <i
-                                                class="fa fa-arrow-circle-right"></i></a>
+                        <div class="row graph-row">
+                            <div class="col-lg-3">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title"><i class="fa fa-long-arrow-right fa-fw"></i> Victim Alliances</h3>
                                     </div>
-                                    <graph-doughnut data="assistedAlliances" ng-show="!tableAssistedAlliances"></graph-doughnut>
-                                    <table class="table table-striped" ng-show="tableAssistedAlliances">
-                                        <thead>
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Count</th>
-                                            <th>Percentage</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr ng-repeat="alliance in recentActivity.assistedAlliances">
-                                            <td>{{alliance.value.name}}</td>
-                                            <td>{{alliance.count}}</td>
-                                            <td>{{alliance.weight * 100}}</td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title"><i class="fa fa-long-arrow-right fa-fw"></i> Victim Ships</h3>
-                                </div>
-                                <div class="panel-body">
-                                    <div class="text-right">
-                                        <a href="#" ng-click="tableKilledShips = !tableKilledShips">Switch View <i class="fa fa-arrow-circle-right"></i></a>
+                                    <div class="panel-body">
+                                        <div class="text-right">
+                                            <a href="javascript:void(0)" ng-click="tableKilledAlliances = !tableKilledAlliances">Switch View <i
+                                                    class="fa fa-arrow-circle-right"></i></a>
+                                        </div>
+                                        <graph-doughnut data="killedAlliances" ng-show="!tableKilledAlliances"></graph-doughnut>
+                                        <table class="table table-striped" ng-show="tableKilledAlliances">
+                                            <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Count</th>
+                                                <th>Percentage</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr ng-repeat="alliance in recentActivity.killedAlliances">
+                                                <td>{{alliance.value.name}}</td>
+                                                <td>{{alliance.count}}</td>
+                                                <td>{{alliance.weight * 100 | number : 2}}</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
-                                    <graph-doughnut data="killedShips" ng-show="!tableKilledShips"></graph-doughnut>
-                                    <table class="table table-striped" ng-show="tableKilledShips">
-                                        <thead>
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Count</th>
-                                            <th>Percentage</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr ng-repeat="alliance in recentActivity.killedShips">
-                                            <td>{{alliance.value.name}}</td>
-                                            <td>{{alliance.count}}</td>
-                                            <td>{{alliance.weight * 100}}</td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title"><i class="fa fa-long-arrow-right fa-fw"></i> Flown Ships</h3>
-                                </div>
-                                <div class="panel-body">
-                                    <div class="text-right">
-                                        <a href="#" ng-click="tableUsedShips = !tableUsedShips">Switch View <i class="fa fa-arrow-circle-right"></i></a>
+                            <div class="col-lg-3">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title"><i class="fa fa-long-arrow-right fa-fw"></i> Friend Alliances</h3>
                                     </div>
-                                    <graph-doughnut data="usedShips" ng-show="!tableUsedShips"></graph-doughnut>
-                                    <table class="table table-striped" ng-show="tableUsedShips">
-                                        <thead>
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Count</th>
-                                            <th>Percentage</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr ng-repeat="alliance in recentActivity.usedShips">
-                                            <td>{{alliance.value.name}}</td>
-                                            <td>{{alliance.count}}</td>
-                                            <td>{{alliance.weight * 100}}</td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
+                                    <div class="panel-body">
+                                        <div class="text-right">
+                                            <a href="javascript:void(0)" ng-click="tableAssistedAlliances = !tableAssistedAlliances">Switch View <i
+                                                    class="fa fa-arrow-circle-right"></i></a>
+                                        </div>
+                                        <graph-doughnut data="assistedAlliances" ng-show="!tableAssistedAlliances"></graph-doughnut>
+                                        <table class="table table-striped" ng-show="tableAssistedAlliances">
+                                            <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Count</th>
+                                                <th>Percentage</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr ng-repeat="alliance in recentActivity.assistedAlliances">
+                                                <td>{{alliance.value.name}}</td>
+                                                <td>{{alliance.count}}</td>
+                                                <td>{{alliance.weight * 100 | number : 2}}</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title"><i class="fa fa-long-arrow-right fa-fw"></i> Victim Ships</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="text-right">
+                                            <a href="javascript:void(0)" ng-click="tableKilledShips = !tableKilledShips">Switch View <i class="fa fa-arrow-circle-right"></i></a>
+                                        </div>
+                                        <graph-doughnut data="killedShips" ng-show="!tableKilledShips"></graph-doughnut>
+                                        <table class="table table-striped" ng-show="tableKilledShips">
+                                            <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Count</th>
+                                                <th>Percentage</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr ng-repeat="alliance in recentActivity.killedShips">
+                                                <td>{{alliance.value.name}}</td>
+                                                <td>{{alliance.count}}</td>
+                                                <td>{{alliance.weight * 100 | number : 2}}</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title"><i class="fa fa-long-arrow-right fa-fw"></i> Flown Ships</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="text-right">
+                                            <a href="javascript:void(0)" ng-click="tableUsedShips = !tableUsedShips">Switch View <i class="fa fa-arrow-circle-right"></i></a>
+                                        </div>
+                                        <graph-doughnut data="usedShips" ng-show="!tableUsedShips"></graph-doughnut>
+                                        <table class="table table-striped" ng-show="tableUsedShips">
+                                            <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Count</th>
+                                                <th>Percentage</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr ng-repeat="alliance in recentActivity.usedShips">
+                                                <td>{{alliance.value.name}}</td>
+                                                <td>{{alliance.count}}</td>
+                                                <td>{{alliance.weight * 100 | number : 2}}</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title"><i class="fa fa-long-arrow-right fa-fw"></i> Kills Per Day</h3>
-                                </div>
-                                <div class="panel-body">
-                                    <graph-line data="killsPerDay"></graph-line>
+                        <div class="row graph-row">
+                            <div class="col-lg-12">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title"><i class="fa fa-long-arrow-right fa-fw"></i> Kills Per Day</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <graph-line data="killsPerDay"></graph-line>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div scroll-on-true="loadComplete"></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
 </body>
 </html>

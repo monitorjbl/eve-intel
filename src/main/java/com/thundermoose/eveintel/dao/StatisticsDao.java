@@ -25,6 +25,7 @@ import org.slf4j.LoggerFactory;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -38,7 +39,8 @@ import java.util.Objects;
 @Named
 public class StatisticsDao {
   private static final Logger log = LoggerFactory.getLogger(StatisticsDao.class);
-  public static final Double TENDENCY_CUTOFF = 0.2;
+  public static final Long POD_ID = 670L;
+  public static final Integer ROUNDING_SCALE = 4;
 
   private final Ehcache recentActivityCache;
   private final PilotDao pilotDao;
@@ -84,7 +86,7 @@ public class StatisticsDao {
       }
 
       //dont count pods
-      if (!Objects.equals(km.getVictim().getType().getId(), 670L)) {
+      if (!Objects.equals(km.getVictim().getType().getId(), POD_ID)) {
         killedShips.add(km.getVictim().getType());
       }
 
@@ -121,6 +123,7 @@ public class StatisticsDao {
           .recentRegion(recency(regions))
           .tendencyRegion(tendency(wr))
           .killsPerDay(killsPerDay(start, finish, p.getKills()))
+          .averageFleetSize(averageFleetSize(p.getKills()))
           .build();
     } else {
       return null;
@@ -128,7 +131,7 @@ public class StatisticsDao {
   }
 
   @SuppressWarnings("unchecked")
-  public <E extends NamedItem> List<WeightedData<E>> weight(List<E> items) {
+  <E extends NamedItem> List<WeightedData<E>> weight(List<E> items) {
     Double unit = div(1.0, (double) items.size());
     List<WeightedData<E>> weightedData = new ArrayList<>();
 
@@ -151,7 +154,15 @@ public class StatisticsDao {
     return weightedData;
   }
 
-  public TimeGraph killsPerDay(DateTime start, DateTime finish, List<Killmail> killmails) {
+  Integer averageFleetSize(List<Killmail> killmails) {
+    Integer total = 0;
+    for (Killmail km : killmails) {
+      total += km.getAttackingShips().size();
+    }
+    return div((double) total, (double) killmails.size()).intValue();
+  }
+
+  TimeGraph killsPerDay(DateTime start, DateTime finish, List<Killmail> killmails) {
     List<TimeGraphPoint> data = new ArrayList<>();
 
     DateTime ptr = start;
@@ -161,7 +172,10 @@ public class StatisticsDao {
       DateTime boundary = ptr.plusDays(1);
       TimeGraphPoint point = new TimeGraphPoint(ptr.toDate(), 0.0);
       while (curr != null && ptr.isBefore(curr.getDate().getTime()) && boundary.isAfter(curr.getDate().getTime())) {
-        point.setY(point.getY() + 1.0);
+        //don't count pods
+        if (!Objects.equals(POD_ID, curr.getVictim().getType().getId())) {
+          point.setY(point.getY() + 1.0);
+        }
         curr = iter.hasNext() ? iter.next() : null;
       }
       ptr = ptr.plusDays(1);
@@ -171,24 +185,17 @@ public class StatisticsDao {
     return new TimeGraph(data, "Time of day", "Kills per hour", "Kills over time");
   }
 
-  public <E extends NamedItem> E recency(List<E> data) {
+  <E extends NamedItem> E recency(List<E> data) {
     return data.get(data.size() - 1);
   }
 
-  public <E extends NamedItem> E tendency(List<WeightedData<E>> data) {
+  <E extends NamedItem> E tendency(List<WeightedData<E>> data) {
     if (data.size() <= 1) {
       return data.get(0).getValue();
     }
 
-    //weights are sorted, determine if the lead is strongly preferred
-    //if the preference isn't strong enough, return null
     WeightedData<E> o1 = data.get(0);
-    WeightedData<E> o2 = data.get(1);
-    if (sub(o1.getWeight(), o2.getWeight()) >= TENDENCY_CUTOFF) {
-      return o1.getValue();
-    } else {
-      return null;
-    }
+    return o1.getValue();
   }
 
   private <E extends NamedItem> WeightedData<E> findItem(List<WeightedData<E>> data, String name) {
@@ -203,15 +210,18 @@ public class StatisticsDao {
   private Double div(Double top, Double bottom) {
     BigDecimal a = new BigDecimal(top);
     BigDecimal b = new BigDecimal(bottom);
-    return a.divide(b, 6, BigDecimal.ROUND_HALF_UP).doubleValue();
+    return a.divide(b, ROUNDING_SCALE + 2, BigDecimal.ROUND_HALF_UP)
+        .setScale(ROUNDING_SCALE, RoundingMode.HALF_UP).doubleValue();
   }
 
   private Double add(Double left, Double right) {
-    return new BigDecimal(left).add(new BigDecimal(right)).doubleValue();
+    return new BigDecimal(left).add(new BigDecimal(right))
+        .setScale(ROUNDING_SCALE, RoundingMode.HALF_UP).doubleValue();
   }
 
   private Double sub(Double left, Double right) {
-    return new BigDecimal(left).subtract(new BigDecimal(right)).doubleValue();
+    return new BigDecimal(left).subtract(new BigDecimal(right))
+        .setScale(ROUNDING_SCALE, RoundingMode.HALF_UP).doubleValue();
   }
 
   class RecentActivityCacheEntryFactory implements CacheEntryFactory {

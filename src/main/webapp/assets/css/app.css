@@ -235,3 +235,16 @@ ul.alert-dropdown {
     width: 300px;
     z-index:100;
 }
+
+.graph{
+    height: 275px;
+}
+
+.stats th, .stats td{
+    text-align: center;
+}
+
+.graph-row .panel-body{
+    height: 350px;
+    overflow: auto;
+}

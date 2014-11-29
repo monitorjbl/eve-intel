@@ -57,7 +57,7 @@ app.directive('graphLine', function ($filter) {
                         ykeys: ['y'],
                         labels: [scope.data.title],
                         dateFormat: function (x) {
-                            return $filter('date')(x);
+                            return $filter('date')(x, 'fullDate');
                         }
                     });
                 }
@@ -71,13 +71,12 @@ app.directive('scrollOnTrue', function ($log) {
     return {
         restrict: 'A',
         link: function (scope, element, attributes) {
-            console.log(scope.scrollOnTrue);
             var id = 'scroll';
             $(element).attr('id', id);
             scope.$watch(attributes.scrollOnTrue, function (newValue) {
                 console.log(newValue);
                 if (newValue) {
-                    $log.debug("scrolling");
+                    $log.debug('scrolling');
                     $("body").animate({scrollTop: element.offset().top}, "slow");
                 }
             });

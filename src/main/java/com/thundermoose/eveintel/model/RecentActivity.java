@@ -29,6 +29,7 @@ public class RecentActivity {
   private ShipType tendencyKilledShip;
   private ShipType recentKilledShip;
   private TimeGraph killsPerDay;
+  private Integer averageFleetSize;
 
   private RecentActivity(Builder builder) {
     killCount = builder.killCount;
@@ -49,6 +50,7 @@ public class RecentActivity {
     tendencyKilledShip = builder.tendencyKilledShip;
     recentKilledShip = builder.recentKilledShip;
     killsPerDay = builder.killsPerDay;
+    averageFleetSize = builder.averageFleetSize;
   }
 
   public static Builder builder() {
@@ -127,6 +129,10 @@ public class RecentActivity {
     return killsPerDay;
   }
 
+  public Integer getAverageFleetSize() {
+    return averageFleetSize;
+  }
+
   @JsonPOJOBuilder(buildMethodName = "build", withPrefix = "")
   public static final class Builder {
     private Integer killCount;
@@ -147,6 +153,7 @@ public class RecentActivity {
     private ShipType tendencyKilledShip;
     private ShipType recentKilledShip;
     private TimeGraph killsPerDay;
+    private Integer averageFleetSize;
 
     private Builder() {
     }
@@ -238,6 +245,11 @@ public class RecentActivity {
 
     public Builder killsPerDay(TimeGraph killsPerDay) {
       this.killsPerDay = killsPerDay;
+      return this;
+    }
+
+    public Builder averageFleetSize(Integer averageFleetSize) {
+      this.averageFleetSize = averageFleetSize;
       return this;
     }
 
