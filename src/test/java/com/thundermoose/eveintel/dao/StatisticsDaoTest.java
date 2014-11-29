@@ -45,11 +45,11 @@ public class StatisticsDaoTest {
     sut = new StatisticsDao(cacheManager, pilotDao);
   }
 
-  @Test
-  public void test() throws IOException {
-    ZKillApiClient client = new ZKillApiClient(new EveStaticData());
-    client.getKillmailsForPilot(353765550L, new DateTime().minusMonths(1));
-  }
+//  @Test
+//  public void test() throws IOException {
+//    ZKillApiClient client = new ZKillApiClient(new EveStaticData());
+//    client.getKillmailsForPilot(353765550L, new DateTime().minusMonths(1));
+//  }
 
   @Test
   public void testKillGraph() throws IOException, InterruptedException {
