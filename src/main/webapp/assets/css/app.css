@@ -240,7 +240,7 @@ ul.alert-dropdown {
     height: 275px;
 }
 
-.stats th, .stats td{
+.stats-row th, .stats-row td{
     text-align: center;
 }
 

@@ -20,7 +20,7 @@ app.controller('RecentActivity', function ($scope, $http, $timeout) {
                     $scope.loadComplete = true;
                 }, 1);
             } else {
-                $scope.recentActivity = {};
+                $scope.error = 'Pilot has no kill information for the past month.';
             }
             $scope.loading = false;
         }).error(function (data) {

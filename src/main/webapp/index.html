@@ -39,7 +39,7 @@
 
         <div class="container-fluid">
             <div ng-controller="RecentActivity">
-                <div class="alert alert-danger alert-message" ng-show="error">{{error}}</div>
+                <!--<div class="alert alert-danger alert-message" ng-show="error">{{error}}</div>-->
 
                 <div class="row">
                     <div class="col-lg-offset-1 col-lg-10">
@@ -60,9 +60,9 @@
                     </div>
                 </div>
 
-                <div class="row" ng-show="recentActivity &&  !recentActivity.killCount">
-                    <div class="col-lg-12 text-center">
-                        Pilot has no kill information
+                <div class="row" ng-show="error">
+                    <div class="col-lg-offset-4 col-lg-4 text-center">
+                        <div class="alert alert-danger">{{error}}</div>
                     </div>
                 </div>
 
@@ -223,10 +223,20 @@
                             </div>
                         </div>
                         <div class="row graph-row">
-                            <div class="col-lg-12">
+                            <div class="col-lg-6">
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
                                         <h3 class="panel-title"><i class="fa fa-long-arrow-right fa-fw"></i> Kills Per Day</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <graph-line data="killsPerDay"></graph-line>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title"><i class="fa fa-long-arrow-right fa-fw"></i> Kills Per Hour</h3>
                                     </div>
                                     <div class="panel-body">
                                         <graph-line data="killsPerDay"></graph-line>

@@ -1,0 +1,1 @@
+select concat('"',typeID, '":"', typeName, '",') from invTypes limit 100000;
