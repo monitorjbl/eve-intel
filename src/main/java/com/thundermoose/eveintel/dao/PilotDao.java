@@ -4,6 +4,7 @@ import com.thundermoose.eveintel.api.EveApiClient;
 import com.thundermoose.eveintel.api.ZKillApiClient;
 import com.thundermoose.eveintel.model.Pilot;
 import net.sf.ehcache.CacheManager;
+import net.sf.ehcache.Ehcache;
 import net.sf.ehcache.constructs.blocking.CacheEntryFactory;
 import net.sf.ehcache.constructs.blocking.SelfPopulatingCache;
 
@@ -15,7 +16,7 @@ import javax.inject.Named;
  */
 @Named
 public class PilotDao {
-  private final SelfPopulatingCache pilotCache;
+  private final Ehcache pilotCache;
   private final EveApiClient eveApiClient;
   private final ZKillApiClient zKillApiClient;
 
@@ -23,7 +24,7 @@ public class PilotDao {
   public PilotDao(CacheManager cacheManager, EveApiClient eveApiClient, ZKillApiClient zKillApiClient) {
     this.eveApiClient = eveApiClient;
     this.zKillApiClient = zKillApiClient;
-    this.pilotCache = new SelfPopulatingCache(cacheManager.getCache("pilotCache"), new PilotCacheEntryFactory());
+    this.pilotCache = new SelfPopulatingCache(cacheManager.getCache(CacheNames.PILOT_CACHE), new PilotCacheEntryFactory());
   }
 
   public Pilot getPilotByName(String name) {

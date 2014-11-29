@@ -46,5 +46,5 @@ DELIMITER ;
 
 CALL Hierarchy(4,1);
 
-SELECT * FROM eve_static.invTypes
-WHERE marketGroupID in (select marketGroupID from out_temp);
+SELECT concat('"',typeID, '":"', typeName, '",') FROM eve_static.invTypes
+where marketGroupID in (select marketGroupID from out_temp);

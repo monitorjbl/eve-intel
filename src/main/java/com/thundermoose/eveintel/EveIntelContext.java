@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.thundermoose.eveintel.api.EveApiClient;
 import com.thundermoose.eveintel.api.EveStaticData;
 import com.thundermoose.eveintel.api.ZKillApiClient;
+import com.thundermoose.eveintel.dao.CacheNames;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 import org.springframework.context.annotation.Bean;
@@ -53,7 +54,8 @@ public class EveIntelContext extends WebMvcConfigurerAdapter {
   @Bean
   public CacheManager cacheManager() {
     CacheManager cacheManager = CacheManager.create();
-    cacheManager.addCache(new Cache("pilotCache", CACHE_SIZE, false, false, CACHE_TTL, CACHE_IDLE_TTL));
+    cacheManager.addCache(new Cache(CacheNames.PILOT_CACHE, CACHE_SIZE, false, false, CACHE_TTL, CACHE_IDLE_TTL));
+    cacheManager.addCache(new Cache(CacheNames.RECENT_ACTIVITY_CACHE, CACHE_SIZE, false, false, CACHE_TTL, CACHE_IDLE_TTL));
     return cacheManager;
   }
 

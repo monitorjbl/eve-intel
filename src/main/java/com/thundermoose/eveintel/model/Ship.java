@@ -5,13 +5,11 @@ package com.thundermoose.eveintel.model;
  */
 public class Ship {
   private Long id;
-  private String name;
   private Pilot pilot;
   private ShipType type;
 
   private Ship(Builder builder) {
     setId(builder.id);
-    setName(builder.name);
     setPilot(builder.pilot);
     setType(builder.type);
   }
@@ -26,14 +24,6 @@ public class Ship {
 
   public void setId(Long id) {
     this.id = id;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
   }
 
   public Pilot getPilot() {
@@ -55,7 +45,6 @@ public class Ship {
 
   public static final class Builder {
     private Long id;
-    private String name;
     private Pilot pilot;
     private ShipType type;
 
@@ -64,11 +53,6 @@ public class Ship {
 
     public Builder id(Long id) {
       this.id = id;
-      return this;
-    }
-
-    public Builder name(String name) {
-      this.name = name;
       return this;
     }
 

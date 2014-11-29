@@ -3,9 +3,17 @@ package com.thundermoose.eveintel.model;
 /**
  * Created by thundermoose on 11/24/14.
  */
-public class ShipType {
+public class ShipType implements NamedItem {
   private Long id;
   private String name;
+
+  public ShipType() {
+  }
+
+  public ShipType(Long id, String name) {
+    this.id = id;
+    this.name = name;
+  }
 
   public Long getId() {
     return id;

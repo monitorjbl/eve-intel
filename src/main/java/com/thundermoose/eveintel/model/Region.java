@@ -3,7 +3,7 @@ package com.thundermoose.eveintel.model;
 /**
  * Created by thundermoose on 11/24/14.
  */
-public class Region {
+public class Region implements NamedItem{
   private Long id;
   private String name;
 

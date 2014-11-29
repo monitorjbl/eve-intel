@@ -1,10 +1,12 @@
 package com.thundermoose.eveintel.api;
 
+import com.thundermoose.eveintel.exceptions.NotFoundException;
 import com.thundermoose.eveintel.model.Alliance;
 import com.thundermoose.eveintel.model.Corporation;
 import com.thundermoose.eveintel.model.Killmail;
 import com.thundermoose.eveintel.model.Pilot;
 import com.thundermoose.eveintel.model.Ship;
+import com.thundermoose.eveintel.model.ShipType;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -16,6 +18,7 @@ import org.w3c.dom.Node;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static com.thundermoose.eveintel.api.ApiUtils.*;
@@ -45,40 +48,23 @@ public class ZKillApiClient {
                 .id(Long.parseLong(attribute(n, KILL_ID)))
                 .date(KILL_DATE.parseDateTime(attribute(n, KILL_TIME)).toDate())
                 .solarSystem(eveStaticData.getSolarSystem(Long.parseLong(attribute(n, KILL_SYSTEM_ID))))
-                .attackers(getAttackers(n))
+                .attackingShip(getAttacker(n, pilotId))
                 .victim(getVictim(n))
                 .build()
     ).collect(Collectors.toList());
   }
 
-  private List<Ship> getAttackers(Node n) {
-    List<Ship> attackers = new ArrayList<>();
+  private ShipType getAttacker(Node n, Long pilotId) {
     for (Node an : xmlNodes((Element) n, ATTACKERS)) {
-      Alliance alliance = Alliance.builder()
-          .id(Long.parseLong(attribute(an, ALLIANCE_ID)))
-          .name(attribute(an, ALLIANCE_NAME))
-          .build();
-
-      Corporation corporation = Corporation.builder()
-          .id(Long.parseLong(attribute(an, CORPORATION_ID)))
-          .name(attribute(an, CORPORATION_NAME))
-          .alliance(alliance)
-          .build();
-
-      Pilot ap = Pilot.builder()
-          .id(Long.parseLong(attribute(an, CHARACTER_ID)))
-          .name(attribute(an, CHARACTER_NAME))
-          .corporation(corporation)
-          .build();
-
-      Long shiptId = Long.parseLong(attribute(an, SHIP_ID));
-      attackers.add(Ship.builder()
-          .id(shiptId)
-          .name(eveStaticData.getShipName(shiptId))
-          .pilot(ap)
-          .build());
+      Long attackerId = Long.parseLong(attribute(an, CHARACTER_ID));
+      if (Objects.equals(attackerId, pilotId)) {
+        Long shipId = Long.parseLong(attribute(an, SHIP_ID));
+        return new ShipType(shipId, eveStaticData.getShipName(shipId));
+      }
     }
-    return attackers;
+
+    throw new IllegalStateException("Could not find attacker [" + pilotId + "]. This should only " +
+        "happen if killboard data is bad.");
   }
 
   private Ship getVictim(Node n) {
@@ -101,10 +87,9 @@ public class ZKillApiClient {
         .corporation(corporation)
         .build();
 
-    Long shiptId = Long.parseLong(attribute(vn, SHIP_ID));
+    Long shipId = Long.parseLong(attribute(vn, SHIP_ID));
     return Ship.builder()
-        .id(shiptId)
-        .name(eveStaticData.getShipName(shiptId))
+        .type(new ShipType(shipId, eveStaticData.getShipName(shipId)))
         .pilot(vp)
         .build();
   }

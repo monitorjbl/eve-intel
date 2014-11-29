@@ -11,15 +11,15 @@ public class Killmail {
   private Long id;
   private Date date;
   private Ship victim;
+  private ShipType attackingShip;
   private SolarSystem solarSystem;
-  private List<Ship> attackers = new ArrayList<>();
 
   private Killmail(Builder builder) {
     setId(builder.id);
     setDate(builder.date);
     setVictim(builder.victim);
+    setAttackingShip(builder.attackingShip);
     setSolarSystem(builder.solarSystem);
-    setAttackers(builder.attackers);
   }
 
   public static Builder builder() {
@@ -50,6 +50,14 @@ public class Killmail {
     this.victim = victim;
   }
 
+  public ShipType getAttackingShip() {
+    return attackingShip;
+  }
+
+  public void setAttackingShip(ShipType attackingShip) {
+    this.attackingShip = attackingShip;
+  }
+
   public SolarSystem getSolarSystem() {
     return solarSystem;
   }
@@ -58,21 +66,13 @@ public class Killmail {
     this.solarSystem = solarSystem;
   }
 
-  public List<Ship> getAttackers() {
-    return attackers;
-  }
-
-  public void setAttackers(List<Ship> attackers) {
-    this.attackers = attackers;
-  }
-
 
   public static final class Builder {
     private Long id;
     private Date date;
     private Ship victim;
+    private ShipType attackingShip;
     private SolarSystem solarSystem;
-    private List<Ship> attackers;
 
     private Builder() {
     }
@@ -92,13 +92,13 @@ public class Killmail {
       return this;
     }
 
-    public Builder solarSystem(SolarSystem solarSystem) {
-      this.solarSystem = solarSystem;
+    public Builder attackingShip(ShipType attackingShip) {
+      this.attackingShip = attackingShip;
       return this;
     }
 
-    public Builder attackers(List<Ship> attackers) {
-      this.attackers = attackers;
+    public Builder solarSystem(SolarSystem solarSystem) {
+      this.solarSystem = solarSystem;
       return this;
     }
 
