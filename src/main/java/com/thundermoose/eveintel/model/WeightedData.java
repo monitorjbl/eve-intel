@@ -3,25 +3,25 @@ package com.thundermoose.eveintel.model;
 /**
  * Created by thundermoose on 11/25/14.
  */
-public class WeightedData {
-  private NamedItem value;
+public class WeightedData<T extends NamedItem> {
+  private T value;
   private Double weight;
   private Integer count;
 
   public WeightedData() {
   }
 
-  public WeightedData(NamedItem value, Double weight, Integer count) {
+  public WeightedData(T value, Double weight, Integer count) {
     this.value = value;
     this.weight = weight;
     this.count = count;
   }
 
-  public NamedItem getValue() {
+  public T getValue() {
     return value;
   }
 
-  public void setValue(NamedItem value) {
+  public void setValue(T value) {
     this.value = value;
   }
 

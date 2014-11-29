@@ -30,4 +30,10 @@ public class StatisticsController {
   public RecentActivity getRecentActivity(@PathVariable String name) {
     return service.getRecentActivity(name);
   }
+
+  @RequestMapping(value = "/zap/{name}", method = RequestMethod.GET)
+  @ResponseBody
+  public void zap(@PathVariable String name) {
+    service.zap(name);
+  }
 }

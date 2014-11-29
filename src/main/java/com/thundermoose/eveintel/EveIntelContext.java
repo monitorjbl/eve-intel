@@ -28,7 +28,7 @@ import java.util.List;
 @ComponentScan(basePackages = {"com.thundermoose.eveintel"})
 public class EveIntelContext extends WebMvcConfigurerAdapter {
   public static final Integer CACHE_SIZE = 10000;
-  public static final Long CACHE_TTL = 300L;
+  public static final Long CACHE_TTL = 3600L;
   public static final Long CACHE_IDLE_TTL = 0L;
 
   @Override

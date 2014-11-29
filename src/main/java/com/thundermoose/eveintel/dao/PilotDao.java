@@ -2,7 +2,9 @@ package com.thundermoose.eveintel.dao;
 
 import com.thundermoose.eveintel.api.EveApiClient;
 import com.thundermoose.eveintel.api.ZKillApiClient;
+import com.thundermoose.eveintel.model.Killmail;
 import com.thundermoose.eveintel.model.Pilot;
+import com.thundermoose.eveintel.model.Ship;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Ehcache;
 import net.sf.ehcache.constructs.blocking.CacheEntryFactory;
@@ -35,6 +37,11 @@ public class PilotDao {
     public Object createEntry(Object key) throws Exception {
       Pilot p = eveApiClient.findPilotByName((String) key);
       p.setKills(zKillApiClient.getKillmailsForPilot(p.getId()));
+      for(Killmail km : p.getKills()){
+        for(Ship s : km.getAttackingShips()){
+//          System.out.println(s.getPilot().getCorporation().getAlliance().getName());
+        }
+      }
       return p;
     }
   }

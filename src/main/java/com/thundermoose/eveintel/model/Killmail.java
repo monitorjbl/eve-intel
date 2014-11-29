@@ -1,6 +1,5 @@
 package com.thundermoose.eveintel.model;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -11,14 +10,14 @@ public class Killmail {
   private Long id;
   private Date date;
   private Ship victim;
-  private ShipType attackingShip;
+  private List<Ship> attackingShips;
   private SolarSystem solarSystem;
 
   private Killmail(Builder builder) {
     setId(builder.id);
     setDate(builder.date);
     setVictim(builder.victim);
-    setAttackingShip(builder.attackingShip);
+    setAttackingShips(builder.attackingShips);
     setSolarSystem(builder.solarSystem);
   }
 
@@ -50,12 +49,12 @@ public class Killmail {
     this.victim = victim;
   }
 
-  public ShipType getAttackingShip() {
-    return attackingShip;
+  public List<Ship> getAttackingShips() {
+    return attackingShips;
   }
 
-  public void setAttackingShip(ShipType attackingShip) {
-    this.attackingShip = attackingShip;
+  public void setAttackingShips(List<Ship> attackingShips) {
+    this.attackingShips = attackingShips;
   }
 
   public SolarSystem getSolarSystem() {
@@ -71,7 +70,7 @@ public class Killmail {
     private Long id;
     private Date date;
     private Ship victim;
-    private ShipType attackingShip;
+    private List<Ship> attackingShips;
     private SolarSystem solarSystem;
 
     private Builder() {
@@ -92,8 +91,8 @@ public class Killmail {
       return this;
     }
 
-    public Builder attackingShip(ShipType attackingShip) {
-      this.attackingShip = attackingShip;
+    public Builder attackingShips(List<Ship> attackingShips) {
+      this.attackingShips = attackingShips;
       return this;
     }
 
