@@ -5,7 +5,7 @@ app.controller('RecentActivity', function ($scope, $http, $timeout) {
         delete $scope.error;
         delete $scope.loadComplete;
         $scope.loading = true;
-        $http.get('api/activity/' + $scope.pilot).success(function (data) {
+        $http.get('api/pilotStatistics/' + $scope.pilot).success(function (data) {
             if (data != '') {
                 $scope.recentActivity = data;
                 //morris needs the div to be visible before it renders

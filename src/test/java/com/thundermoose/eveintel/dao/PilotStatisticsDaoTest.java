@@ -25,21 +25,21 @@ import static org.mockito.Mockito.*;
 /**
  * Created by thundermoose on 11/29/14.
  */
-public class StatisticsDaoTest {
+public class PilotStatisticsDaoTest {
   private static final DateTimeFormatter df = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss");
 
   @Mock
   CacheManager cacheManager;
   @Mock
   PilotDao pilotDao;
-  StatisticsDao sut;
+  PilotStatisticsDao sut;
 
   @Before
   public void setup() {
     MockitoAnnotations.initMocks(this);
     when(cacheManager.getCache(CacheNames.RECENT_ACTIVITY_CACHE))
         .thenReturn(new Cache(CacheNames.RECENT_ACTIVITY_CACHE, 1, false, false, 1, 1));
-    sut = new StatisticsDao(cacheManager, pilotDao);
+    sut = new PilotStatisticsDao(cacheManager, pilotDao);
   }
 
 //  @Test

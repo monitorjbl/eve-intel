@@ -1,7 +1,7 @@
 package com.thundermoose.eveintel.controllers;
 
-import com.thundermoose.eveintel.model.RecentActivity;
-import com.thundermoose.eveintel.service.StatisticsService;
+import com.thundermoose.eveintel.model.PilotStatistics;
+import com.thundermoose.eveintel.service.PilotStatisticsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,18 +16,18 @@ import javax.inject.Named;
  */
 @Named
 @Controller
-public class StatisticsController {
+public class PilotStatisticsController {
 
-  private final StatisticsService service;
+  private final PilotStatisticsService service;
 
   @Inject
-  public StatisticsController(StatisticsService service) {
+  public PilotStatisticsController(PilotStatisticsService service) {
     this.service = service;
   }
 
-  @RequestMapping(value = "/activity/{name}", method = RequestMethod.GET)
+  @RequestMapping(value = "/pilotStatistics/{name}", method = RequestMethod.GET)
   @ResponseBody
-  public RecentActivity getRecentActivity(@PathVariable String name) {
+  public PilotStatistics getRecentActivity(@PathVariable String name) {
     return service.getRecentActivity(name);
   }
 }

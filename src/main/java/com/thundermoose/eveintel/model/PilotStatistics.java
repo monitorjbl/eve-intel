@@ -9,8 +9,8 @@ import java.util.List;
 /**
  * Created by thundermoose on 11/25/14.
  */
-@JsonDeserialize(builder = RecentActivity.Builder.class)
-public class RecentActivity {
+@JsonDeserialize(builder = PilotStatistics.Builder.class)
+public class PilotStatistics {
   private Integer killCount;
   private Double costIn;
   private List<WeightedData<Region>> regions = new ArrayList<>();
@@ -32,7 +32,7 @@ public class RecentActivity {
   private TimeGraph killsPerDay;
   private BarGraph killsPerHour;
 
-  private RecentActivity(Builder builder) {
+  private PilotStatistics(Builder builder) {
     killCount = builder.killCount;
     costIn = builder.costIn;
     regions = builder.regions;
@@ -265,8 +265,8 @@ public class RecentActivity {
       return this;
     }
 
-    public RecentActivity build() {
-      return new RecentActivity(this);
+    public PilotStatistics build() {
+      return new PilotStatistics(this);
     }
   }
 }

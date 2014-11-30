@@ -9,7 +9,7 @@ import com.thundermoose.eveintel.model.BarGraphPoint;
 import com.thundermoose.eveintel.model.Killmail;
 import com.thundermoose.eveintel.model.NamedItem;
 import com.thundermoose.eveintel.model.Pilot;
-import com.thundermoose.eveintel.model.RecentActivity;
+import com.thundermoose.eveintel.model.PilotStatistics;
 import com.thundermoose.eveintel.model.Region;
 import com.thundermoose.eveintel.model.Ship;
 import com.thundermoose.eveintel.model.ShipType;
@@ -30,7 +30,6 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -41,26 +40,31 @@ import java.util.TreeMap;
  * Created by thundermoose on 11/25/14.
  */
 @Named
-public class StatisticsDao {
-  private static final Logger log = LoggerFactory.getLogger(StatisticsDao.class);
+public class PilotStatisticsDao {
+  private static final Logger log = LoggerFactory.getLogger(PilotStatisticsDao.class);
   public static final Long POD_ID = 670L;
   public static final Integer ROUNDING_SCALE = 4;
+  public static final Boolean CACHE_STATISTICS = true;
 
   private final Ehcache recentActivityCache;
   private final PilotDao pilotDao;
 
   @Inject
-  public StatisticsDao(CacheManager cacheManager, PilotDao pilotDao) {
+  public PilotStatisticsDao(CacheManager cacheManager, PilotDao pilotDao) {
     this.recentActivityCache = new SelfPopulatingCache(cacheManager.getCache(
         CacheNames.RECENT_ACTIVITY_CACHE), new RecentActivityCacheEntryFactory());
     this.pilotDao = pilotDao;
   }
 
-  public RecentActivity getRecentActivity(String name) {
-    return (RecentActivity) recentActivityCache.get(name.toLowerCase()).getObjectValue();
+  public PilotStatistics getRecentActivity(String name) {
+    if (CACHE_STATISTICS) {
+      return (PilotStatistics) recentActivityCache.get(name.toLowerCase()).getObjectValue();
+    } else {
+      return generateStatistics(name);
+    }
   }
 
-  RecentActivity generateStatistics(String name) {
+  PilotStatistics generateStatistics(String name) {
     log.debug("Recent Activity: calculating activity for [" + name + "]");
 
     //pull pilot data for the last month
@@ -109,7 +113,7 @@ public class StatisticsDao {
       List<WeightedData<Alliance>> waa = weight(assistedAlliances);
       List<WeightedData<Region>> wr = weight(regions);
 
-      return RecentActivity.builder()
+      return PilotStatistics.builder()
           .killCount(killedShips.size())
           .killedShips(wv)
           .recentKilledShip(recency(killedShips))
@@ -194,7 +198,7 @@ public class StatisticsDao {
     Map<Integer, BarGraphPoint> data = new TreeMap<>();
     //load base data
     for (int i = 0; i < 24; i++) {
-      data.put(i, new BarGraphPoint(String.format("%02d00",i), 0.0));
+      data.put(i, new BarGraphPoint(String.format("%02d00", i), 0.0));
     }
 
     //for each killmail, find what time the kill occurred
