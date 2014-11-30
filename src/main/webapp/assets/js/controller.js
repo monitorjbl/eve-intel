@@ -19,7 +19,7 @@ app.controller('RecentActivity', function ($scope, $http, $timeout) {
                     $scope.killsPerDay = data.killsPerDay;
                     $scope.killsPerHour = data.killsPerHour;
                     $scope.loadComplete = true;
-                }, 1);
+                });
             } else {
                 $scope.error = 'Pilot has no kill information for the past month.';
             }

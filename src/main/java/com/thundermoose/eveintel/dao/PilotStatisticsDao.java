@@ -30,6 +30,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -70,7 +71,7 @@ public class PilotStatisticsDao {
     //pull pilot data for the last month
     DateTime finish = DateTime.now();
     DateTime start = finish.minusMonths(1).withTime(0, 0, 0, 0);
-    Pilot p = pilotDao.getPilotData(name, start);
+    final Pilot p = pilotDao.getPilotData(name, start);
 
     //tally up totals
     List<Region> regions = new ArrayList<>();
@@ -156,10 +157,16 @@ public class PilotStatisticsDao {
     }
 
     //sort by weight, then by name
-    Collections.sort(weightedData, (o1, o2) -> ComparisonChain.start()
-        .compare(o2.getWeight(), o1.getWeight())
-        .compare(o1.getValue().getName(), o2.getValue().getName())
-        .result());
+    Collections.sort(weightedData, new Comparator<WeightedData<E>>() {
+      @Override
+      public int compare(WeightedData<E> o1, WeightedData<E> o2) {
+        return ComparisonChain.start()
+            .compare(o2.getWeight(), o1.getWeight())
+            .compare(o1.getValue().getName(), o2.getValue().getName())
+            .result();
+      }
+    });
+
     return weightedData;
   }
 
@@ -223,7 +230,7 @@ public class PilotStatisticsDao {
     return o1.getValue();
   }
 
-  private <E extends NamedItem> WeightedData<E> findItem(List<WeightedData<E>> data, String name) {
+  private <E extends NamedItem> WeightedData<E> findItem(List<WeightedData<E>> data, final String name) {
     return Iterables.find(data, new Predicate<WeightedData>() {
       @Override
       public boolean apply(WeightedData weightedData) {

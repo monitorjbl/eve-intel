@@ -22,21 +22,21 @@
 
 <body>
 
-<nav class="navbar navbar-inverse" role="navigation">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="index.html">EVE Intel</a>
-    </div>
-</nav>
 <div id="wrapper">
-    <div id="page-wrapper">
+    <nav class="navbar navbar-inverse" role="navigation">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="index.html">EVE Intel</a>
+        </div>
+    </nav>
 
+    <div id="page-wrapper">
         <div class="container-fluid">
             <div ng-controller="RecentActivity">
                 <div class="row">
@@ -70,7 +70,7 @@
                 <div ng-show="recentActivity.killCount">
                     <div class="row">
                         <div class="col-lg-12 stats-row">
-                            <div scroll-on-true="loadComplete"></div>
+                            <!--<div scroll-on-true="loadComplete"></div>-->
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <h3 class="panel-title">Pilot Stats</h3>
