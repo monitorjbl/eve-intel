@@ -3,6 +3,7 @@ package com.thundermoose.eveintel;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.joda.JodaModule;
 import com.thundermoose.eveintel.api.EveApiClient;
 import com.thundermoose.eveintel.api.EveStaticData;
 import com.thundermoose.eveintel.api.ZKillApiClient;
@@ -70,6 +71,7 @@ public class EveIntelContext extends WebMvcConfigurerAdapter {
   public ObjectMapper objectMapper() {
     ObjectMapper o = new ObjectMapper();
     o.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+    o.registerModule(new JodaModule());
 //    o.enable(SerializationFeature.INDENT_OUTPUT);
     return o;
   }

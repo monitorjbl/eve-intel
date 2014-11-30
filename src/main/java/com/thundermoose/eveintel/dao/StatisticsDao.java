@@ -31,7 +31,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.TreeMap;
 
 /**
  * Created by thundermoose on 11/25/14.
@@ -170,8 +172,8 @@ public class StatisticsDao {
     Killmail curr = iter.next();
     while (ptr.isBefore(finish)) {
       DateTime boundary = ptr.plusDays(1);
-      TimeGraphPoint point = new TimeGraphPoint(ptr.toDate(), 0.0);
-      while (curr != null && ptr.isBefore(curr.getDate().getTime()) && boundary.isAfter(curr.getDate().getTime())) {
+      TimeGraphPoint point = new TimeGraphPoint(ptr, 0.0);
+      while (curr != null && ptr.isBefore(curr.getDate()) && boundary.isAfter(curr.getDate())) {
         //don't count pods
         if (!Objects.equals(POD_ID, curr.getVictim().getType().getId())) {
           point.setY(point.getY() + 1.0);
@@ -182,7 +184,22 @@ public class StatisticsDao {
       data.add(point);
     }
 
-    return new TimeGraph(data, "Time of day", "Kills per hour", "Kills over time");
+    return new TimeGraph(data, "Day", "Kills", "Kills per Day");
+  }
+
+  TimeGraph killsPerHour(List<Killmail> killmails) {
+    Map<Integer, TimeGraphPoint> data = new TreeMap<>();
+    //load base data
+    for (int i = 0; i < 23; i++) {
+      data.put(i, new TimeGraphPoint());
+    }
+
+    //for each killmail, find what time the kill occurred
+    for (Killmail km : killmails) {
+
+    }
+
+    return new TimeGraph(new ArrayList<>(data.values()), "Hour of day", "Kills", "Kills per Hour");
   }
 
   <E extends NamedItem> E recency(List<E> data) {

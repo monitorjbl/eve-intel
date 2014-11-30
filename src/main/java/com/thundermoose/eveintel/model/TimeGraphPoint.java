@@ -1,27 +1,27 @@
 package com.thundermoose.eveintel.model;
 
-import java.util.Date;
+import org.joda.time.DateTime;
 
 /**
  * Created by thundermoose on 11/29/14.
  */
 public class TimeGraphPoint {
-  private Date x;
+  private DateTime x;
   private Double y;
 
   public TimeGraphPoint() {
   }
 
-  public TimeGraphPoint(Date x, Double y) {
+  public TimeGraphPoint(DateTime x, Double y) {
     this.x = x;
     this.y = y;
   }
 
-  public Date getX() {
+  public DateTime getX() {
     return x;
   }
 
-  public void setX(Date x) {
+  public void setX(DateTime x) {
     this.x = x;
   }
 

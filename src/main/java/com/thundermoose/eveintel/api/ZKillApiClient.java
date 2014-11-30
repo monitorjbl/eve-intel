@@ -120,7 +120,7 @@ public class ZKillApiClient {
     public Killmail apply(Node n) {
       return Killmail.builder()
           .id(Long.parseLong(attribute(n, KILL_ID)))
-          .date(KILL_DATE.parseDateTime(attribute(n, KILL_TIME)).toDate())
+          .date(KILL_DATE.parseDateTime(attribute(n, KILL_TIME)))
           .solarSystem(eveStaticData.getSolarSystem(Long.parseLong(attribute(n, KILL_SYSTEM_ID))))
           .attackingShips(getAttackers(n))
           .victim(getShip(xmlNode((Element) n, VICTIM)))

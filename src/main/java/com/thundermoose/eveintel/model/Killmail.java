@@ -2,8 +2,8 @@ package com.thundermoose.eveintel.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+import org.joda.time.DateTime;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -12,7 +12,7 @@ import java.util.List;
 @JsonDeserialize(builder = Killmail.Builder.class)
 public class Killmail {
   private Long id;
-  private Date date;
+  private DateTime date;
   private Ship victim;
   private List<Ship> attackingShips;
   private SolarSystem solarSystem;
@@ -33,7 +33,7 @@ public class Killmail {
     return id;
   }
 
-  public Date getDate() {
+  public DateTime getDate() {
     return date;
   }
 
@@ -52,7 +52,7 @@ public class Killmail {
   @JsonPOJOBuilder(buildMethodName = "build", withPrefix = "")
   public static final class Builder {
     private Long id;
-    private Date date;
+    private DateTime date;
     private Ship victim;
     private List<Ship> attackingShips;
     private SolarSystem solarSystem;
@@ -65,7 +65,7 @@ public class Killmail {
       return this;
     }
 
-    public Builder date(Date date) {
+    public Builder date(DateTime date) {
       this.date = date;
       return this;
     }
