@@ -1,23 +1,21 @@
 package com.thundermoose.eveintel.model;
 
-import org.joda.time.DateTime;
-
 /**
  * Created by thundermoose on 11/29/14.
  */
-public class TimeGraphPoint {
-  private DateTime x;
+public class BarGraphPoint {
+  private String x;
   private Double y;
 
-  public TimeGraphPoint() {
+  public BarGraphPoint() {
   }
 
-  public TimeGraphPoint(DateTime x, Double y) {
+  public BarGraphPoint(String x, Double y) {
     this.x = x;
     this.y = y;
   }
 
-  public DateTime getX() {
+  public String getX() {
     return x;
   }
 

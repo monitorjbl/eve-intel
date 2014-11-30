@@ -28,8 +28,9 @@ public class RecentActivity {
   private List<WeightedData<ShipType>> killedShips = new ArrayList<>();
   private ShipType tendencyKilledShip;
   private ShipType recentKilledShip;
-  private TimeGraph killsPerDay;
   private Integer averageFleetSize;
+  private TimeGraph killsPerDay;
+  private BarGraph killsPerHour;
 
   private RecentActivity(Builder builder) {
     killCount = builder.killCount;
@@ -49,8 +50,9 @@ public class RecentActivity {
     killedShips = builder.killedShips;
     tendencyKilledShip = builder.tendencyKilledShip;
     recentKilledShip = builder.recentKilledShip;
-    killsPerDay = builder.killsPerDay;
     averageFleetSize = builder.averageFleetSize;
+    killsPerDay = builder.killsPerDay;
+    killsPerHour = builder.killsPerHour;
   }
 
   public static Builder builder() {
@@ -125,12 +127,16 @@ public class RecentActivity {
     return recentKilledShip;
   }
 
+  public Integer getAverageFleetSize() {
+    return averageFleetSize;
+  }
+
   public TimeGraph getKillsPerDay() {
     return killsPerDay;
   }
 
-  public Integer getAverageFleetSize() {
-    return averageFleetSize;
+  public BarGraph getKillsPerHour() {
+    return killsPerHour;
   }
 
   @JsonPOJOBuilder(buildMethodName = "build", withPrefix = "")
@@ -152,8 +158,9 @@ public class RecentActivity {
     private List<WeightedData<ShipType>> killedShips;
     private ShipType tendencyKilledShip;
     private ShipType recentKilledShip;
-    private TimeGraph killsPerDay;
     private Integer averageFleetSize;
+    private TimeGraph killsPerDay;
+    private BarGraph killsPerHour;
 
     private Builder() {
     }
@@ -243,13 +250,18 @@ public class RecentActivity {
       return this;
     }
 
+    public Builder averageFleetSize(Integer averageFleetSize) {
+      this.averageFleetSize = averageFleetSize;
+      return this;
+    }
+
     public Builder killsPerDay(TimeGraph killsPerDay) {
       this.killsPerDay = killsPerDay;
       return this;
     }
 
-    public Builder averageFleetSize(Integer averageFleetSize) {
-      this.averageFleetSize = averageFleetSize;
+    public Builder killsPerHour(BarGraph killsPerHour) {
+      this.killsPerHour = killsPerHour;
       return this;
     }
 

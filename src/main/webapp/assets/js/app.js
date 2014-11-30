@@ -14,11 +14,6 @@ app.directive('graphDoughnut', function () {
         },
         link: function (scope, element, attrs) {
             var chart = $('<div class="graph graph-doughnut"></div>').appendTo(element);
-            $.each(attrs.$attr, function (i, v) {
-                if (v != 'data') {
-                    $(chart).attr(v, attrs[v]);
-                }
-            });
             scope.$watch('data', function (newValue, oldValue) {
                 if (newValue) {
                     $(chart).children().remove();
@@ -42,15 +37,38 @@ app.directive('graphLine', function ($filter) {
         },
         link: function (scope, element, attrs) {
             var chart = $('<div class="graph graph-line"></div>').appendTo(element);
-            $.each(attrs.$attr, function (i, v) {
-                if (v != 'data') {
-                    $(chart).attr(v, attrs[v]);
-                }
-            });
             scope.$watch('data', function (newValue, oldValue) {
                 if (newValue) {
                     $(chart).children().remove();
                     Morris.Line({
+                        element: chart,
+                        data: scope.data.data,
+                        xkey: 'x',
+                        ykeys: ['y'],
+                        labels: [scope.data.title],
+                        dateFormat: function (x) {
+                            return $filter('date')(x, 'fullDate');
+                        }
+                    });
+                }
+            }, false);
+
+        }
+    }
+});
+
+app.directive('graphBar', function ($filter) {
+    return {
+        restrict: 'E',
+        scope: {
+            data: '='
+        },
+        link: function (scope, element, attrs) {
+            var chart = $('<div class="graph graph-bar"></div>').appendTo(element);
+            scope.$watch('data', function (newValue, oldValue) {
+                if (newValue) {
+                    $(chart).children().remove();
+                    Morris.Bar({
                         element: chart,
                         data: scope.data.data,
                         xkey: 'x',

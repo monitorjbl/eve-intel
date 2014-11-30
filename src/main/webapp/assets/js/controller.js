@@ -17,6 +17,7 @@ app.controller('RecentActivity', function ($scope, $http, $timeout) {
                     $scope.killedShips = convertToGraph(data.killedShips);
                     $scope.regions = convertToGraph(data.regions);
                     $scope.killsPerDay = data.killsPerDay;
+                    $scope.killsPerHour = data.killsPerHour;
                     $scope.loadComplete = true;
                 }, 1);
             } else {

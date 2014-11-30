@@ -59,7 +59,7 @@ public class StatisticsDaoTest {
     TimeGraph graph = sut.killsPerDay(start, finish, killmails);
     SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
     for (TimeGraphPoint pt : graph.getData()) {
-      System.out.println("{x:" + pt.getX().toDate().getTime() + ",y:" + pt.getY() + "},");
+      System.out.println("{x:" + pt.getX() + ",y:" + pt.getY() + "},");
     }
 
     Thread.sleep(1000);

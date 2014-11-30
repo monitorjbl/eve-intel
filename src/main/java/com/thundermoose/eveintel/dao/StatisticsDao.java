@@ -4,6 +4,8 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.Iterables;
 import com.thundermoose.eveintel.model.Alliance;
+import com.thundermoose.eveintel.model.BarGraph;
+import com.thundermoose.eveintel.model.BarGraphPoint;
 import com.thundermoose.eveintel.model.Killmail;
 import com.thundermoose.eveintel.model.NamedItem;
 import com.thundermoose.eveintel.model.Pilot;
@@ -125,6 +127,7 @@ public class StatisticsDao {
           .recentRegion(recency(regions))
           .tendencyRegion(tendency(wr))
           .killsPerDay(killsPerDay(start, finish, p.getKills()))
+          .killsPerHour(killsPerHour(p.getKills()))
           .averageFleetSize(averageFleetSize(p.getKills()))
           .build();
     } else {
@@ -187,19 +190,20 @@ public class StatisticsDao {
     return new TimeGraph(data, "Day", "Kills", "Kills per Day");
   }
 
-  TimeGraph killsPerHour(List<Killmail> killmails) {
-    Map<Integer, TimeGraphPoint> data = new TreeMap<>();
+  BarGraph killsPerHour(List<Killmail> killmails) {
+    Map<Integer, BarGraphPoint> data = new TreeMap<>();
     //load base data
-    for (int i = 0; i < 23; i++) {
-      data.put(i, new TimeGraphPoint());
+    for (int i = 0; i < 24; i++) {
+      data.put(i, new BarGraphPoint(String.format("%02d00",i), 0.0));
     }
 
     //for each killmail, find what time the kill occurred
     for (Killmail km : killmails) {
-
+      BarGraphPoint p = data.get(km.getDate().getHourOfDay());
+      p.setY(p.getY() + 1.0);
     }
 
-    return new TimeGraph(new ArrayList<>(data.values()), "Hour of day", "Kills", "Kills per Hour");
+    return new BarGraph(new ArrayList<>(data.values()), "Hour of day", "Kills", "Kills per Hour");
   }
 
   <E extends NamedItem> E recency(List<E> data) {

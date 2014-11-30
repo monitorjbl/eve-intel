@@ -39,8 +39,6 @@
 
         <div class="container-fluid">
             <div ng-controller="RecentActivity">
-                <!--<div class="alert alert-danger alert-message" ng-show="error">{{error}}</div>-->
-
                 <div class="row">
                     <div class="col-lg-offset-1 col-lg-10">
                         <div class="jumbotron" style="margin-top:10px;">
@@ -53,6 +51,9 @@
                             <input type="text" class="form-control" ng-model="pilot" ng-disabled="loading" ng-enter="getSinglePilot()"
                                    placeholder="Look up pilot"
                                    style="width:300px;display:inline-block;"/>
+                            <select class="form-control" style="width:120px;display:inline-block;">
+                                <option>Past Month</option>
+                            </select>
                             <span class="btn btn-primary" ng-click="getSinglePilot()" ng-disabled="loading" style="top: -1px;position: relative;">
                                 Search <i ng-show="loading" class="fa fa-spinner fa-spin"></i>
                             </span>
@@ -239,7 +240,7 @@
                                         <h3 class="panel-title"><i class="fa fa-long-arrow-right fa-fw"></i> Kills Per Hour</h3>
                                     </div>
                                     <div class="panel-body">
-                                        <graph-line data="killsPerDay"></graph-line>
+                                        <graph-bar data="killsPerHour"></graph-bar>
                                     </div>
                                 </div>
                             </div>
