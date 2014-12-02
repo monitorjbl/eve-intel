@@ -2,16 +2,29 @@ app.controller('pilotStats', function ($scope, $http, $timeout) {
     $scope.inputType = 'single';
     $scope.loading = false;
 
-    $scope.search = function(){
-        if($scope.inputType == 'single'){
+    $scope.search = function () {
+        if ($scope.inputType == 'single') {
             $scope.getSinglePilot();
-        } else if($scope.inputType == 'multi'){
+        } else if ($scope.inputType == 'multi') {
             $scope.getMultiplePilots();
         }
     };
 
-    $scope.getMultiplePilots = function(){
-        console.log($scope.pilotNames);
+    $scope.getMultiplePilots = function () {
+        if (!$scope.pilotNames) {
+            return;
+        }
+
+        $http.get('api/pilotStatistics/multi/' + $scope.pilotNames.split('\n')).success(function (data) {
+            $scope.statList = [];
+            $.each(data, function (i, v) {
+                if (v.killCount) {
+                    v = assignData(v);
+                }
+                $scope.statList.push(v);
+            });
+            $scope.loading = false;
+        });
     }
 
     $scope.getSinglePilot = function () {
@@ -19,29 +32,28 @@ app.controller('pilotStats', function ($scope, $http, $timeout) {
         delete $scope.error;
         delete $scope.loadComplete;
         $scope.loading = true;
-        $http.get('api/pilotStatistics/' + $scope.pilotName).success(function (data) {
-            if (data != '') {
-                $scope.pilotStats = data;
-                //morris needs the div to be visible before it renders
-                //need to delay this call
-                $timeout(function () {
-                    $scope.killedAlliances = convertToGraph(data.killedAlliances);
-                    $scope.assistedAlliances = convertToGraph(data.assistedAlliances);
-                    $scope.usedShips = convertToGraph(data.usedShips);
-                    $scope.killedShips = convertToGraph(data.killedShips);
-                    $scope.regions = convertToGraph(data.regions);
-                    $scope.killsPerDay = data.killsPerDay;
-                    $scope.killsPerHour = data.killsPerHour;
-                    $scope.loadComplete = true;
-                });
-            } else {
-                $scope.error = 'Pilot has no kill information for the past month.';
+        $http.get('api/pilotStatistics/single/' + $scope.pilotName).success(function (data) {
+            if (data.killCount) {
+                assignData(data);
             }
+            $scope.statList = [data];
             $scope.loading = false;
         }).error(function (data) {
             $scope.error = data;
             $scope.loading = false;
         });
+    };
+
+    var assignData = function (data) {
+        data.killedAlliancesGraph = convertToGraph(data.killedAlliances);
+        data.assistedAlliancesGraph = convertToGraph(data.assistedAlliances);
+        data.usedShipsGraph = convertToGraph(data.usedShips);
+        data.killedShipsGraph = convertToGraph(data.killedShips);
+        data.regionsGraph = convertToGraph(data.regions);
+        data.killsPerDayGraph = data.killsPerDay;
+        data.killsPerHourGraph = data.killsPerHour;
+        data.loadComplete = true;
+        return data;
     };
 
     var convertToGraph = function (data) {

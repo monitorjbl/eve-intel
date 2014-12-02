@@ -137,7 +137,7 @@ public class PilotStatisticsDao {
           .averageFleetSize(averageFleetSize(p.getKills()))
           .build();
     } else {
-      return null;
+      return PilotStatistics.builder().pilot(p).build();
     }
   }
 
