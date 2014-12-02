@@ -42,6 +42,13 @@ public class Pilot {
     return kills;
   }
 
+  @Override
+  public String toString() {
+    return "Pilot{" +
+        "name='" + name + '\'' +
+        '}';
+  }
+
   @JsonPOJOBuilder(buildMethodName = "build", withPrefix = "")
   public static final class Builder {
     private Long id;

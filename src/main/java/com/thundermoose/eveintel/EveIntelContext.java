@@ -55,7 +55,7 @@ public class EveIntelContext extends WebMvcConfigurerAdapter {
   @Bean
   public CacheManager cacheManager() {
     CacheManager cacheManager = CacheManager.create();
-    cacheManager.addCache(new Cache(CacheNames.PILOT_CACHE, CACHE_SIZE, false, false, CACHE_TTL, CACHE_IDLE_TTL));
+    cacheManager.addCache(new Cache(CacheNames.PILOT_CACHE, CACHE_SIZE, false, false, 1L, CACHE_IDLE_TTL));
     cacheManager.addCache(new Cache(CacheNames.RECENT_ACTIVITY_CACHE, CACHE_SIZE, false, false, CACHE_TTL, CACHE_IDLE_TTL));
     return cacheManager;
   }

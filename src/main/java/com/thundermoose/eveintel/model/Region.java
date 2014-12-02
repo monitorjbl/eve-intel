@@ -28,6 +28,13 @@ public class Region implements NamedItem {
     return name;
   }
 
+  @Override
+  public String toString() {
+    return "Region{" +
+        "name='" + name + '\'' +
+        '}';
+  }
+
   @JsonPOJOBuilder(buildMethodName = "build", withPrefix = "")
   public static final class Builder {
     private Long id;

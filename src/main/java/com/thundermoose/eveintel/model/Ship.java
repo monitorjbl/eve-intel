@@ -34,6 +34,14 @@ public class Ship {
     return type;
   }
 
+  @Override
+  public String toString() {
+    return "Ship{" +
+        "pilot=" + pilot.getName() +
+        ", type=" + type.getName() +
+        '}';
+  }
+
   @JsonPOJOBuilder(buildMethodName = "build", withPrefix = "")
   public static final class Builder {
     private Long id;

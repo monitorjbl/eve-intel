@@ -35,6 +35,13 @@ public class SolarSystem {
     return region;
   }
 
+  @Override
+  public String toString() {
+    return "SolarSystem{" +
+        "name='" + name + '\'' +
+        '}';
+  }
+
   @JsonPOJOBuilder(buildMethodName = "build", withPrefix = "")
   public static final class Builder {
     private Long id;

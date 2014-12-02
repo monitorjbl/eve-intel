@@ -34,6 +34,13 @@ public class Corporation {
     return alliance;
   }
 
+  @Override
+  public String toString() {
+    return "Corporation{" +
+        "name='" + name + '\'' +
+        '}';
+  }
+
   @JsonPOJOBuilder(buildMethodName = "build", withPrefix = "")
   public static final class Builder {
     private Long id;

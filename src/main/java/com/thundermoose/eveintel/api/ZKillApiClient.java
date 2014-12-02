@@ -63,13 +63,6 @@ public class ZKillApiClient {
   }
 
   private Ship getShip(Node n) {
-    //sometimes, killmails are formatted badly
-    //if so, don't bother recording this ship
-    Long shipId = Long.parseLong(attribute(n, SHIP_ID));
-    if (Objects.equals(0L, shipId)) {
-      return null;
-    }
-
     Alliance alliance = Alliance.builder()
         .id(Long.parseLong(attribute(n, ALLIANCE_ID)))
         .name(attribute(n, ALLIANCE_NAME))
@@ -90,8 +83,17 @@ public class ZKillApiClient {
         .corporation(corporation)
         .build();
 
+    //sometimes, killmails are formatted badly
+    //if so, don't bother recording this ship
+    Long shipId = Long.parseLong(attribute(n, SHIP_ID));
+    ShipType type;
+    if (Objects.equals(0L, shipId)) {
+      type = ShipType.builder().id(shipId).name("Unknown").build();
+    } else {
+      type = ShipType.builder().id(shipId).name(eveStaticData.getItemName(shipId)).build();
+    }
     return Ship.builder()
-        .type(ShipType.builder().id(shipId).name(eveStaticData.getItemName(shipId)).build())
+        .type(type)
         .pilot(vp)
         .build();
   }
