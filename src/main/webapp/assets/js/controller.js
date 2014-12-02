@@ -1,11 +1,25 @@
 app.controller('pilotStats', function ($scope, $http, $timeout) {
+    $scope.inputType = 'single';
     $scope.loading = false;
+
+    $scope.search = function(){
+        if($scope.inputType == 'single'){
+            $scope.getSinglePilot();
+        } else if($scope.inputType == 'multi'){
+            $scope.getMultiplePilots();
+        }
+    };
+
+    $scope.getMultiplePilots = function(){
+        console.log($scope.pilotNames);
+    }
+
     $scope.getSinglePilot = function () {
         delete $scope.pilotStats;
         delete $scope.error;
         delete $scope.loadComplete;
         $scope.loading = true;
-        $http.get('api/pilotStatistics/' + $scope.pilot).success(function (data) {
+        $http.get('api/pilotStatistics/' + $scope.pilotName).success(function (data) {
             if (data != '') {
                 $scope.pilotStats = data;
                 //morris needs the div to be visible before it renders

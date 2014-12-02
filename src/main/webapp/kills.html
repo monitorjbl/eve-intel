@@ -1,22 +1,25 @@
 <div ng-controller="pilotStats">
     <div class="row">
-        <div class="col-lg-offset-1 col-lg-10">
-            <div class="jumbotron" style="margin-top:10px;">
+        <div class="col-lg-offset-3 col-lg-6">
+            <div class="jumbotron">
                 <div>
-                    <h1>EVE Intel</h1>
-
-                    <p>Quickly get information about an enemy pilot. See who he tends to fight, who his friends are,
-                        and what he tends to fly.</p>
+                    <textarea class="form-control" ng-show="inputType == 'multi'" ng-click="getMultiplePilots()"
+                              ng-model="pilotNames"></textarea>
+                    <div class="btn-group">
+                        <label class="btn btn-primary" ng-model="inputType" btn-radio="'single'">Single</label>
+                        <label class="btn btn-primary" ng-model="inputType" btn-radio="'multi'">Multiple</label>
+                    </div>
+                    <input type="text" class="form-control" ng-show="inputType == 'single'" ng-model="pilotName"
+                           ng-disabled="loading" ng-enter="getSinglePilot()"
+                           placeholder="Look up pilot"
+                           style="width:300px;display:inline-block;"/>
+                    <select class="form-control" style="width:140px;display:inline-block;">
+                        <option>Past Month</option>
+                    </select>
+                    <span class="btn btn-primary" ng-click="search()" ng-disabled="loading" style="top: -1px;position: relative;">
+                        Search <i ng-show="loading" class="fa fa-spinner fa-spin"></i>
+                    </span>
                 </div>
-                <input type="text" class="form-control" ng-model="pilot" ng-disabled="loading" ng-enter="getSinglePilot()"
-                       placeholder="Look up pilot"
-                       style="width:300px;display:inline-block;"/>
-                <select class="form-control" style="width:140px;display:inline-block;">
-                    <option>Past Month</option>
-                </select>
-                <span class="btn btn-primary" ng-click="getSinglePilot()" ng-disabled="loading" style="top: -1px;position: relative;">
-                    Search <i ng-show="loading" class="fa fa-spinner fa-spin"></i>
-                </span>
             </div>
         </div>
     </div>
