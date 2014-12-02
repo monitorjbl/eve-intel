@@ -11,6 +11,7 @@ import java.util.List;
  */
 @JsonDeserialize(builder = PilotStatistics.Builder.class)
 public class PilotStatistics {
+  private Pilot pilot;
   private Integer killCount;
   private Double costIn;
   private List<WeightedData<Region>> regions = new ArrayList<>();
@@ -33,6 +34,7 @@ public class PilotStatistics {
   private BarGraph killsPerHour;
 
   private PilotStatistics(Builder builder) {
+    pilot = builder.pilot;
     killCount = builder.killCount;
     costIn = builder.costIn;
     regions = builder.regions;
@@ -57,6 +59,10 @@ public class PilotStatistics {
 
   public static Builder builder() {
     return new Builder();
+  }
+
+  public Pilot getPilot() {
+    return pilot;
   }
 
   public Integer getKillCount() {
@@ -141,6 +147,7 @@ public class PilotStatistics {
 
   @JsonPOJOBuilder(buildMethodName = "build", withPrefix = "")
   public static final class Builder {
+    private Pilot pilot;
     private Integer killCount;
     private Double costIn;
     private List<WeightedData<Region>> regions;
@@ -163,6 +170,11 @@ public class PilotStatistics {
     private BarGraph killsPerHour;
 
     private Builder() {
+    }
+
+    public Builder pilot(Pilot pilot) {
+      this.pilot = pilot;
+      return this;
     }
 
     public Builder killCount(Integer killCount) {

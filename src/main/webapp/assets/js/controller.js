@@ -1,13 +1,13 @@
-app.controller('RecentActivity', function ($scope, $http, $timeout) {
+app.controller('pilotStats', function ($scope, $http, $timeout) {
     $scope.loading = false;
     $scope.getSinglePilot = function () {
-        delete $scope.recentActivity;
+        delete $scope.pilotStats;
         delete $scope.error;
         delete $scope.loadComplete;
         $scope.loading = true;
         $http.get('api/pilotStatistics/' + $scope.pilot).success(function (data) {
             if (data != '') {
-                $scope.recentActivity = data;
+                $scope.pilotStats = data;
                 //morris needs the div to be visible before it renders
                 //need to delay this call
                 $timeout(function () {

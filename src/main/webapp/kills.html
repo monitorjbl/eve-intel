@@ -1,0 +1,228 @@
+<div ng-controller="pilotStats">
+    <div class="row">
+        <div class="col-lg-offset-1 col-lg-10">
+            <div class="jumbotron" style="margin-top:10px;">
+                <div>
+                    <h1>EVE Intel</h1>
+
+                    <p>Quickly get information about an enemy pilot. See who he tends to fight, who his friends are,
+                        and what he tends to fly.</p>
+                </div>
+                <input type="text" class="form-control" ng-model="pilot" ng-disabled="loading" ng-enter="getSinglePilot()"
+                       placeholder="Look up pilot"
+                       style="width:300px;display:inline-block;"/>
+                <select class="form-control" style="width:120px;display:inline-block;">
+                    <option>Past Month</option>
+                </select>
+                <span class="btn btn-primary" ng-click="getSinglePilot()" ng-disabled="loading" style="top: -1px;position: relative;">
+                    Search <i ng-show="loading" class="fa fa-spinner fa-spin"></i>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" ng-show="error">
+        <div class="col-lg-offset-4 col-lg-4 text-center">
+            <div class="alert alert-danger">{{error}}</div>
+        </div>
+    </div>
+
+    <div ng-show="pilotStats.killCount">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        &nbsp;
+                        <div class="pull-left">
+                            <h3 class="panel-title">Pilot Stats</h3>
+                        </div>
+                        <div class="pull-right">
+                            <span class="badge badge-info"><i class="fa fa-arrow-down"></i></span>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-lg-2 text-center">
+                                <img class="img-responsive" src="http://image.eveonline.com/Character/{{pilotStats.pilot.id}}_128.jpg">
+
+                                <h3>{{pilotStats.pilot.name}}</h3>
+
+                                <p>{{pilotStats.pilot.corporation.alliance.name}}</p>
+                            </div>
+                            <div class="col-lg-10 stats-row">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>Kills in Past Month</th>
+                                        <th>Average Fleet Size</th>
+                                        <th>Most Flown Ship</th>
+                                        <th>Most Killed Ship</th>
+                                        <th>Most Killed Alliance</th>
+                                        <th>Most Assisted Alliance</th>
+                                        <th>Most Common Region</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>{{pilotStats.killCount}}</td>
+                                        <td>{{pilotStats.averageFleetSize}}</td>
+                                        <td>{{pilotStats.tendencyUsedShip.name}}</td>
+                                        <td>{{pilotStats.tendencyKilledShip.name}}</td>
+                                        <td>{{pilotStats.tendencyKilledAlliance.name}}</td>
+                                        <td>{{pilotStats.tendencyAssistedAlliance.name}}</td>
+                                        <td>{{pilotStats.tendencyRegion.name}}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row graph-row">
+                            <div class="col-lg-3">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">Killed Alliances</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="text-right">
+                                            <a href="javascript:void(0)" ng-click="tableKilledAlliances = !tableKilledAlliances">Switch View <i
+                                                    class="fa fa-arrow-circle-right"></i></a>
+                                        </div>
+                                        <graph-doughnut data="killedAlliances" ng-show="!tableKilledAlliances"></graph-doughnut>
+                                        <table class="table table-striped" ng-show="tableKilledAlliances">
+                                            <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Count</th>
+                                                <th>Percentage</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr ng-repeat="alliance in pilotStats.killedAlliances">
+                                                <td>{{alliance.value.name}}</td>
+                                                <td>{{alliance.count}}</td>
+                                                <td>{{alliance.weight * 100 | number : 2}}</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">Assisted Alliances</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="text-right">
+                                            <a href="javascript:void(0)" ng-click="tableAssistedAlliances = !tableAssistedAlliances">Switch View <i
+                                                    class="fa fa-arrow-circle-right"></i></a>
+                                        </div>
+                                        <graph-doughnut data="assistedAlliances" ng-show="!tableAssistedAlliances"></graph-doughnut>
+                                        <table class="table table-striped" ng-show="tableAssistedAlliances">
+                                            <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Count</th>
+                                                <th>Percentage</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr ng-repeat="alliance in pilotStats.assistedAlliances">
+                                                <td>{{alliance.value.name}}</td>
+                                                <td>{{alliance.count}}</td>
+                                                <td>{{alliance.weight * 100 | number : 2}}</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">Killed Ships</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="text-right">
+                                            <a href="javascript:void(0)" ng-click="tableKilledShips = !tableKilledShips">Switch View <i
+                                                    class="fa fa-arrow-circle-right"></i></a>
+                                        </div>
+                                        <graph-doughnut data="killedShips" ng-show="!tableKilledShips"></graph-doughnut>
+                                        <table class="table table-striped" ng-show="tableKilledShips">
+                                            <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Count</th>
+                                                <th>Percentage</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr ng-repeat="alliance in pilotStats.killedShips">
+                                                <td>{{alliance.value.name}}</td>
+                                                <td>{{alliance.count}}</td>
+                                                <td>{{alliance.weight * 100 | number : 2}}</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">Flown Ships</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="text-right">
+                                            <a href="javascript:void(0)" ng-click="tableUsedShips = !tableUsedShips">Switch View <i
+                                                    class="fa fa-arrow-circle-right"></i></a>
+                                        </div>
+                                        <graph-doughnut data="usedShips" ng-show="!tableUsedShips"></graph-doughnut>
+                                        <table class="table table-striped" ng-show="tableUsedShips">
+                                            <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Count</th>
+                                                <th>Percentage</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr ng-repeat="alliance in pilotStats.usedShips">
+                                                <td>{{alliance.value.name}}</td>
+                                                <td>{{alliance.count}}</td>
+                                                <td>{{alliance.weight * 100 | number : 2}}</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row graph-row">
+                            <div class="col-lg-6">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">Kills Per Day</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <graph-line data="killsPerDay"></graph-line>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">Kills Per Hour</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <graph-bar data="killsPerHour"></graph-bar>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

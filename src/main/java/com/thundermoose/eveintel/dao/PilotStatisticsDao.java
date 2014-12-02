@@ -115,6 +115,7 @@ public class PilotStatisticsDao {
       List<WeightedData<Region>> wr = weight(regions);
 
       return PilotStatistics.builder()
+          .pilot(p)
           .killCount(killedShips.size())
           .killedShips(wv)
           .recentKilledShip(recency(killedShips))

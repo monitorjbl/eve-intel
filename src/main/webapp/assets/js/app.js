@@ -1,6 +1,6 @@
 var app = angular.module('eveintel', ['ngRoute', 'ui.bootstrap']).config(function ($routeProvider) {
     $routeProvider.when('/', {
-        templateUrl: 'root.html'
+        templateUrl: 'kills.html'
     }).otherwise({
         redirectTo: '/'
     });
