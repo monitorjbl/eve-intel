@@ -37,7 +37,10 @@
                             <h3 class="panel-title">Pilot Stats</h3>
                         </div>
                         <div class="pull-right">
-                            <span class="badge badge-info"><i class="fa fa-arrow-down"></i></span>
+                            <span class="badge badge-info" ng-click="pilotStats.detail = !pilotStats.detail">
+                                <i class="fa fa-arrow-up" ng-show="pilotStats.detail"></i>
+                                <i class="fa fa-arrow-down" ng-show="!pilotStats.detail"></i>
+                            </span>
                         </div>
                     </div>
                     <div class="panel-body">
@@ -76,7 +79,7 @@
                                 </table>
                             </div>
                         </div>
-                        <div class="row graph-row">
+                        <div ng-show="pilotStats.detail" class="row graph-row">
                             <div class="col-lg-3">
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
@@ -87,7 +90,7 @@
                                             <a href="javascript:void(0)" ng-click="tableKilledAlliances = !tableKilledAlliances">Switch View <i
                                                     class="fa fa-arrow-circle-right"></i></a>
                                         </div>
-                                        <graph-doughnut data="killedAlliances" ng-show="!tableKilledAlliances"></graph-doughnut>
+                                        <graph-doughnut data="killedAlliances" trigger="pilotStats.detail" ng-show="!tableKilledAlliances"></graph-doughnut>
                                         <table class="table table-striped" ng-show="tableKilledAlliances">
                                             <thead>
                                             <tr>
@@ -117,7 +120,7 @@
                                             <a href="javascript:void(0)" ng-click="tableAssistedAlliances = !tableAssistedAlliances">Switch View <i
                                                     class="fa fa-arrow-circle-right"></i></a>
                                         </div>
-                                        <graph-doughnut data="assistedAlliances" ng-show="!tableAssistedAlliances"></graph-doughnut>
+                                        <graph-doughnut data="assistedAlliances" trigger="pilotStats.detail" ng-show="!tableAssistedAlliances"></graph-doughnut>
                                         <table class="table table-striped" ng-show="tableAssistedAlliances">
                                             <thead>
                                             <tr>
@@ -147,7 +150,7 @@
                                             <a href="javascript:void(0)" ng-click="tableKilledShips = !tableKilledShips">Switch View <i
                                                     class="fa fa-arrow-circle-right"></i></a>
                                         </div>
-                                        <graph-doughnut data="killedShips" ng-show="!tableKilledShips"></graph-doughnut>
+                                        <graph-doughnut data="killedShips" trigger="pilotStats.detail" ng-show="!tableKilledShips"></graph-doughnut>
                                         <table class="table table-striped" ng-show="tableKilledShips">
                                             <thead>
                                             <tr>
@@ -177,7 +180,7 @@
                                             <a href="javascript:void(0)" ng-click="tableUsedShips = !tableUsedShips">Switch View <i
                                                     class="fa fa-arrow-circle-right"></i></a>
                                         </div>
-                                        <graph-doughnut data="usedShips" ng-show="!tableUsedShips"></graph-doughnut>
+                                        <graph-doughnut data="usedShips" trigger="pilotStats.detail" ng-show="!tableUsedShips"></graph-doughnut>
                                         <table class="table table-striped" ng-show="tableUsedShips">
                                             <thead>
                                             <tr>
@@ -198,14 +201,14 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row graph-row">
+                        <div ng-show="pilotStats.detail" class="row graph-row">
                             <div class="col-lg-6">
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
                                         <h3 class="panel-title">Kills Per Day</h3>
                                     </div>
                                     <div class="panel-body">
-                                        <graph-line data="killsPerDay"></graph-line>
+                                        <graph-line data="killsPerDay" trigger="pilotStats.detail"></graph-line>
                                     </div>
                                 </div>
                             </div>
@@ -215,7 +218,7 @@
                                         <h3 class="panel-title">Kills Per Hour</h3>
                                     </div>
                                     <div class="panel-body">
-                                        <graph-bar data="killsPerHour"></graph-bar>
+                                        <graph-bar data="killsPerHour" trigger="pilotStats.detail"></graph-bar>
                                     </div>
                                 </div>
                             </div>

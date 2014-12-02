@@ -6,40 +6,54 @@ var app = angular.module('eveintel', ['ngRoute', 'ui.bootstrap']).config(functio
     });
 });
 
-app.directive('graphDoughnut', function () {
+app.directive('graphDoughnut', function ($timeout) {
     return {
         restrict: 'E',
         scope: {
-            data: '='
+            data: '=',
+            trigger: '='
         },
         link: function (scope, element, attrs) {
             var chart = $('<div class="graph graph-doughnut"></div>').appendTo(element);
-            scope.$watch('data', function (newValue, oldValue) {
-                if (newValue) {
-                    $(chart).children().remove();
+            var draw = function () {
+                $(chart).children().remove();
+                $timeout(function () {
                     Morris.Donut({
                         element: chart,
                         data: scope.data,
                         resize: true
                     });
-                }
-            }, false);
-
+                });
+            };
+            if (attrs.trigger) {
+                scope.$watch('trigger', function (newValue, oldValue) {
+                    if (newValue) {
+                        draw();
+                    }
+                }, false);
+            } else {
+                scope.$watch('data', function (newValue, oldValue) {
+                    if (newValue) {
+                        draw();
+                    }
+                });
+            }
         }
     }
 });
 
-app.directive('graphLine', function ($filter) {
+app.directive('graphLine', function ($filter, $timeout) {
     return {
         restrict: 'E',
         scope: {
-            data: '='
+            data: '=',
+            trigger: '='
         },
         link: function (scope, element, attrs) {
             var chart = $('<div class="graph graph-line"></div>').appendTo(element);
-            scope.$watch('data', function (newValue, oldValue) {
-                if (newValue) {
-                    $(chart).children().remove();
+            var draw = function () {
+                $(chart).children().remove();
+                $timeout(function () {
                     Morris.Line({
                         element: chart,
                         data: scope.data.data,
@@ -50,24 +64,38 @@ app.directive('graphLine', function ($filter) {
                             return $filter('date')(x, 'fullDate');
                         }
                     });
-                }
-            }, false);
+                });
+            };
 
+            if (attrs.trigger) {
+                scope.$watch('trigger', function (newValue, oldValue) {
+                    if (newValue) {
+                        draw();
+                    }
+                }, false);
+            } else {
+                scope.$watch('data', function (newValue, oldValue) {
+                    if (newValue) {
+                        draw();
+                    }
+                });
+            }
         }
     }
 });
 
-app.directive('graphBar', function ($filter) {
+app.directive('graphBar', function ($filter, $timeout) {
     return {
         restrict: 'E',
         scope: {
-            data: '='
+            data: '=',
+            trigger: '='
         },
         link: function (scope, element, attrs) {
             var chart = $('<div class="graph graph-bar"></div>').appendTo(element);
-            scope.$watch('data', function (newValue, oldValue) {
-                if (newValue) {
-                    $(chart).children().remove();
+            var draw = function () {
+                $(chart).children().remove();
+                $timeout(function () {
                     Morris.Bar({
                         element: chart,
                         data: scope.data.data,
@@ -78,8 +106,21 @@ app.directive('graphBar', function ($filter) {
                             return $filter('date')(x, 'fullDate');
                         }
                     });
-                }
-            }, false);
+                });
+            };
+            if (attrs.trigger) {
+                scope.$watch('trigger', function (newValue, oldValue) {
+                    if (newValue) {
+                        draw();
+                    }
+                }, false);
+            } else {
+                scope.$watch('data', function (newValue, oldValue) {
+                    if (newValue) {
+                        draw();
+                    }
+                });
+            }
 
         }
     }
