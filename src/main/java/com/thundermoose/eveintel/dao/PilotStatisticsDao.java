@@ -143,6 +143,10 @@ public class PilotStatisticsDao {
 
   @SuppressWarnings("unchecked")
   <E extends NamedItem> List<WeightedData<E>> weight(List<E> items) {
+    if (items.size() == 0) {
+      return Collections.emptyList();
+    }
+
     Double unit = div(1.0, (double) items.size());
     List<WeightedData<E>> weightedData = new ArrayList<>();
 
@@ -219,11 +223,16 @@ public class PilotStatisticsDao {
   }
 
   <E extends NamedItem> E recency(List<E> data) {
+    if (data.size() == 0) {
+      return null;
+    }
     return data.get(data.size() - 1);
   }
 
   <E extends NamedItem> E tendency(List<WeightedData<E>> data) {
-    if (data.size() <= 1) {
+    if (data.size() == 0) {
+      return null;
+    } else if (data.size() == 1) {
       return data.get(0).getValue();
     }
 
