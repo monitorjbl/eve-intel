@@ -6,6 +6,7 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicHeader;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -30,9 +31,13 @@ import java.util.List;
  * Created by thundermoose on 11/24/14.
  */
 public class ApiUtils {
+  public static final String CONTACT_INFO = "monitorjbl@gmail.com";
+
   public static InputStream httpGet(String uri) throws IOException {
     CloseableHttpClient httpclient = HttpClients.createDefault();
     HttpGet httpGet = new HttpGet(uri);
+    httpGet.addHeader(new BasicHeader("Accept-Encoding", "gzip"));
+    httpGet.addHeader(new BasicHeader("User-Agent", "eve-intel;" + CONTACT_INFO));
     CloseableHttpResponse response = httpclient.execute(httpGet);
 
     int code = response.getStatusLine().getStatusCode();

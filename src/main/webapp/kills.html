@@ -3,8 +3,8 @@
         <div class="col-lg-offset-3 col-lg-6">
             <div class="jumbotron">
                 <div>
-                    <textarea class="form-control" ng-show="inputType == 'multi'" ng-click="getMultiplePilots()"
-                              ng-model="pilotNames"></textarea>
+                    <textarea class="form-control" ng-show="inputType == 'multi'" ng-model="pilotNames"></textarea>
+
                     <div class="btn-group">
                         <label class="btn btn-primary" ng-model="inputType" btn-radio="'single'">Single</label>
                         <label class="btn btn-primary" ng-model="inputType" btn-radio="'multi'">Multiple</label>
@@ -41,7 +41,7 @@
                             <small>{{pilotStats.pilot.corporation.alliance.name}}</small>
                         </div>
                         <div class="pull-right">
-                            <span class="badge" ng-click="pilotStats.detail = !pilotStats.detail"
+                            <span class="badge" ng-click="pilotStats.detail = pilotStats.killCount && !pilotStats.detail"
                                   ng-class="{'badge-active':pilotStats.detail, 'badge-inactive':!pilotStats.detail}">
                                 <i class="fa fa-line-chart"></i>
                             </span>
@@ -51,11 +51,9 @@
                         <div class="row stats-row">
                             <div class="col-lg-1 text-center">
                                 <img class="img-responsive img-rounded" src="http://image.eveonline.com/Character/{{pilotStats.pilot.id}}_128.jpg">
-
-                                <!--<p> </p>-->
                             </div>
                             <div class="col-lg-11">
-                                <table class="table">
+                                <table class="table" ng-show="pilotStats.killCount">
                                     <thead>
                                     <tr>
                                         <th>Kills in Past Month</th>
@@ -79,6 +77,7 @@
                                     </tr>
                                     </tbody>
                                 </table>
+                                <div class="alert alert-warning" ng-show="!pilotStats.killCount">Pilot has no killboard information</div>
                             </div>
                         </div>
                         <div ng-show="pilotStats.detail" class="row graph-row">
@@ -92,7 +91,8 @@
                                             <a href="javascript:void(0)" ng-click="tableKilledAlliances = !tableKilledAlliances">Switch View <i
                                                     class="fa fa-arrow-circle-right"></i></a>
                                         </div>
-                                        <graph-doughnut data="pilotStats.killedAlliancesGraph" trigger="pilotStats.detail" ng-show="!tableKilledAlliances"></graph-doughnut>
+                                        <graph-doughnut data="pilotStats.killedAlliancesGraph" trigger="pilotStats.detail"
+                                                        ng-show="!tableKilledAlliances"></graph-doughnut>
                                         <table class="table table-striped" ng-show="tableKilledAlliances">
                                             <thead>
                                             <tr>
@@ -122,7 +122,8 @@
                                             <a href="javascript:void(0)" ng-click="tableAssistedAlliances = !tableAssistedAlliances">Switch View <i
                                                     class="fa fa-arrow-circle-right"></i></a>
                                         </div>
-                                        <graph-doughnut data="pilotStats.assistedAlliancesGraph" trigger="pilotStats.detail" ng-show="!tableAssistedAlliances"></graph-doughnut>
+                                        <graph-doughnut data="pilotStats.assistedAlliancesGraph" trigger="pilotStats.detail"
+                                                        ng-show="!tableAssistedAlliances"></graph-doughnut>
                                         <table class="table table-striped" ng-show="tableAssistedAlliances">
                                             <thead>
                                             <tr>
@@ -152,7 +153,8 @@
                                             <a href="javascript:void(0)" ng-click="tableKilledShips = !tableKilledShips">Switch View <i
                                                     class="fa fa-arrow-circle-right"></i></a>
                                         </div>
-                                        <graph-doughnut data="pilotStats.killedShipsGraph" trigger="pilotStats.detail" ng-show="!tableKilledShips"></graph-doughnut>
+                                        <graph-doughnut data="pilotStats.killedShipsGraph" trigger="pilotStats.detail"
+                                                        ng-show="!tableKilledShips"></graph-doughnut>
                                         <table class="table table-striped" ng-show="tableKilledShips">
                                             <thead>
                                             <tr>

@@ -271,8 +271,6 @@ public class PilotStatisticsDao {
     public Object createEntry(Object key) throws Exception {
       return generateStatistics((String) key);
     }
-
-
   }
 
 }

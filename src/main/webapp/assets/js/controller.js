@@ -15,6 +15,10 @@ app.controller('pilotStats', function ($scope, $http, $timeout) {
             return;
         }
 
+        delete $scope.statList;
+        delete $scope.error;
+        delete $scope.loadComplete;
+        $scope.loading = true;
         $http.get('api/pilotStatistics/multi/' + $scope.pilotNames.split('\n')).success(function (data) {
             $scope.statList = [];
             $.each(data, function (i, v) {
@@ -24,11 +28,14 @@ app.controller('pilotStats', function ($scope, $http, $timeout) {
                 $scope.statList.push(v);
             });
             $scope.loading = false;
+        }).error(function (data) {
+            $scope.error = data;
+            $scope.loading = false;
         });
     }
 
     $scope.getSinglePilot = function () {
-        delete $scope.pilotStats;
+        delete $scope.statList;
         delete $scope.error;
         delete $scope.loadComplete;
         $scope.loading = true;

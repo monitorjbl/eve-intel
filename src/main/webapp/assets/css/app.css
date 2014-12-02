@@ -245,7 +245,7 @@ ul.alert-dropdown {
     text-align: center;
 }
 
-.stats-row{
+.stats-row {
     margin-bottom: 10px;
 }
 
@@ -257,32 +257,32 @@ ul.alert-dropdown {
 .panel-body .row {
     margin-right: 0px;
     margin-left: 0px;
-    padding-right:0px;
-    padding-left:0px;
+    padding-right: 0px;
+    padding-left: 0px;
 }
 
 .img-responsive {
     margin: 0 auto;
 }
 
-.panel-default > .panel-heading .badge-active{
+.panel-default > .panel-heading .badge-active {
     background-color: #3a87ad;
 }
 
-.panel-default > .panel-heading .badge-active:hover{
+.panel-default > .panel-heading .badge-active:hover {
     background-color: #3ba3c9;
 }
 
-.panel-default > .panel-heading .badge-inactive{
+.panel-default > .panel-heading .badge-inactive {
     background-color: #ccc;
-    color:#000;
+    color: #000;
 }
 
-.panel-default > .panel-heading .badge-inactive:hover{
+.panel-default > .panel-heading .badge-inactive:hover {
     background-color: #9f9f9f;
 }
 
-.panel-title{
-    display:inline-block;
+.panel-title {
+    display: inline-block;
     font-size: 20px;
 }

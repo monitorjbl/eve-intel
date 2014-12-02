@@ -5,6 +5,9 @@ import com.thundermoose.eveintel.model.PilotStatistics;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
@@ -48,7 +51,16 @@ public class PilotStatisticsService {
       }
     }
 
-    return stats;
+    //sort
+    List<PilotStatistics> sorted = new ArrayList<>(stats);
+    Collections.sort(sorted, new Comparator<PilotStatistics>() {
+      @Override
+      public int compare(PilotStatistics o1, PilotStatistics o2) {
+        return o1.getPilot().getName().compareTo(o2.getPilot().getName());
+      }
+    });
+
+    return sorted;
   }
 
 }
