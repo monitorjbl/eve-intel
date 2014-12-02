@@ -245,6 +245,10 @@ ul.alert-dropdown {
     text-align: center;
 }
 
+.stats-row{
+    margin-bottom: 10px;
+}
+
 .graph-row .panel-body {
     height: 350px;
     overflow: auto;
@@ -261,10 +265,24 @@ ul.alert-dropdown {
     margin: 0 auto;
 }
 
-.panel-default > .panel-heading .badge{
+.panel-default > .panel-heading .badge-active{
     background-color: #3a87ad;
 }
 
-.panel-default > .panel-heading .badge:hover{
-    background-color: #3ca3c9;
+.panel-default > .panel-heading .badge-active:hover{
+    background-color: #3ba3c9;
+}
+
+.panel-default > .panel-heading .badge-inactive{
+    background-color: #ccc;
+    color:#000;
+}
+
+.panel-default > .panel-heading .badge-inactive:hover{
+    background-color: #9f9f9f;
+}
+
+.panel-title{
+    display:inline-block;
+    font-size: 20px;
 }

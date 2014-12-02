@@ -11,7 +11,7 @@
                 <input type="text" class="form-control" ng-model="pilot" ng-disabled="loading" ng-enter="getSinglePilot()"
                        placeholder="Look up pilot"
                        style="width:300px;display:inline-block;"/>
-                <select class="form-control" style="width:120px;display:inline-block;">
+                <select class="form-control" style="width:140px;display:inline-block;">
                     <option>Past Month</option>
                 </select>
                 <span class="btn btn-primary" ng-click="getSinglePilot()" ng-disabled="loading" style="top: -1px;position: relative;">
@@ -34,25 +34,24 @@
                     <div class="panel-heading">
                         &nbsp;
                         <div class="pull-left">
-                            <h3 class="panel-title">Pilot Stats</h3>
+                            <h3 class="panel-title">{{pilotStats.pilot.name}}</h3>
+                            <small>{{pilotStats.pilot.corporation.alliance.name}}</small>
                         </div>
                         <div class="pull-right">
-                            <span class="badge badge-info" ng-click="pilotStats.detail = !pilotStats.detail">
-                                <i class="fa fa-arrow-up" ng-show="pilotStats.detail"></i>
-                                <i class="fa fa-arrow-down" ng-show="!pilotStats.detail"></i>
+                            <span class="badge" ng-click="pilotStats.detail = !pilotStats.detail"
+                                  ng-class="{'badge-active':pilotStats.detail, 'badge-inactive':!pilotStats.detail}">
+                                <i class="fa fa-line-chart"></i>
                             </span>
                         </div>
                     </div>
                     <div class="panel-body">
-                        <div class="row">
-                            <div class="col-lg-2 text-center">
-                                <img class="img-responsive" src="http://image.eveonline.com/Character/{{pilotStats.pilot.id}}_128.jpg">
+                        <div class="row stats-row">
+                            <div class="col-lg-1 text-center">
+                                <img class="img-responsive img-rounded" src="http://image.eveonline.com/Character/{{pilotStats.pilot.id}}_128.jpg">
 
-                                <h3>{{pilotStats.pilot.name}}</h3>
-
-                                <p>{{pilotStats.pilot.corporation.alliance.name}}</p>
+                                <!--<p> </p>-->
                             </div>
-                            <div class="col-lg-10 stats-row">
+                            <div class="col-lg-11">
                                 <table class="table">
                                     <thead>
                                     <tr>
