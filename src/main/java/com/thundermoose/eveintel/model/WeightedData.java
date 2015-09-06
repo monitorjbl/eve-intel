@@ -1,8 +1,5 @@
 package com.thundermoose.eveintel.model;
 
-/**
- * Created by thundermoose on 11/25/14.
- */
 public class WeightedData<T extends NamedItem> {
   private T value;
   private Double weight;

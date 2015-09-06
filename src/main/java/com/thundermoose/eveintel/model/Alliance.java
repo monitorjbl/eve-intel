@@ -3,9 +3,6 @@ package com.thundermoose.eveintel.model;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
-/**
- * Created by thundermoose on 11/24/14.
- */
 @JsonDeserialize(builder = Alliance.Builder.class)
 public class Alliance implements NamedItem {
   private Long id;

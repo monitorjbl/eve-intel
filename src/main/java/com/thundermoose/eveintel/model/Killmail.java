@@ -6,9 +6,6 @@ import org.joda.time.DateTime;
 
 import java.util.List;
 
-/**
- * Created by thundermoose on 11/24/14.
- */
 @JsonDeserialize(builder = Killmail.Builder.class)
 public class Killmail {
   private Long id;

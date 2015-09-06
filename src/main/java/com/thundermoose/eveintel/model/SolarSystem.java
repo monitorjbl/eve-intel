@@ -1,9 +1,5 @@
 package com.thundermoose.eveintel.model;
 
-/**
- * Created by thundermoose on 11/24/14.
- */
-
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 

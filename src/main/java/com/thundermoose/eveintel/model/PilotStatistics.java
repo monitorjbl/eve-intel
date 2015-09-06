@@ -6,9 +6,6 @@ import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by thundermoose on 11/25/14.
- */
 @JsonDeserialize(builder = PilotStatistics.Builder.class)
 public class PilotStatistics {
   private Pilot pilot;

@@ -9,9 +9,6 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
 
-/**
- * Created by thundermoose on 11/24/14.
- */
 public class ServletInit implements WebApplicationInitializer {
 
   @Override

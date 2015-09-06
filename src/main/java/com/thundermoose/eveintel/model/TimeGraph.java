@@ -2,9 +2,6 @@ package com.thundermoose.eveintel.model;
 
 import java.util.List;
 
-/**
- * Created by thundermoose on 11/29/14.
- */
 public class TimeGraph {
   private List<TimeGraphPoint> data;
   private String LabelX;

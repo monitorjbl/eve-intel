@@ -1,8 +1,5 @@
 package com.thundermoose.eveintel.model;
 
-/**
- * Created by thundermoose on 11/29/14.
- */
 public class BarGraphPoint {
   private String x;
   private Double y;

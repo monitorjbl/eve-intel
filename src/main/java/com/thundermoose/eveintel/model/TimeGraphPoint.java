@@ -2,9 +2,6 @@ package com.thundermoose.eveintel.model;
 
 import org.joda.time.DateTime;
 
-/**
- * Created by thundermoose on 11/29/14.
- */
 public class TimeGraphPoint {
   private DateTime x;
   private Double y;
