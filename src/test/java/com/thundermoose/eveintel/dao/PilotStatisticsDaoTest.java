@@ -6,21 +6,18 @@ import com.google.common.io.Resources;
 import com.thundermoose.eveintel.model.Killmail;
 import com.thundermoose.eveintel.model.TimeGraph;
 import com.thundermoose.eveintel.model.TimeGraphPoint;
-import net.sf.ehcache.Cache;
-import net.sf.ehcache.CacheManager;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.List;
-
-import static org.mockito.Mockito.*;
 
 /**
  * Created by thundermoose on 11/29/14.
@@ -29,17 +26,13 @@ public class PilotStatisticsDaoTest {
   private static final DateTimeFormatter df = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss");
 
   @Mock
-  CacheManager cacheManager;
-  @Mock
   PilotDao pilotDao;
+  @InjectMocks
   PilotStatisticsDao sut;
 
   @Before
   public void setup() {
     MockitoAnnotations.initMocks(this);
-    when(cacheManager.getCache(CacheNames.RECENT_ACTIVITY_CACHE))
-        .thenReturn(new Cache(CacheNames.RECENT_ACTIVITY_CACHE, 1, false, false, 1, 1));
-    sut = new PilotStatisticsDao(cacheManager, pilotDao);
   }
 
 //  @Test

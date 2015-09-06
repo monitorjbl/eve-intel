@@ -16,10 +16,6 @@ import com.thundermoose.eveintel.model.ShipType;
 import com.thundermoose.eveintel.model.TimeGraph;
 import com.thundermoose.eveintel.model.TimeGraphPoint;
 import com.thundermoose.eveintel.model.WeightedData;
-import net.sf.ehcache.CacheManager;
-import net.sf.ehcache.Ehcache;
-import net.sf.ehcache.constructs.blocking.CacheEntryFactory;
-import net.sf.ehcache.constructs.blocking.SelfPopulatingCache;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,32 +33,21 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
 
-/**
- * Created by thundermoose on 11/25/14.
- */
 @Named
 public class PilotStatisticsDao {
   private static final Logger log = LoggerFactory.getLogger(PilotStatisticsDao.class);
   public static final Long POD_ID = 670L;
   public static final Integer ROUNDING_SCALE = 4;
-  public static final Boolean CACHE_STATISTICS = true;
 
-  private final Ehcache recentActivityCache;
   private final PilotDao pilotDao;
 
   @Inject
-  public PilotStatisticsDao(CacheManager cacheManager, PilotDao pilotDao) {
-    this.recentActivityCache = new SelfPopulatingCache(cacheManager.getCache(
-        CacheNames.RECENT_ACTIVITY_CACHE), new RecentActivityCacheEntryFactory());
+  public PilotStatisticsDao(PilotDao pilotDao) {
     this.pilotDao = pilotDao;
   }
 
   public PilotStatistics getRecentActivity(String name) {
-    if (CACHE_STATISTICS) {
-      return (PilotStatistics) recentActivityCache.get(name.toLowerCase()).getObjectValue();
-    } else {
-      return generateStatistics(name);
-    }
+    return generateStatistics(name);
   }
 
   PilotStatistics generateStatistics(String name) {
@@ -264,13 +249,6 @@ public class PilotStatisticsDao {
   private Double sub(Double left, Double right) {
     return new BigDecimal(left).subtract(new BigDecimal(right))
         .setScale(ROUNDING_SCALE, RoundingMode.HALF_UP).doubleValue();
-  }
-
-  class RecentActivityCacheEntryFactory implements CacheEntryFactory {
-    @Override
-    public Object createEntry(Object key) throws Exception {
-      return generateStatistics((String) key);
-    }
   }
 
 }

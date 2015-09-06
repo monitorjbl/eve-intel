@@ -7,9 +7,6 @@ import com.thundermoose.eveintel.api.ApiCommon;
 import com.thundermoose.eveintel.api.EveApiClient;
 import com.thundermoose.eveintel.api.EveStaticData;
 import com.thundermoose.eveintel.api.ZKillApiClient;
-import com.thundermoose.eveintel.dao.CacheNames;
-import net.sf.ehcache.Cache;
-import net.sf.ehcache.CacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -25,10 +22,6 @@ import java.util.List;
 @EnableWebMvc
 @ComponentScan(basePackages = {"com.thundermoose.eveintel"})
 public class EveIntelContext extends WebMvcConfigurerAdapter {
-  public static final Integer CACHE_SIZE = 10000;
-  public static final Long CACHE_TTL = 3600L;
-  public static final Long CACHE_IDLE_TTL = 0L;
-
   @Override
   public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
     converters.add(jacksonConverter());
@@ -52,14 +45,6 @@ public class EveIntelContext extends WebMvcConfigurerAdapter {
   @Bean
   public ZKillApiClient zkillClient() throws IOException {
     return new ZKillApiClient(eveStaticData(), apiCommon());
-  }
-
-  @Bean
-  public CacheManager cacheManager() {
-    CacheManager cacheManager = CacheManager.create();
-    cacheManager.addCache(new Cache(CacheNames.PILOT_CACHE, CACHE_SIZE, false, false, CACHE_TTL, CACHE_IDLE_TTL));
-    cacheManager.addCache(new Cache(CacheNames.RECENT_ACTIVITY_CACHE, CACHE_SIZE, false, false, CACHE_TTL, CACHE_IDLE_TTL));
-    return cacheManager;
   }
 
   @Bean
