@@ -3,8 +3,10 @@ package com.thundermoose.eveintel.model;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
+import java.io.Serializable;
+
 @JsonDeserialize(builder = ShipType.Builder.class)
-public class ShipType implements NamedItem {
+public class ShipType implements NamedItem, Serializable {
   private Long id;
   private String name;
 

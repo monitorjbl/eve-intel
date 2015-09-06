@@ -4,10 +4,11 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import org.joda.time.DateTime;
 
+import java.io.Serializable;
 import java.util.List;
 
 @JsonDeserialize(builder = Killmail.Builder.class)
-public class Killmail {
+public class Killmail implements Serializable{
   private Long id;
   private DateTime date;
   private Ship victim;

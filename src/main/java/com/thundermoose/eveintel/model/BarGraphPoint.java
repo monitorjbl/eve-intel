@@ -1,6 +1,8 @@
 package com.thundermoose.eveintel.model;
 
-public class BarGraphPoint {
+import java.io.Serializable;
+
+public class BarGraphPoint implements Serializable {
   private String x;
   private Double y;
 

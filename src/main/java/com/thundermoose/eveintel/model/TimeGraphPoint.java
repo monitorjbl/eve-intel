@@ -2,7 +2,9 @@ package com.thundermoose.eveintel.model;
 
 import org.joda.time.DateTime;
 
-public class TimeGraphPoint {
+import java.io.Serializable;
+
+public class TimeGraphPoint implements Serializable{
   private DateTime x;
   private Double y;
 

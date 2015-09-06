@@ -1,8 +1,9 @@
 package com.thundermoose.eveintel.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class TimeGraph {
+public class TimeGraph implements Serializable{
   private List<TimeGraphPoint> data;
   private String LabelX;
   private String labelY;

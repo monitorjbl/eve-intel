@@ -4,10 +4,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
+import java.io.Serializable;
 import java.util.List;
 
 @JsonDeserialize(builder = Pilot.Builder.class)
-public class Pilot {
+public class Pilot implements NamedItem, Serializable {
   private Long id;
   private String name;
   private Corporation corporation;

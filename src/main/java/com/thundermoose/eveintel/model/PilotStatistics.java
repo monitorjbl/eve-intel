@@ -3,11 +3,12 @@ package com.thundermoose.eveintel.model;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @JsonDeserialize(builder = PilotStatistics.Builder.class)
-public class PilotStatistics {
+public class PilotStatistics implements Serializable{
   private Pilot pilot;
   private Integer killCount;
   private Double costIn;

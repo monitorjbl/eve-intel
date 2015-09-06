@@ -3,8 +3,10 @@ package com.thundermoose.eveintel.model;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
+import java.io.Serializable;
+
 @JsonDeserialize(builder = Ship.Builder.class)
-public class Ship {
+public class Ship implements Serializable{
   private Long id;
   private Pilot pilot;
   private ShipType type;

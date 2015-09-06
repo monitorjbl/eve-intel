@@ -1,6 +1,8 @@
 package com.thundermoose.eveintel.model;
 
-public class WeightedData<T extends NamedItem> {
+import java.io.Serializable;
+
+public class WeightedData<T extends NamedItem> implements Serializable {
   private T value;
   private Double weight;
   private Integer count;
