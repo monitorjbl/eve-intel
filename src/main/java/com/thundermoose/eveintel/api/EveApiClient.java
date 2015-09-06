@@ -1,6 +1,5 @@
 package com.thundermoose.eveintel.api;
 
-import com.google.common.base.Strings;
 import com.thundermoose.eveintel.exceptions.NotFoundException;
 import com.thundermoose.eveintel.model.Alliance;
 import com.thundermoose.eveintel.model.Corporation;
@@ -12,17 +11,22 @@ import org.w3c.dom.Node;
 
 import java.util.Objects;
 
-import static com.thundermoose.eveintel.api.ApiUtils.*;
+import static com.thundermoose.eveintel.api.XmlUtils.attribute;
+import static com.thundermoose.eveintel.api.XmlUtils.sanitize;
+import static com.thundermoose.eveintel.api.XmlUtils.xmlNode;
 
-/**
- * Created by thundermoose on 11/24/14.
- */
 public class EveApiClient {
   private static final Logger log = LoggerFactory.getLogger(EveApiClient.class);
 
+  private final ApiCommon apiCommon;
+
+  public EveApiClient(ApiCommon apiCommon) {
+    this.apiCommon = apiCommon;
+  }
+
   public Pilot findPilotByName(String pilotName) {
     log.debug("Eve API Request: retrieving character ID for [" + pilotName + "]");
-    Document doc = readXml(CHARACTER_URI.replaceAll("#", sanitize(pilotName)));
+    Document doc = apiCommon.readXml(CHARACTER_URI.replaceAll("#", sanitize(pilotName)));
     Node node = xmlNode(doc.getDocumentElement(), CHARACTER_ROW);
 
     String idStr = attribute(node, CHARACTER_ID);
@@ -41,7 +45,7 @@ public class EveApiClient {
 
   private Corporation getCorporation(Long id) {
     log.debug("Eve API Request: retrieving character affiliations for [" + id + "]");
-    Document doc = readXml(CHARACTER_AFFIL_URI.replaceAll("#", String.valueOf(id)));
+    Document doc = apiCommon.readXml(CHARACTER_AFFIL_URI.replaceAll("#", String.valueOf(id)));
     Node node = xmlNode(doc.getDocumentElement(), CORPORATION_ROW);
 
     Alliance alliance = Alliance.builder()

@@ -13,9 +13,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-/**
- * Created by thundermoose on 11/25/14.
- */
 @Named
 public class PilotStatisticsService {
   public static final int THREAD_LIMIT = 5;

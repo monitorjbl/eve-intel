@@ -2,8 +2,8 @@ package com.thundermoose.eveintel;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
+import com.thundermoose.eveintel.api.ApiCommon;
 import com.thundermoose.eveintel.api.EveApiClient;
 import com.thundermoose.eveintel.api.EveStaticData;
 import com.thundermoose.eveintel.api.ZKillApiClient;
@@ -21,9 +21,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import java.io.IOException;
 import java.util.List;
 
-/**
- * Created by thundermoose on 11/24/14.
- */
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = {"com.thundermoose.eveintel"})
@@ -38,8 +35,13 @@ public class EveIntelContext extends WebMvcConfigurerAdapter {
   }
 
   @Bean
+  public ApiCommon apiCommon() {
+    return new ApiCommon();
+  }
+
+  @Bean
   public EveApiClient eveClient() {
-    return new EveApiClient();
+    return new EveApiClient(apiCommon());
   }
 
   @Bean
@@ -49,7 +51,7 @@ public class EveIntelContext extends WebMvcConfigurerAdapter {
 
   @Bean
   public ZKillApiClient zkillClient() throws IOException {
-    return new ZKillApiClient(eveStaticData());
+    return new ZKillApiClient(eveStaticData(), apiCommon());
   }
 
   @Bean
