@@ -19,9 +19,6 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-/**
- * Created by thundermoose on 11/29/14.
- */
 public class PilotStatisticsDaoTest {
   private static final DateTimeFormatter df = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss");
 

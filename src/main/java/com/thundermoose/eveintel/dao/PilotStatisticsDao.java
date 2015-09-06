@@ -20,8 +20,6 @@ import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.inject.Inject;
-import javax.inject.Named;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -33,7 +31,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
 
-@Named
 public class PilotStatisticsDao {
   private static final Logger log = LoggerFactory.getLogger(PilotStatisticsDao.class);
   public static final Long POD_ID = 670L;
@@ -41,7 +38,6 @@ public class PilotStatisticsDao {
 
   private final PilotDao pilotDao;
 
-  @Inject
   public PilotStatisticsDao(PilotDao pilotDao) {
     this.pilotDao = pilotDao;
   }

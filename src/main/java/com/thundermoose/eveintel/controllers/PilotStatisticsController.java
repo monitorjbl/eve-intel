@@ -9,13 +9,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 import java.util.List;
 
-/**
- * Created by thundermoose on 11/25/14.
- */
-@Named
 @Controller
 public class PilotStatisticsController {
 

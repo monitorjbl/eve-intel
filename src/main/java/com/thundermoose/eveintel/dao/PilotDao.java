@@ -6,18 +6,14 @@ import com.thundermoose.eveintel.model.Killmail;
 import com.thundermoose.eveintel.model.Pilot;
 import org.joda.time.DateTime;
 
-import javax.inject.Inject;
-import javax.inject.Named;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-@Named
 public class PilotDao {
   private final EveApiClient eveApiClient;
   private final ZKillApiClient zKillApiClient;
 
-  @Inject
   public PilotDao(EveApiClient eveApiClient, ZKillApiClient zKillApiClient) {
     this.eveApiClient = eveApiClient;
     this.zKillApiClient = zKillApiClient;

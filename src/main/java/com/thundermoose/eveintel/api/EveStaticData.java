@@ -13,28 +13,29 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by thundermoose on 11/25/14.
- */
 public class EveStaticData {
   private static final Logger log = LoggerFactory.getLogger(EveStaticData.class);
 
   private Map<Long, String> invTypes;
   private Map<Long, Map<String, String>> solarSystemData;
 
-  public EveStaticData() throws IOException {
+  public EveStaticData() {
     init();
   }
 
-  private void init() throws IOException {
-    log.debug("Static content load: starting");
-    invTypes = new ObjectMapper().readValue(Resources.getResource("type_data.json").openStream(),
-        new TypeReference<HashMap<Long, String>>() {
-        });
-    solarSystemData = new ObjectMapper().readValue(Resources.getResource("solar_system_data.json").openStream(),
-        new TypeReference<HashMap<Long, HashMap<String, String>>>() {
-        });
-    log.debug("Static content load: complete");
+  private void init() {
+    try {
+      log.debug("Static content load: starting");
+      invTypes = new ObjectMapper().readValue(Resources.getResource("type_data.json").openStream(),
+          new TypeReference<HashMap<Long, String>>() {
+          });
+      solarSystemData = new ObjectMapper().readValue(Resources.getResource("solar_system_data.json").openStream(),
+          new TypeReference<HashMap<Long, HashMap<String, String>>>() {
+          });
+      log.debug("Static content load: complete");
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   public String getItemName(Long id) {

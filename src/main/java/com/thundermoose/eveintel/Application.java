@@ -7,6 +7,9 @@ import com.thundermoose.eveintel.api.ApiCommon;
 import com.thundermoose.eveintel.api.EveApiClient;
 import com.thundermoose.eveintel.api.EveStaticData;
 import com.thundermoose.eveintel.api.ZKillApiClient;
+import com.thundermoose.eveintel.dao.PilotDao;
+import com.thundermoose.eveintel.dao.PilotStatisticsDao;
+import com.thundermoose.eveintel.service.PilotStatisticsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -15,16 +18,30 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
-import java.io.IOException;
 import java.util.List;
 
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = {"com.thundermoose.eveintel"})
-public class EveIntelContext extends WebMvcConfigurerAdapter {
+public class Application extends WebMvcConfigurerAdapter {
   @Override
   public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
     converters.add(jacksonConverter());
+  }
+
+  @Bean
+  public PilotStatisticsService service() {
+    return new PilotStatisticsService(statisticsDao());
+  }
+
+  @Bean
+  public PilotStatisticsDao statisticsDao() {
+    return new PilotStatisticsDao(pilotDao());
+  }
+
+  @Bean
+  public PilotDao pilotDao() {
+    return new PilotDao(eveClient(), zkillClient());
   }
 
   @Bean
@@ -38,12 +55,12 @@ public class EveIntelContext extends WebMvcConfigurerAdapter {
   }
 
   @Bean
-  public EveStaticData eveStaticData() throws IOException {
+  public EveStaticData eveStaticData() {
     return new EveStaticData();
   }
 
   @Bean
-  public ZKillApiClient zkillClient() throws IOException {
+  public ZKillApiClient zkillClient() {
     return new ZKillApiClient(eveStaticData(), apiCommon());
   }
 
