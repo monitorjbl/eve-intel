@@ -172,7 +172,7 @@ public class PilotStatisticsDao {
     Killmail curr = iter.next();
     while (ptr.isBefore(finish)) {
       DateTime boundary = ptr.plusDays(1);
-      TimeGraphPoint point = new TimeGraphPoint(ptr, 0.0);
+      TimeGraphPoint point = new TimeGraphPoint(ptr.toDate().getTime(), 0.0);
       while (curr != null && ptr.isBefore(curr.getDate()) && boundary.isAfter(curr.getDate())) {
         //don't count pods
         if (!Objects.equals(POD_ID, curr.getVictim().getType().getId())) {

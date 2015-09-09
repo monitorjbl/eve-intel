@@ -44,6 +44,8 @@ public class Requester {
     log.info("request: " + request);
     List<String> pilots = sanitize((List<String>) request.get("pilots"));
     log.info("Loading data for " + pilots);
+
+    //TODO: if any pilots have been loaded in the last hour, don't scan for them
     try (InputStream is = new ByteArrayInputStream(mapper.writeValueAsBytes(pilots))) {
       fs.write(loadPrefix + UUID.randomUUID().toString(), is);
     } catch (IOException e) {

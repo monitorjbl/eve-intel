@@ -1,4 +1,7 @@
 app.controller('pilotStats', function ($scope, $http, $timeout, $log) {
+  var MAX_ATTEMPTS = 10;
+  var DELAY = 3000;
+
   $scope.inputType = 'single';
   $scope.loading = false;
 
@@ -24,20 +27,22 @@ app.controller('pilotStats', function ($scope, $http, $timeout, $log) {
     $scope.loading = true;
 
     var names = $scope.pilotName.split('\n');
-    var loaded = [];
+    $scope.loaded = [];
     $log.info(names);
-    $.each(names, function (i, name) {
-      name = name.toLowerCase();
+    $.each(names, function (i, n) {
+      var name = n.toLowerCase();
+      var attempts = 0;
+
       function attempt() {
         $log.info("Loading details for " + name);
         $http.get('https://s3.amazonaws.com/eve-intel-stats/pilot/' + name).success(function (data) {
           $log.info("Found details for " + name);
-          loaded.push(name);
+          $scope.loaded.push({name: name, loaded: false});
           if (data.killCount) {
             $scope.statList.push(assignData(data));
           }
 
-          if (loaded.length == names.length) {
+          if ($scope.loaded.length == names.length) {
             $scope.loading = false;
           }
         }).error(function (data, code) {
@@ -45,7 +50,12 @@ app.controller('pilotStats', function ($scope, $http, $timeout, $log) {
             $scope.error = data;
           } else {
             $log.info("No details found for " + name + ", retrying");
-            $timeout(attempt, 3000);
+            if (attempts++ < MAX_ATTEMPTS) {
+              $timeout(attempt, DELAY);
+            } else {
+              log.error("Could not get details for " + name);
+              $scope.loaded.push({name: name, loaded: false});
+            }
           }
         });
       }
