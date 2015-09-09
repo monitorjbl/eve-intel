@@ -3,7 +3,7 @@
         <div class="col-lg-offset-3 col-lg-6">
             <div class="jumbotron">
                 <div>
-                    <textarea class="form-control" ng-show="inputType == 'multi'" ng-model="pilotNames"></textarea>
+                    <textarea class="form-control" ng-show="inputType == 'multi'" ng-model="pilotName" placeholder="Lookup multiple pilots"></textarea>
 
                     <div class="btn-group">
                         <label class="btn btn-primary" ng-model="inputType" btn-radio="'single'">Single</label>
@@ -13,9 +13,6 @@
                            ng-disabled="loading" ng-enter="getSinglePilot()"
                            placeholder="Look up pilot"
                            style="width:300px;display:inline-block;"/>
-                    <select class="form-control" style="width:140px;display:inline-block;">
-                        <option>Past Month</option>
-                    </select>
                     <span class="btn btn-primary" ng-click="search()" ng-disabled="loading" style="top: -1px;position: relative;">
                         Search <i ng-show="loading" class="fa fa-spinner fa-spin"></i>
                     </span>

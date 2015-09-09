@@ -5,34 +5,24 @@ import com.thundermoose.eveintel.model.PilotStatistics;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class PilotStatisticsService {
-  public static final int THREAD_LIMIT = 5;
+  public static final int THREAD_LIMIT = 30;
   private final PilotStatisticsDao dao;
 
   public PilotStatisticsService(PilotStatisticsDao dao) {
     this.dao = dao;
   }
 
-  public PilotStatistics getRecentActivity(String name) {
-    return dao.getRecentActivity(name.trim());
-  }
-
   public List<PilotStatistics> getRecentActivity(List<String> names) {
     ExecutorService executor = Executors.newFixedThreadPool(THREAD_LIMIT);
-    final List<PilotStatistics> stats = new CopyOnWriteArrayList();
+    final List<PilotStatistics> stats = new CopyOnWriteArrayList<>();
     for (final String name : names) {
-      executor.execute(new Runnable() {
-        @Override
-        public void run() {
-          stats.add(dao.getRecentActivity(name.trim()));
-        }
-      });
+      executor.execute(() -> stats.add(dao.getRecentActivity(name.trim())));
     }
 
     executor.shutdown();
@@ -44,14 +34,8 @@ public class PilotStatisticsService {
       }
     }
 
-    //sort
     List<PilotStatistics> sorted = new ArrayList<>(stats);
-    Collections.sort(sorted, new Comparator<PilotStatistics>() {
-      @Override
-      public int compare(PilotStatistics o1, PilotStatistics o2) {
-        return o1.getPilot().getName().compareTo(o2.getPilot().getName());
-      }
-    });
+    Collections.sort(sorted, (o1, o2) -> o1.getPilot().getName().compareTo(o2.getPilot().getName()));
 
     return sorted;
   }

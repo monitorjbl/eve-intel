@@ -1,1 +1,1 @@
-select concat('"',typeID, '":"', typeName, '",') from invTypes limit 100000;
+select concat('"',typeID, '":"', replace(typeName, '"', '\\"'), '",') from invTypes limit 100000;
