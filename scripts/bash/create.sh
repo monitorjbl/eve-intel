@@ -1,3 +1,8 @@
+#!/bin/bash
+
+$DIR/build.sh
+
+echo "Creating [eve-intel-load]"
 aws lambda create-function \
 --region us-east-1 \
 --function-name eve-intel-load \
@@ -8,6 +13,7 @@ aws lambda create-function \
 --timeout 60 \
 --memory-size 512
 
+echo "Creating [eve-intel-load-request]"
 aws lambda create-function \
 --region us-east-1 \
 --function-name eve-intel-load-request \
@@ -18,10 +24,4 @@ aws lambda create-function \
 --timeout 30 \
 --memory-size 512
 
-mvn clean package && \
-aws lambda update-function-code \
---function-name eve-intel-load \
---zip-file fileb://./target/eve-intel.jar &&
-aws lambda update-function-code \
---function-name eve-intel-load-request \
---zip-file fileb://./target/eve-intel.jar
+$DIR/sync.sh

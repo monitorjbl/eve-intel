@@ -1,25 +1,35 @@
-<div ng-controller="pilotStats">
+<div ng-controller="PilotStats">
   <div class="row">
-    <div class="col-lg-offset-3 col-lg-6">
-      <div class="jumbotron" style="padding: 20px;">
-        <div style="padding-left:17%">
-          <textarea class="form-control" ng-show="inputType == 'multi'" ng-model="pilotName"
-                    style="width: 85%;" placeholder="Lookup multiple pilots"></textarea>
-
-          <div class="btn-group">
-            <label class="btn btn-primary" ng-model="inputType" btn-radio="'single'">Single</label>
-            <label class="btn btn-primary" ng-model="inputType" btn-radio="'multi'">Multiple</label>
+    <div class="col-lg-offset-4 col-lg-4">
+      <div class="jumbotron" style="padding: 30px;">
+        <div class="row">
+          <div class="col-lg-12 text-center header">
+            <span>View kill history for pilots</span>
           </div>
-          <input type="text" class="form-control" ng-show="inputType == 'single'" ng-model="pilotName"
-                 ng-disabled="loading" ng-enter="search()"
-                 placeholder="Look up pilot"
-                 style="width:300px;display:inline-block;"/>
-          <span class="btn btn-primary" ng-click="search()" ng-disabled="loading"
-                style="top: -1px;position: relative;">
-              Search <i ng-show="loading" class="fa fa-spinner fa-spin"></i>
-          </span>
+        </div>
+        <div class="row">
+          <div class="col-lg-12">
+            <textarea class="form-control" ng-model="pilotName" placeholder="Pilots (one per line)" rows="4"></textarea>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-4 col-md-offset-4 text-center" style="margin-top:15px;">
+            <span class="btn btn-primary" ng-click="search()" ng-disabled="loading">
+                Search <i ng-show="loading" class="fa fa-spinner fa-spin"></i>
+            </span>
+          </div>
         </div>
       </div>
+    </div>
+  </div>
+
+  <div class="alert alert-info alert-dismissible loading-list" role="alert" ng-show="loading || loadingErrorsFound">
+    <div ng-repeat="name in pilotNames" ng-show="!pilotsLoaded[name].loaded">
+      {{name}}:
+      <i ng-show="pilotsLoaded[name] == undefined" class="fa fa-spinner fa-spin"></i>
+      <i ng-show="pilotsLoaded[name].loaded == false" class="fa fa-exclamation-circle error"
+         tooltip-placement="right" tooltip="{{pilotsLoaded[name].message}}" tooltip-append-to-body="true"></i>
     </div>
   </div>
 
@@ -51,7 +61,7 @@
             <div class="row stats-row">
               <div class="col-lg-1 text-center">
                 <img class="img-responsive img-rounded"
-                     src="http://image.eveonline.com/Character/{{pilotStats.pilot.id}}_128.jpg">
+                     src="https://image.eveonline.com/Character/{{pilotStats.pilot.id}}_128.jpg">
               </div>
               <div class="col-lg-11">
                 <table class="table" ng-show="pilotStats.killCount">
@@ -78,7 +88,8 @@
                   </tr>
                   </tbody>
                 </table>
-                <div class="alert alert-warning" ng-show="!pilotStats.killCount">Pilot has no killboard information
+                <div class="alert alert-warning" ng-show="!pilotStats.killCount">Pilot has no killboard data for the
+                  past month
                 </div>
               </div>
             </div>
@@ -90,9 +101,11 @@
                   </div>
                   <div class="panel-body">
                     <div class="text-right">
-                      <a href="javascript:void(0)" ng-click="tableKilledAlliances = !tableKilledAlliances">Switch View
-                        <i
-                            class="fa fa-arrow-circle-right"></i></a>
+                      <a href="javascript:void(0)" ng-click="tableKilledAlliances = !tableKilledAlliances">
+                        <span ng-show="!tableKilledAlliances">List View</span>
+                        <span ng-show="tableKilledAlliances">Graph View</span>
+                        <i class="fa fa-arrow-circle-right"></i>
+                      </a>
                     </div>
                     <graph-doughnut data="pilotStats.killedAlliancesGraph" trigger="pilotStats.detail"
                                     ng-show="!tableKilledAlliances"></graph-doughnut>
@@ -122,9 +135,11 @@
                   </div>
                   <div class="panel-body">
                     <div class="text-right">
-                      <a href="javascript:void(0)" ng-click="tableAssistedAlliances = !tableAssistedAlliances">Switch
-                        View <i
-                            class="fa fa-arrow-circle-right"></i></a>
+                      <a href="javascript:void(0)" ng-click="tableAssistedAlliances = !tableAssistedAlliances">
+                        <span ng-show="!tableAssistedAlliances">List View</span>
+                        <span ng-show="tableAssistedAlliances">Graph View</span>
+                        <i class="fa fa-arrow-circle-right"></i>
+                      </a>
                     </div>
                     <graph-doughnut data="pilotStats.assistedAlliancesGraph" trigger="pilotStats.detail"
                                     ng-show="!tableAssistedAlliances"></graph-doughnut>
@@ -154,8 +169,11 @@
                   </div>
                   <div class="panel-body">
                     <div class="text-right">
-                      <a href="javascript:void(0)" ng-click="tableKilledShips = !tableKilledShips">Switch View <i
-                          class="fa fa-arrow-circle-right"></i></a>
+                      <a href="javascript:void(0)" ng-click="tableKilledShips = !tableKilledShips">
+                        <span ng-show="!tableKilledShips">List View</span>
+                        <span ng-show="tableKilledShips">Graph View</span>
+                        <i class="fa fa-arrow-circle-right"></i>
+                      </a>
                     </div>
                     <graph-doughnut data="pilotStats.killedShipsGraph" trigger="pilotStats.detail"
                                     ng-show="!tableKilledShips"></graph-doughnut>
@@ -185,8 +203,11 @@
                   </div>
                   <div class="panel-body">
                     <div class="text-right">
-                      <a href="javascript:void(0)" ng-click="tableUsedShips = !tableUsedShips">Switch View <i
-                          class="fa fa-arrow-circle-right"></i></a>
+                      <a href="javascript:void(0)" ng-click="tableUsedShips = !tableUsedShips">
+                        <span ng-show="!tableUsedShips">List View</span>
+                        <span ng-show="tableUsedShips">Graph View</span>
+                        <i class="fa fa-arrow-circle-right"></i>
+                      </a>
                     </div>
                     <graph-doughnut data="pilotStats.usedShipsGraph" trigger="pilotStats.detail"
                                     ng-show="!tableUsedShips"></graph-doughnut>
@@ -224,7 +245,7 @@
               <div class="col-lg-6">
                 <div class="panel panel-default">
                   <div class="panel-heading">
-                    <h3 class="panel-title">Kills Per Hour</h3>
+                    <h3 class="panel-title">Kills by Hour of Day</h3>
                   </div>
                   <div class="panel-body">
                     <graph-bar data="pilotStats.killsPerHourGraph" trigger="pilotStats.detail"></graph-bar>

@@ -3,53 +3,63 @@ package com.thundermoose.eveintel;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
-import com.thundermoose.eveintel.s3.DiskFilesystem;
-import com.thundermoose.eveintel.s3.Filesystem;
-import com.thundermoose.eveintel.s3.S3Filesystem;
+import com.thundermoose.eveintel.fs.DiskFilesystem;
+import com.thundermoose.eveintel.fs.Filesystem;
+import com.thundermoose.eveintel.fs.S3Filesystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import static com.google.common.collect.Lists.newArrayList;
+import static java.time.LocalDateTime.now;
 import static java.util.stream.Collectors.toList;
 
 public class Requester {
   private static final Logger log = LoggerFactory.getLogger(Requester.class);
   private static final int MAX_INPUT_SIZE = 4096;
+  private static final int MAX_PILOTS_PER_REQUEST = 10;
 
   private final Filesystem fs;
   private final String loadPrefix;
+  private final String pilotPrefix;
   private final ObjectMapper mapper = new ObjectMapper();
 
   public Requester() {
-    fs = new S3Filesystem("eve-intel-stats", "AKIAIKWDRPBRB7K7BFDQ", "3fq9EqalsHwM8aWetXsDW8xylz1iN11skIVzSg8/");
+    fs = new S3Filesystem("eve-intel-stats");
     loadPrefix = "load/";
+    pilotPrefix = "pilot/";
   }
 
-  public Requester(Filesystem fs, String loadPrefix) {
+  public Requester(Filesystem fs, String loadPrefix, String pilotPrefix) {
     this.fs = fs;
     this.loadPrefix = loadPrefix;
+    this.pilotPrefix = pilotPrefix;
   }
 
   @SuppressWarnings("unchecked")
   public void trigger(Map<String, Object> request, Context context) {
     log.info("request: " + request);
-    List<String> pilots = sanitize((List<String>) request.get("pilots"));
-    log.info("Loading data for " + pilots);
+    List<String> pilots = sanitize((List<String>) request.get("pilots")).parallelStream()
+        .filter(p -> !fs.exists(pilotPrefix + p) || fs.info(pilotPrefix + p).getLastModified().isBefore(now().minusDays(1)))
+        .collect(toList());
 
-    //TODO: if any pilots have been loaded in the last hour, don't scan for them
-    try (InputStream is = new ByteArrayInputStream(mapper.writeValueAsBytes(pilots))) {
-      fs.write(loadPrefix + UUID.randomUUID().toString(), is);
-    } catch (IOException e) {
-      e.printStackTrace();
+    if (pilots.size() > 0) {
+      log.info("Loading data for " + pilots);
+      for (List<String> chunk : chunkList(pilots)) {
+        try (InputStream is = new ByteArrayInputStream(mapper.writeValueAsBytes(chunk))) {
+          fs.write(loadPrefix + UUID.randomUUID().toString(), is);
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      }
+    } else {
+      log.info("No update required");
     }
   }
 
@@ -60,17 +70,19 @@ public class Requester {
 
     return str.stream()
         .map(String::toLowerCase)
-        .map(s -> {
-          try {
-            return URLDecoder.decode(s, "UTF-8");
-          } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-          }
-        })
         .collect(toList());
   }
 
+  public static List<List<String>> chunkList(List<String> input) {
+    List<List<String>> chunks = newArrayList();
+    for (int i = 0; i < input.size(); i += MAX_PILOTS_PER_REQUEST) {
+      chunks.add(input.subList(i, Math.min(i + MAX_PILOTS_PER_REQUEST, input.size())));
+    }
+    return chunks;
+  }
+
   public static void main(String[] args) {
-    new Requester(new DiskFilesystem(), "/tmp/test/").trigger(ImmutableMap.of("pilots", Arrays.asList("Ryshar","The Mittani")), null);
+    new Requester(new DiskFilesystem(), "/tmp/test/load/", "/tmp/test/pilots/")
+        .trigger(ImmutableMap.of("pilots", newArrayList("Ryshar", "The Mittani", "Arrendis", "Trunks")), null);
   }
 }

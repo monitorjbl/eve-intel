@@ -1,19 +1,21 @@
-app.controller('pilotStats', function ($scope, $http, $timeout, $log) {
-  var MAX_ATTEMPTS = 10;
+app.controller('PilotStats', function ($scope, $routeParams, $http, $timeout, $log) {
+  var MAX_ATTEMPTS = 1;
   var DELAY = 3000;
+  var S3_URL = 'https://s3.amazonaws.com/eve-intel-stats/pilot/';
+  var API_URL = 'https://rpbwclxcdk.execute-api.us-east-1.amazonaws.com/prod/eveintel/load';
 
   $scope.inputType = 'single';
   $scope.loading = false;
 
   $scope.search = function () {
+    $log.info('Searching');
     $scope.requestLoad();
     $scope.loadPilots();
   };
 
   $scope.requestLoad = function () {
     var payload = {pilots: $scope.pilotName.split('\n')};
-    console.log(payload);
-    $http.post('https://rpbwclxcdk.execute-api.us-east-1.amazonaws.com/prod/eveintel/load', payload);
+    $http.post(API_URL, payload);
   };
 
   $scope.loadPilots = function () {
@@ -26,36 +28,39 @@ app.controller('pilotStats', function ($scope, $http, $timeout, $log) {
     delete $scope.loadComplete;
     $scope.loading = true;
 
-    var names = $scope.pilotName.split('\n');
-    $scope.loaded = [];
-    $log.info(names);
-    $.each(names, function (i, n) {
+    $scope.pilotNames = $scope.pilotName.toLowerCase().split('\n');
+    $scope.pilotsLoaded = {};
+    var updatePilot = function (name, loaded, message) {
+      $scope.pilotsLoaded[name] = {loaded: loaded, message: message};
+      if (!loaded) {
+        $scope.loadingErrorsFound = true;
+      }
+      if (Object.keys($scope.pilotsLoaded).length == $scope.pilotNames.length) {
+        $scope.loading = false;
+      }
+    };
+
+    $.each($scope.pilotNames, function (i, n) {
       var name = n.toLowerCase();
       var attempts = 0;
 
       function attempt() {
-        $log.info("Loading details for " + name);
-        $http.get('https://s3.amazonaws.com/eve-intel-stats/pilot/' + name).success(function (data) {
-          $log.info("Found details for " + name);
-          $scope.loaded.push({name: name, loaded: false});
+        $log.info('Loading details for ' + name);
+        $http.get(S3_URL + name).success(function (data) {
+          $log.info('Found details for ' + name);
+          updatePilot(name, true);
           if (data.killCount) {
             $scope.statList.push(assignData(data));
-          }
-
-          if ($scope.loaded.length == names.length) {
-            $scope.loading = false;
-          }
-        }).error(function (data, code) {
-          if (code != 403) {
-            $scope.error = data;
           } else {
-            $log.info("No details found for " + name + ", retrying");
-            if (attempts++ < MAX_ATTEMPTS) {
-              $timeout(attempt, DELAY);
-            } else {
-              log.error("Could not get details for " + name);
-              $scope.loaded.push({name: name, loaded: false});
-            }
+            $scope.statList.push(data);
+          }
+        }).error(function () {
+          if (attempts++ < MAX_ATTEMPTS) {
+            $log.info('No details found for ' + name + ', retrying');
+            $timeout(attempt, DELAY);
+          } else {
+            $log.error('Could not get details for ' + name + ', timed out');
+            updatePilot(name, false, 'Pilot data could not be found');
           }
         });
       }
@@ -84,18 +89,10 @@ app.controller('pilotStats', function ($scope, $http, $timeout, $log) {
       }
     });
   };
+
+  if ($routeParams.pilot) {
+    $scope.pilotName = $routeParams.pilot;
+    $scope.search();
+  }
 });
 
-app.directive('ngEnter', function () {
-  return function (scope, element, attrs) {
-    element.bind("keydown keypress", function (event) {
-      if (event.which === 13) {
-        scope.$apply(function () {
-          scope.$eval(attrs.ngEnter);
-        });
-
-        event.preventDefault();
-      }
-    });
-  };
-});

@@ -18,7 +18,7 @@ public class JettyServer {
     resource_handler.setDirectoriesListed(true);
     resource_handler.setWelcomeFiles(new String[]{"index.html"});
 
-    resource_handler.setResourceBase(".");
+    resource_handler.setResourceBase("src/main/webapp");
 
     HandlerList handlers = new HandlerList();
     handlers.setHandlers(new Handler[]{resource_handler, new DefaultHandler()});

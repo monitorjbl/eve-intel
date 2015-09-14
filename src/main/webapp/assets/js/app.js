@@ -1,5 +1,5 @@
 var app = angular.module('eveintel', ['ngRoute', 'ui.bootstrap']).config(function ($routeProvider) {
-  $routeProvider.when('/', {
+  $routeProvider.when('/:pilot?', {
     templateUrl: 'kills.html'
   }).otherwise({
     redirectTo: '/'
@@ -53,7 +53,6 @@ app.directive('graphLine', function ($filter, $timeout) {
       var chart = $('<div class="graph graph-line"></div>').appendTo(element);
       var draw = function () {
         $(chart).children().remove();
-        console.log(scope.data);
         $timeout(function () {
           Morris.Line({
             element: chart,
@@ -62,7 +61,6 @@ app.directive('graphLine', function ($filter, $timeout) {
             ykeys: ['y'],
             labels: [scope.data.title],
             dateFormat: function (x) {
-              console.log(x);
               return $filter('date')(x, 'fullDate');
             }
           });
@@ -105,7 +103,6 @@ app.directive('graphBar', function ($filter, $timeout) {
             ykeys: ['y'],
             labels: [scope.data.title],
             dateFormat: function (x) {
-              console.log(x);
               return $filter('date')(x, 'fullDate');
             }
           });
@@ -136,7 +133,6 @@ app.directive('scrollOnTrue', function ($log) {
       var id = 'scroll';
       $(element).attr('id', id);
       scope.$watch(attributes.scrollOnTrue, function (newValue) {
-        console.log(newValue);
         if (newValue) {
           $log.debug('scrolling');
           $("body").animate({scrollTop: element.offset().top}, "slow");
@@ -144,4 +140,18 @@ app.directive('scrollOnTrue', function ($log) {
       });
     }
   }
+});
+
+app.directive('ngEnter', function () {
+  return function (scope, element, attrs) {
+    element.bind("keydown keypress", function (event) {
+      if (event.which === 13) {
+        scope.$apply(function () {
+          scope.$eval(attrs.ngEnter);
+        });
+
+        event.preventDefault();
+      }
+    });
+  };
 });
