@@ -1,8 +1,10 @@
 #!/bin/bash
 
+DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+
 $DIR/build.sh
 
-echo "Creating [eve-intel-load]"
+echo "Creating lambda [eve-intel-load]"
 aws lambda create-function \
 --region us-east-1 \
 --function-name eve-intel-load \
@@ -13,7 +15,7 @@ aws lambda create-function \
 --timeout 60 \
 --memory-size 512
 
-echo "Creating [eve-intel-load-request]"
+echo "Creating lambda [eve-intel-load-request]"
 aws lambda create-function \
 --region us-east-1 \
 --function-name eve-intel-load-request \
@@ -24,4 +26,4 @@ aws lambda create-function \
 --timeout 30 \
 --memory-size 512
 
-$DIR/sync.sh
+$DIR/static.sh

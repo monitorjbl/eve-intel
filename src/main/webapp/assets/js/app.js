@@ -60,6 +60,7 @@ app.directive('graphLine', function ($filter, $timeout) {
             xkey: 'x',
             ykeys: ['y'],
             labels: [scope.data.title],
+            resize: true,
             dateFormat: function (x) {
               return $filter('date')(x, 'fullDate');
             }
@@ -102,6 +103,7 @@ app.directive('graphBar', function ($filter, $timeout) {
             xkey: 'x',
             ykeys: ['y'],
             labels: [scope.data.title],
+            resize: true,
             dateFormat: function (x) {
               return $filter('date')(x, 'fullDate');
             }

@@ -3,6 +3,8 @@
     <div class="col-lg-offset-4 col-lg-4">
       <div class="jumbotron" style="padding: 30px;">
         <div class="row">
+          <div class="link" ng-show="link"><a href="{{link}}">Current Search</a></div>
+
           <div class="col-lg-12 text-center header">
             <span>View kill history for pilots</span>
           </div>
@@ -24,12 +26,17 @@
     </div>
   </div>
 
+
+
   <div class="alert alert-info alert-dismissible loading-list" role="alert" ng-show="loading || loadingErrorsFound">
-    <div ng-repeat="name in pilotNames" ng-show="!pilotsLoaded[name].loaded">
+    <progressbar class="progress-striped active" animate="false" value="(loadRequest.current/loadRequest.total)*100">
+      <span style="color:white; white-space:nowrap;">{{loadRequest.current}} / {{loadRequest.total}}</span>
+    </progressbar>
+    <div ng-repeat="name in loadRequest.pilotNames" ng-show="!loadRequest.pilotsLoaded[name].loaded">
       {{name}}:
-      <i ng-show="pilotsLoaded[name] == undefined" class="fa fa-spinner fa-spin"></i>
-      <i ng-show="pilotsLoaded[name].loaded == false" class="fa fa-exclamation-circle error"
-         tooltip-placement="right" tooltip="{{pilotsLoaded[name].message}}" tooltip-append-to-body="true"></i>
+      <i ng-show="loadRequest.pilotsLoaded[name] == undefined" class="fa fa-spinner fa-spin"></i>
+      <i ng-show="loadRequest.pilotsLoaded[name].loaded == false" class="fa fa-exclamation-circle error"
+         tooltip-placement="right" tooltip="{{loadRequest.pilotsLoaded[name].message}}" tooltip-append-to-body="true"></i>
     </div>
   </div>
 
@@ -94,7 +101,7 @@
               </div>
             </div>
             <div ng-show="pilotStats.detail" class="row graph-row">
-              <div class="col-lg-3">
+              <div class="col-lg-3 col-xs-6">
                 <div class="panel panel-default">
                   <div class="panel-heading">
                     <h3 class="panel-title">Killed Alliances</h3>
@@ -128,7 +135,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-lg-3">
+              <div class="col-lg-3 col-xs-6">
                 <div class="panel panel-default">
                   <div class="panel-heading">
                     <h3 class="panel-title">Assisted Alliances</h3>
@@ -162,7 +169,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-lg-3">
+              <div class="col-lg-3 col-xs-6">
                 <div class="panel panel-default">
                   <div class="panel-heading">
                     <h3 class="panel-title">Killed Ships</h3>
@@ -196,7 +203,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-lg-3">
+              <div class="col-lg-3 col-xs-6">
                 <div class="panel panel-default">
                   <div class="panel-heading">
                     <h3 class="panel-title">Flown Ships</h3>
@@ -232,7 +239,7 @@
               </div>
             </div>
             <div ng-show="pilotStats.detail" class="row graph-row">
-              <div class="col-lg-6">
+              <div class="col-lg-6 col-xs-12">
                 <div class="panel panel-default">
                   <div class="panel-heading">
                     <h3 class="panel-title">Kills Per Day</h3>
@@ -242,7 +249,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-lg-6">
+              <div class="col-lg-6 col-xs-12">
                 <div class="panel panel-default">
                   <div class="panel-heading">
                     <h3 class="panel-title">Kills by Hour of Day</h3>

@@ -215,7 +215,7 @@ ul.alert-dropdown {
 
 /* App styles */
 
-.header{
+.header {
     font-size: 18px;
     margin-bottom: 10px;
 }
@@ -284,10 +284,16 @@ ul.alert-dropdown {
     top: 61px;
     right: 20px;
     width: 250px;
-    height: 100px;
+    height: 140px;
     overflow: auto;
 }
 
 .loading-list .error {
     color: #9A3E3E;
+}
+
+.link {
+    position: absolute;
+    right: 30px;
+    bottom: 40px;
 }

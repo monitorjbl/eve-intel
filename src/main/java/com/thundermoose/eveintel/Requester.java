@@ -22,8 +22,8 @@ import static java.util.stream.Collectors.toList;
 
 public class Requester {
   private static final Logger log = LoggerFactory.getLogger(Requester.class);
-  private static final int MAX_INPUT_SIZE = 4096;
-  private static final int MAX_PILOTS_PER_REQUEST = 10;
+  private static final Integer MAX_INPUT_SIZE = 4096;
+  private static final Integer MAX_PILOTS_PER_REQUEST = 10;
 
   private final Filesystem fs;
   private final String loadPrefix;
@@ -34,6 +34,7 @@ public class Requester {
     fs = new S3Filesystem("eve-intel-stats");
     loadPrefix = "load/";
     pilotPrefix = "pilot/";
+    System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism", MAX_PILOTS_PER_REQUEST.toString());
   }
 
   public Requester(Filesystem fs, String loadPrefix, String pilotPrefix) {
@@ -46,8 +47,10 @@ public class Requester {
   public void trigger(Map<String, Object> request, Context context) {
     log.info("request: " + request);
     List<String> pilots = sanitize((List<String>) request.get("pilots")).parallelStream()
-        .filter(p -> !fs.exists(pilotPrefix + p) || fs.info(pilotPrefix + p).getLastModified().isBefore(now().minusDays(1)))
-        .collect(toList());
+        .filter(p -> {
+          log.debug("Checking " + p);
+          return !fs.exists(pilotPrefix + p) || fs.info(pilotPrefix + p).getLastModified().isBefore(now().minusDays(1));
+        }).collect(toList());
 
     if (pilots.size() > 0) {
       log.info("Loading data for " + pilots);
