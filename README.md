@@ -4,7 +4,7 @@ This is an intel tool for quickly gathering information about pilots. It is desi
 
 This tool sources its data from [zKillboard's API](https://zkillboard.com/) and the EVE API. As such, it is dependent on the uptime of these systems; if zKill goes down or becomes slow, EVE Intel may become unavailable.
 
-You can access a running instance of this application here: http://monitorjbl.io/eve-intel/.
+You can access a running instance of the application here: http://monitorjbl.io/eve-intel/.
 
 # History and Technical Stuff
 
