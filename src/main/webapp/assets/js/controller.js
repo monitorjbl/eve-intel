@@ -1,7 +1,7 @@
 app.controller('PilotStats', function ($scope, $routeParams, $http, $timeout, $log) {
   var MAX_ATTEMPTS = 20;
   var DELAY = 3000;
-  var S3_URL = 'https://s3.amazonaws.com/eve-intel-stats/pilot/';
+  var S3_URL = 'https://s3.amazonaws.com/eve-intel-stats-stage/pilot/';
   var API_URL = 'https://rpbwclxcdk.execute-api.us-east-1.amazonaws.com/prod/eveintel/load';
 
   $scope.inputType = 'single';

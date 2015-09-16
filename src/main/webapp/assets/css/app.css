@@ -1,12 +1,12 @@
 /* Global Styles */
 
-body {
-    background: #000 url(../img/drake_background.png) no-repeat center center fixed;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-}
+/*body {*/
+    /*background-color: #414A4C;*/
+    /*background-image: url(../img/drake_background.png);*/
+    /*background-repeat: no-repeat;*/
+    /*background-position: 100%;*/
+    /*background-attachment: fixed;*/
+/*}*/
 
 @media (min-width: 768px) {
     body {
@@ -229,7 +229,7 @@ ul.alert-dropdown {
 }
 
 .graph {
-    height: 275px;
+    height: 225px;
 }
 
 .stats-row th, .stats-row td {
@@ -241,7 +241,7 @@ ul.alert-dropdown {
 }
 
 .graph-row .panel-body {
-    height: 350px;
+    height: 270px;
     overflow: auto;
 }
 
