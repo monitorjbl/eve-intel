@@ -24,17 +24,18 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
 
+import static java.util.stream.Collectors.toList;
+
 public class PilotStatisticsDao {
   private static final Logger log = LoggerFactory.getLogger(PilotStatisticsDao.class);
   public static final Long POD_ID = 670L;
-  public static final Integer ROUNDING_SCALE = 4;
+  public static final Integer ROUNDING_SCALE = 8;
 
   private final PilotDao pilotDao;
 
@@ -54,65 +55,37 @@ public class PilotStatisticsDao {
     DateTime start = finish.minusMonths(1).withTime(0, 0, 0, 0);
     final Pilot p = pilotDao.getPilotData(name, start);
 
-    //tally up totals
-    List<Region> regions = new ArrayList<>();
-    List<Alliance> killedAlliances = new ArrayList<>();
-    List<Alliance> assistedAlliances = new ArrayList<>();
-    List<ShipType> killedShips = new ArrayList<>();
-    List<ShipType> usedShips = new ArrayList<>();
-    for (Killmail km : p.getKills()) {
-      regions.add(km.getSolarSystem().getRegion());
+    List<Region> regions = regions(p);
+    List<Alliance> killedAlliances = killedAlliances(p);
+    List<Alliance> assistedAlliances = assistedAlliances(p);
+    List<ShipType> killedShips = killedShips(p);
+    List<ShipType> usedShips = usedShips(p);
 
-      Alliance va = km.getVictim().getPilot().getCorporation().getAlliance();
-      if (va != null) {
-        killedAlliances.add(va);
-      }
-
-      for (Ship s : km.getAttackingShips()) {
-        Alliance a = s.getPilot().getCorporation().getAlliance();
-        if (a != null && !Objects.equals(a.getId(), p.getCorporation().getAlliance().getId())) {
-          assistedAlliances.add(a);
-        }
-      }
-
-      //dont count pods
-      if (!Objects.equals(km.getVictim().getType().getId(), POD_ID)) {
-        killedShips.add(km.getVictim().getType());
-      }
-
-      usedShips.add(Iterables.find(km.getAttackingShips(), new Predicate<Ship>() {
-        @Override
-        public boolean apply(Ship ship) {
-          return ship.getPilot().getId().equals(p.getId());
-        }
-      }).getType());
-    }
-
-    if (p.getKills().size() > 0) {
-      List<WeightedData<ShipType>> wv = weight(killedShips);
-      List<WeightedData<ShipType>> wk = weight(usedShips);
-      List<WeightedData<Alliance>> wka = weight(killedAlliances);
-      List<WeightedData<Alliance>> waa = weight(assistedAlliances);
-      List<WeightedData<Region>> wr = weight(regions);
+    if(p.getKills().size() > 0) {
+      List<WeightedData<Region>> weightedRegions = weight(regions);
+      List<WeightedData<ShipType>> weightedKilledShips = weight(killedShips);
+      List<WeightedData<ShipType>> weightedUsedShips = weight(usedShips);
+      List<WeightedData<Alliance>> weightedKilledAlliances = weight(killedAlliances);
+      List<WeightedData<Alliance>> weightedAssistedAlliances = weight(assistedAlliances);
 
       return PilotStatistics.builder()
           .pilot(p)
           .killCount(killedShips.size())
-          .killedShips(wv)
+          .killedShips(weightedKilledShips)
           .recentKilledShip(recency(killedShips))
-          .tendencyKilledShip(tendency(wk))
-          .usedShips(wk)
+          .tendencyKilledShip(tendency(weightedKilledShips))
+          .usedShips(weightedUsedShips)
           .recentUsedShip(recency(usedShips))
-          .tendencyUsedShip(tendency(wk))
-          .killedAlliances(wka)
+          .tendencyUsedShip(tendency(weightedUsedShips))
+          .killedAlliances(weightedKilledAlliances)
           .recentKilledAlliance(recency(killedAlliances))
-          .tendencyKilledAlliance(tendency(wka))
-          .assistedAlliances(waa)
+          .tendencyKilledAlliance(tendency(weightedKilledAlliances))
+          .assistedAlliances(weightedAssistedAlliances)
           .recentAssistedAlliance(recency(assistedAlliances))
-          .tendencyAssistedAlliance(tendency(waa))
-          .regions(wr)
+          .tendencyAssistedAlliance(tendency(weightedAssistedAlliances))
+          .regions(weightedRegions)
           .recentRegion(recency(regions))
-          .tendencyRegion(tendency(wr))
+          .tendencyRegion(tendency(weightedRegions))
           .killsPerDay(killsPerDay(start, finish, p.getKills()))
           .killsPerHour(killsPerHour(p.getKills()))
           .averageFleetSize(averageFleetSize(p.getKills()))
@@ -122,9 +95,46 @@ public class PilotStatisticsDao {
     }
   }
 
+  List<Region> regions(Pilot p) {
+    return p.getKills().stream()
+        .map(km -> km.getSolarSystem().getRegion())
+        .collect(toList());
+  }
+
+  List<Alliance> assistedAlliances(Pilot p) {
+    return p.getKills().stream()
+        .flatMap(km -> km.getAttackingShips().stream())
+        .map(s -> s.getPilot().getCorporation().getAlliance())
+        .filter(Objects::nonNull)
+        .filter(a -> !Objects.equals(a.getId(), p.getCorporation().getAlliance().getId()))
+        .collect(toList());
+  }
+
+  List<Alliance> killedAlliances(Pilot p) {
+    return p.getKills().stream()
+        .map(km -> km.getVictim().getPilot().getCorporation().getAlliance())
+        .filter(Objects::nonNull)
+        .collect(toList());
+  }
+
+  List<ShipType> killedShips(Pilot p) {
+    return p.getKills().stream()
+        .map(km -> km.getVictim().getType())
+        .filter(s -> !Objects.equals(s.getId(), POD_ID))
+        .collect(toList());
+  }
+
+  List<ShipType> usedShips(Pilot p) {
+    return p.getKills().stream()
+        .flatMap(km -> km.getAttackingShips().stream())
+        .filter(s -> Objects.equals(s.getPilot().getId(), p.getId()))
+        .map(Ship::getType)
+        .collect(toList());
+  }
+
   @SuppressWarnings("unchecked")
   <E extends NamedItem> List<WeightedData<E>> weight(List<E> items) {
-    if (items.size() == 0) {
+    if(items.size() == 0) {
       return Collections.emptyList();
     }
 
@@ -132,9 +142,9 @@ public class PilotStatisticsDao {
     List<WeightedData<E>> weightedData = new ArrayList<>();
 
     //add up items with weights
-    for (NamedItem ni : items) {
+    for(NamedItem ni : items) {
       WeightedData data = findItem(weightedData, ni.getName());
-      if (data == null) {
+      if(data == null) {
         weightedData.add(new WeightedData(ni, unit, 1));
       } else {
         data.setWeight(add(data.getWeight(), unit));
@@ -143,22 +153,18 @@ public class PilotStatisticsDao {
     }
 
     //sort by weight, then by name
-    Collections.sort(weightedData, new Comparator<WeightedData<E>>() {
-      @Override
-      public int compare(WeightedData<E> o1, WeightedData<E> o2) {
-        return ComparisonChain.start()
+    Collections.sort(weightedData, (o1, o2) ->
+        ComparisonChain.start()
             .compare(o2.getWeight(), o1.getWeight())
             .compare(o1.getValue().getName(), o2.getValue().getName())
-            .result();
-      }
-    });
+            .result());
 
     return weightedData;
   }
 
   Integer averageFleetSize(List<Killmail> killmails) {
     Integer total = 0;
-    for (Killmail km : killmails) {
+    for(Killmail km : killmails) {
       total += km.getAttackingShips().size();
     }
     return div((double) total, (double) killmails.size()).intValue();
@@ -170,12 +176,12 @@ public class PilotStatisticsDao {
     DateTime ptr = start;
     Iterator<Killmail> iter = killmails.iterator();
     Killmail curr = iter.next();
-    while (ptr.isBefore(finish)) {
+    while(ptr.isBefore(finish)) {
       DateTime boundary = ptr.plusDays(1);
       TimeGraphPoint point = new TimeGraphPoint(ptr.toDate().getTime(), 0.0);
-      while (curr != null && ptr.isBefore(curr.getDate()) && boundary.isAfter(curr.getDate())) {
+      while(curr != null && ptr.isBefore(curr.getDate()) && boundary.isAfter(curr.getDate())) {
         //don't count pods
-        if (!Objects.equals(POD_ID, curr.getVictim().getType().getId())) {
+        if(!Objects.equals(POD_ID, curr.getVictim().getType().getId())) {
           point.setY(point.getY() + 1.0);
         }
         curr = iter.hasNext() ? iter.next() : null;
@@ -190,12 +196,12 @@ public class PilotStatisticsDao {
   BarGraph killsPerHour(List<Killmail> killmails) {
     Map<Integer, BarGraphPoint> data = new TreeMap<>();
     //load base data
-    for (int i = 0; i < 24; i++) {
+    for(int i = 0; i < 24; i++) {
       data.put(i, new BarGraphPoint(String.format("%02d00", i), 0.0));
     }
 
     //for each killmail, find what time the kill occurred
-    for (Killmail km : killmails) {
+    for(Killmail km : killmails) {
       BarGraphPoint p = data.get(km.getDate().getHourOfDay());
       p.setY(p.getY() + 1.0);
     }
@@ -204,16 +210,16 @@ public class PilotStatisticsDao {
   }
 
   <E extends NamedItem> E recency(List<E> data) {
-    if (data.size() == 0) {
+    if(data.size() == 0) {
       return null;
     }
     return data.get(data.size() - 1);
   }
 
   <E extends NamedItem> E tendency(List<WeightedData<E>> data) {
-    if (data.size() == 0) {
+    if(data.size() == 0) {
       return null;
-    } else if (data.size() == 1) {
+    } else if(data.size() == 1) {
       return data.get(0).getValue();
     }
 

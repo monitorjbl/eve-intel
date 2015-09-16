@@ -3,6 +3,9 @@ package com.thundermoose.eveintel.dao;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.io.Resources;
+import com.thundermoose.eveintel.api.ApiCommon;
+import com.thundermoose.eveintel.api.EveStaticData;
+import com.thundermoose.eveintel.api.ZKillApiClient;
 import com.thundermoose.eveintel.model.Killmail;
 import com.thundermoose.eveintel.model.TimeGraph;
 import com.thundermoose.eveintel.model.TimeGraphPoint;
@@ -32,11 +35,12 @@ public class PilotStatisticsDaoTest {
     MockitoAnnotations.initMocks(this);
   }
 
-//  @Test
-//  public void test() throws IOException {
-//    ZKillApiClient client = new ZKillApiClient(new EveStaticData());
-//    client.getKillmailsForPilot(353765550L, new DateTime().minusMonths(1));
-//  }
+  @Test
+  public void test() throws IOException {
+    ZKillApiClient client = new ZKillApiClient(new EveStaticData(), new ApiCommon());
+    List<Killmail> mails = client.getKillmailsForPilot(353765550L, new DateTime().minusMonths(2));
+    mails.stream().forEach(km->System.out.println(km.getVictim().getPilot().getName()));
+  }
 
   @Test
   public void testKillGraph() throws IOException, InterruptedException {
