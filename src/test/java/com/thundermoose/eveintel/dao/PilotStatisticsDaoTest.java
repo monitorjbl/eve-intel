@@ -39,7 +39,7 @@ public class PilotStatisticsDaoTest {
   public void test() throws IOException {
     ZKillApiClient client = new ZKillApiClient(new EveStaticData(), new ApiCommon());
     List<Killmail> mails = client.getKillmailsForPilot(353765550L, new DateTime().minusMonths(2));
-    mails.stream().forEach(km->System.out.println(km.getVictim().getPilot().getName()));
+    mails.stream().forEach(km->System.out.println(km.getItems()));
   }
 
   @Test

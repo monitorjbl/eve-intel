@@ -5,6 +5,7 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.thundermoose.eveintel.model.Alliance;
 import com.thundermoose.eveintel.model.Corporation;
+import com.thundermoose.eveintel.model.DroppableItem;
 import com.thundermoose.eveintel.model.Killmail;
 import com.thundermoose.eveintel.model.Pilot;
 import com.thundermoose.eveintel.model.Ship;
@@ -21,6 +22,8 @@ import org.w3c.dom.Node;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import static java.util.stream.Collectors.toList;
 
 public class ZKillApiClient {
   private static final Logger log = LoggerFactory.getLogger(ZKillApiClient.class);
@@ -48,9 +51,9 @@ public class ZKillApiClient {
 
   private List<Ship> getAttackers(Node n) {
     List<Ship> ships = new ArrayList<>();
-    for (Node an : XmlUtils.xmlNodes((Element) n, ATTACKERS)) {
+    for(Node an : XmlUtils.xmlNodes((Element) n, ATTACKERS)) {
       Ship s = getShip(an);
-      if (s != null) {
+      if(s != null) {
         ships.add(getShip(an));
       }
     }
@@ -62,7 +65,7 @@ public class ZKillApiClient {
         .id(Long.parseLong(XmlUtils.attribute(n, ALLIANCE_ID)))
         .name(XmlUtils.attribute(n, ALLIANCE_NAME))
         .build();
-    if (alliance.getName().equals("")) {
+    if(alliance.getName().equals("")) {
       alliance = null;
     }
 
@@ -82,7 +85,7 @@ public class ZKillApiClient {
     //if so, don't bother recording this ship
     Long shipId = Long.parseLong(XmlUtils.attribute(n, SHIP_ID));
     ShipType type;
-    if (Objects.equals(0L, shipId)) {
+    if(Objects.equals(0L, shipId)) {
       type = ShipType.builder().id(shipId).name("Unknown").build();
     } else {
       type = ShipType.builder().id(shipId).name(eveStaticData.getItemName(shipId)).build();
@@ -91,6 +94,18 @@ public class ZKillApiClient {
         .type(type)
         .pilot(vp)
         .build();
+  }
+
+  private List<DroppableItem> getItems(Node n) {
+    return XmlUtils.xmlNodes((Element) n, ITEMS).stream()
+        .map(item -> {
+          Long id = Long.parseLong(XmlUtils.attribute(item, ITEM_ID));
+          return DroppableItem.builder()
+              .id(id)
+              .flag(Integer.parseInt(XmlUtils.attribute(item, ITEM_FLAG)))
+              .name(eveStaticData.getItemName(id))
+              .build();
+        }).collect(toList());
   }
 
   public static final String BASE_URI = "https://zkillboard.com";
@@ -102,6 +117,7 @@ public class ZKillApiClient {
   public static final String KILL_TIME = "killTime";
 
   public static final String VICTIM = "victim";
+  public static final String ITEMS = "rowset[@name='items']/row";
   public static final String ATTACKERS = "rowset[@name='attackers']/row";
 
   public static final String CHARACTER_ID = "characterID";
@@ -111,6 +127,8 @@ public class ZKillApiClient {
   public static final String ALLIANCE_ID = "allianceID";
   public static final String ALLIANCE_NAME = "allianceName";
   public static final String SHIP_ID = "shipTypeID";
+  public static final String ITEM_ID = "typeID";
+  public static final String ITEM_FLAG = "flag";
 
   private final Function<Node, Killmail> transformKillmail = new Function<Node, Killmail>() {
     @Override
@@ -121,6 +139,7 @@ public class ZKillApiClient {
           .solarSystem(eveStaticData.getSolarSystem(Long.parseLong(XmlUtils.attribute(n, KILL_SYSTEM_ID))))
           .attackingShips(getAttackers(n))
           .victim(getShip(XmlUtils.xmlNode((Element) n, VICTIM)))
+          .items(getItems(n))
           .build();
     }
   };

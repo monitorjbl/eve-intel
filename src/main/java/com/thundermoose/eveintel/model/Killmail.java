@@ -7,13 +7,16 @@ import org.joda.time.DateTime;
 import java.io.Serializable;
 import java.util.List;
 
+import static com.google.common.collect.Lists.newArrayList;
+
 @JsonDeserialize(builder = Killmail.Builder.class)
-public class Killmail implements Serializable{
+public class Killmail implements Serializable {
   private Long id;
   private DateTime date;
   private Ship victim;
   private List<Ship> attackingShips;
   private SolarSystem solarSystem;
+  private List<DroppableItem> items;
 
   private Killmail(Builder builder) {
     id = builder.id;
@@ -21,6 +24,7 @@ public class Killmail implements Serializable{
     victim = builder.victim;
     attackingShips = builder.attackingShips;
     solarSystem = builder.solarSystem;
+    items = builder.items;
   }
 
   public static Builder builder() {
@@ -47,13 +51,18 @@ public class Killmail implements Serializable{
     return solarSystem;
   }
 
+  public List<DroppableItem> getItems() {
+    return items;
+  }
+
   @JsonPOJOBuilder(buildMethodName = "build", withPrefix = "")
   public static final class Builder {
     private Long id;
     private DateTime date;
     private Ship victim;
-    private List<Ship> attackingShips;
+    private List<Ship> attackingShips = newArrayList();
     private SolarSystem solarSystem;
+    private List<DroppableItem> items = newArrayList();
 
     private Builder() {
     }
@@ -80,6 +89,11 @@ public class Killmail implements Serializable{
 
     public Builder solarSystem(SolarSystem solarSystem) {
       this.solarSystem = solarSystem;
+      return this;
+    }
+
+    public Builder items(List<DroppableItem> items) {
+      this.items = items;
       return this;
     }
 
