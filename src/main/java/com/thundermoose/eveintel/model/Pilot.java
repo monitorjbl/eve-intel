@@ -7,13 +7,15 @@ import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import java.io.Serializable;
 import java.util.List;
 
+import static com.google.common.collect.Lists.newArrayList;
+
 @JsonDeserialize(builder = Pilot.Builder.class)
 public class Pilot implements NamedItem, Serializable {
   private Long id;
   private String name;
   private Corporation corporation;
   @JsonIgnore
-  private List<Killmail> kills;
+  private List<Killmail> kills = newArrayList();
 
   private Pilot(Builder builder) {
     id = builder.id;

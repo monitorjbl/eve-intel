@@ -7,8 +7,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.google.common.collect.Lists.newArrayList;
+
 @JsonDeserialize(builder = PilotStatistics.Builder.class)
-public class PilotStatistics implements Serializable{
+public class PilotStatistics implements Serializable {
   private Pilot pilot;
   private Integer killCount;
   private List<WeightedData<Region>> regions = new ArrayList<>();
@@ -141,19 +143,19 @@ public class PilotStatistics implements Serializable{
   public static final class Builder {
     private Pilot pilot;
     private Integer killCount;
-    private List<WeightedData<Region>> regions;
+    private List<WeightedData<Region>> regions = newArrayList();
     private Region tendencyRegion;
     private Region recentRegion;
-    private List<WeightedData<Alliance>> killedAlliances;
+    private List<WeightedData<Alliance>> killedAlliances = newArrayList();
     private Alliance tendencyKilledAlliance;
     private Alliance recentKilledAlliance;
-    private List<WeightedData<Alliance>> assistedAlliances;
+    private List<WeightedData<Alliance>> assistedAlliances = newArrayList();
     private Alliance tendencyAssistedAlliance;
     private Alliance recentAssistedAlliance;
-    private List<WeightedData<ShipType>> usedShips;
+    private List<WeightedData<ShipType>> usedShips = newArrayList();
     private ShipType tendencyUsedShip;
     private ShipType recentUsedShip;
-    private List<WeightedData<ShipType>> killedShips;
+    private List<WeightedData<ShipType>> killedShips = newArrayList();
     private ShipType tendencyKilledShip;
     private ShipType recentKilledShip;
     private Integer averageFleetSize;
