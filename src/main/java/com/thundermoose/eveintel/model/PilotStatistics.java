@@ -11,7 +11,6 @@ import java.util.List;
 public class PilotStatistics implements Serializable{
   private Pilot pilot;
   private Integer killCount;
-  private Double costIn;
   private List<WeightedData<Region>> regions = new ArrayList<>();
   private Region tendencyRegion;
   private Region recentRegion;
@@ -34,7 +33,6 @@ public class PilotStatistics implements Serializable{
   private PilotStatistics(Builder builder) {
     pilot = builder.pilot;
     killCount = builder.killCount;
-    costIn = builder.costIn;
     regions = builder.regions;
     tendencyRegion = builder.tendencyRegion;
     recentRegion = builder.recentRegion;
@@ -65,10 +63,6 @@ public class PilotStatistics implements Serializable{
 
   public Integer getKillCount() {
     return killCount;
-  }
-
-  public Double getCostIn() {
-    return costIn;
   }
 
   public List<WeightedData<Region>> getRegions() {
@@ -147,7 +141,6 @@ public class PilotStatistics implements Serializable{
   public static final class Builder {
     private Pilot pilot;
     private Integer killCount;
-    private Double costIn;
     private List<WeightedData<Region>> regions;
     private Region tendencyRegion;
     private Region recentRegion;
@@ -177,11 +170,6 @@ public class PilotStatistics implements Serializable{
 
     public Builder killCount(Integer killCount) {
       this.killCount = killCount;
-      return this;
-    }
-
-    public Builder costIn(Double costIn) {
-      this.costIn = costIn;
       return this;
     }
 
