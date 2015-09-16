@@ -1,7 +1,7 @@
 app.controller('PilotStats', function ($scope, $routeParams, $http, $timeout, $log) {
   var MAX_ATTEMPTS = 20;
   var DELAY = 3000;
-  var S3_URL = 'https://s3.amazonaws.com/eve-intel-stats-stage/pilot/';
+  var S3_URL = 'https://s3.amazonaws.com/eve-intel-stats/pilot/';
   var API_URL = 'https://rpbwclxcdk.execute-api.us-east-1.amazonaws.com/prod/eveintel/load';
 
   $scope.inputType = 'single';
@@ -64,14 +64,20 @@ app.controller('PilotStats', function ($scope, $routeParams, $http, $timeout, $l
       var attempts = 0;
 
       function attempt() {
-        $log.info('Loading details for ' + name);
+        $log.debug('Loading details for ' + name);
         $http.get(S3_URL + name).success(function (data) {
-          $log.info('Found details for ' + name);
-          updatePilot(name, true);
-          if (data.killCount) {
-            $scope.statList.push(assignData(data));
+          $log.debug('Found details for ' + name);
+
+          if(typeof data == 'string'){
+            $log.error('Error loading details for ' + name);
+            updatePilot(name, false, data);
           } else {
-            $scope.statList.push(data);
+            updatePilot(name, true);
+            if (data.killCount) {
+              $scope.statList.push(assignData(data));
+            } else {
+              $scope.statList.push(data);
+            }
           }
         }).error(function () {
           if (attempts++ < MAX_ATTEMPTS) {

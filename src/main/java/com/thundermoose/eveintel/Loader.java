@@ -38,26 +38,31 @@ public class Loader {
   }
 
   public void trigger(S3Event event, Context context) throws Exception {
-    for (S3EventNotificationRecord record : event.getRecords()) {
+    for(S3EventNotificationRecord record : event.getRecords()) {
       String key = record.getS3().getObject().getKey();
       load(key);
     }
   }
 
   public void load(String key) throws IOException {
-    try (InputStream is = fs.read(key)) {
+    try(InputStream is = fs.read(key)) {
       List<String> contents = mapper.readValue(is, new TypeReference<List<String>>() {});
-      service.getRecentActivity(contents, stats -> {
-        log.info("Writing stats for " + stats.getPilot());
-        fs.write(pilotPrefix + stats.getPilot().getName().toLowerCase(), stringToStream(pojoToJson(stats)));
-      });
+      service.getRecentActivity(contents,
+          stats -> {
+            log.info("Writing stats for " + stats.getPilot());
+            fs.write(pilotPrefix + stats.getPilot().getName().toLowerCase(), stringToStream(pojoToJson(stats)));
+          },
+          (name, err) -> {
+            log.error("Encountered error", err);
+            fs.write(pilotPrefix + name.toLowerCase(), stringToStream("Pilot does not exist"));
+          });
     }
   }
 
   public static String pojoToJson(Object obj) {
     try {
       return mapper.writeValueAsString(obj);
-    } catch (JsonProcessingException e) {
+    } catch(JsonProcessingException e) {
       throw new RuntimeException(e);
     }
   }
