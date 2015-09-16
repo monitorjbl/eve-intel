@@ -29,7 +29,8 @@
 
 
   <div class="alert alert-info alert-dismissible loading-list" role="alert" ng-show="loading || loadingErrorsFound">
-    <progressbar class="progress-striped active" animate="false" value="(loadRequest.current/loadRequest.total)*100">
+    <progressbar class="progress-striped active" type="{{loadingErrorsFound ? 'warning' : 'info'}}" animate="false"
+                 value="(loadRequest.current/loadRequest.total)*100">
       <span style="color:white; white-space:nowrap;">{{loadRequest.current}} / {{loadRequest.total}}</span>
     </progressbar>
     <div ng-repeat="name in loadRequest.pilotNames" ng-show="!loadRequest.pilotsLoaded[name].loaded">

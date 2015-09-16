@@ -34,9 +34,11 @@ app.controller('PilotStats', function ($scope, $routeParams, $http, $timeout, $l
       return;
     }
 
+    // prepare scope vars
     $scope.statList = [];
     delete $scope.error;
     delete $scope.loadComplete;
+    delete $scope.loadingErrorsFound;
     $scope.loading = true;
 
     var names = $scope.pilotName.toLowerCase().split('\n');
