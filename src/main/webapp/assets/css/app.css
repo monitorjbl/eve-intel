@@ -1,12 +1,12 @@
 /* Global Styles */
 
-/*body {*/
-    /*background-color: #414A4C;*/
-    /*background-image: url(../img/drake_background.png);*/
-    /*background-repeat: no-repeat;*/
-    /*background-position: 100%;*/
-    /*background-attachment: fixed;*/
-/*}*/
+body {
+    background-color: #414A4C;
+    background-image: url(../img/drake_background.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+}
 
 @media (min-width: 768px) {
     body {
@@ -218,6 +218,13 @@ ul.alert-dropdown {
 .header {
     font-size: 18px;
     margin-bottom: 10px;
+}
+
+.github img{
+    height: 40px;
+    top: 6px;
+    right: 5px;
+    position: relative;
 }
 
 .alert-message {
