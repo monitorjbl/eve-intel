@@ -1,6 +1,7 @@
 package com.thundermoose.eveintel.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
@@ -16,6 +17,7 @@ public class Pilot implements NamedItem, Serializable {
   private Corporation corporation;
   @JsonIgnore
   private List<Killmail> kills = newArrayList();
+  @JsonIgnore
   private List<Killmail> losses = newArrayList();
 
   private Pilot(Builder builder) {

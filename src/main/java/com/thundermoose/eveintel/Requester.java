@@ -52,22 +52,22 @@ public class Requester {
           return !fs.exists(pilotPrefix + p) || fs.info(pilotPrefix + p).getLastModified().isBefore(now().minusDays(1));
         }).collect(toList());
 
-    if (pilots.size() > 0) {
+    if(pilots.size() > 0) {
       log.info("Loading data for " + pilots);
-      for (List<String> chunk : chunkList(pilots)) {
-        try (InputStream is = new ByteArrayInputStream(mapper.writeValueAsBytes(chunk))) {
+      chunkList(pilots).parallelStream().forEach(chunk -> {
+        try(InputStream is = new ByteArrayInputStream(mapper.writeValueAsBytes(chunk))) {
           fs.write(loadPrefix + UUID.randomUUID().toString(), is);
-        } catch (IOException e) {
+        } catch(IOException e) {
           e.printStackTrace();
         }
-      }
+      });
     } else {
       log.info("No update required");
     }
   }
 
   public static List<String> sanitize(List<String> str) {
-    if (str.size() > MAX_INPUT_SIZE) {
+    if(str.size() > MAX_INPUT_SIZE) {
       throw new IllegalArgumentException("Input too long");
     }
 
@@ -78,7 +78,7 @@ public class Requester {
 
   public static List<List<String>> chunkList(List<String> input) {
     List<List<String>> chunks = newArrayList();
-    for (int i = 0; i < input.size(); i += MAX_PILOTS_PER_REQUEST) {
+    for(int i = 0; i < input.size(); i += MAX_PILOTS_PER_REQUEST) {
       chunks.add(input.subList(i, Math.min(i + MAX_PILOTS_PER_REQUEST, input.size())));
     }
     return chunks;
