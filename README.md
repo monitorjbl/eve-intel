@@ -6,6 +6,16 @@ This tool sources its data from [zKillboard's API](https://zkillboard.com/) and 
 
 You can access a running instance of the application here: http://monitorjbl.io/eve-intel/.
 
+# Stats Information
+
+Most stats calculated are pretty self-explanatory. Some of the less obvious ones are listed below:
+
+* Average fleet size: This is determined by taking the average count of assists on each killmail.
+* Most assisted alliance: This is determined by checking all of the pilots assisting any kills on the pilot's killboard.
+* Most flown ship: This is determined by checking all of the ships flown by the pilot on all of his kills.
+* Cyno pilot: If there are more than 2 losses on the pilot's killboard where a cyno was fitted to his ship, he is flagged.
+* Fleet booster: If there is 1 or more losses on the pilot's killboard where a fleet assist module was fitted to his ship, he is flagged.
+
 # History and Technical Stuff
 
 I originally wrote this tool to give myself some heads-up info on pilots in local while I moved around in null sec. It was a pretty simple Spring-based standalone application with an AngularJS-based frontend and EHcache to keep things speedy. After hearing about [Amazon's Lambda](https://aws.amazon.com/lambda/) service, I wanted to see how cheaply I could run a site.

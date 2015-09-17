@@ -46,7 +46,7 @@ public class PilotStatisticsDao {
       20069L, 20070L, 20124L, 20405L, 20406L, 20408L, 20409L, 20514L, 22227L, 22228L, 22299L, 22300L,
       22301L, 22303L, 22304L, 22305L, 22306L, 22307L, 22308L, 22309L, 22310L, 22311L);
 
-  public static final Double CYNO_THRESHOLD = 0.25;
+  public static final Integer CYNO_THRESHOLD = 2;
   public static final Integer BOOSTER_THRESHOLD = 1;
 
   private final PilotDao pilotDao;
@@ -147,7 +147,7 @@ public class PilotStatisticsDao {
 
   Flags findFlags(Pilot p) {
     return Flags.builder()
-        .cynoPilot(killsWithItemsFitted(p.getLosses(), CYNO_IDS) > CYNO_THRESHOLD * p.getLosses().size())
+        .cynoPilot(killsWithItemsFitted(p.getLosses(), CYNO_IDS) >= CYNO_THRESHOLD)
         .fleetBooster(killsWithItemsFitted(p.getLosses(), BOOSTER_MODULES) >= BOOSTER_THRESHOLD)
         .build();
   }
