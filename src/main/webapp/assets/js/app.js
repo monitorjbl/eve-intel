@@ -6,6 +6,27 @@ var app = angular.module('eveintel', ['ngRoute', 'ui.bootstrap']).config(functio
   });
 });
 
+app.filter('pilotFilter', function () {
+  return function (input, name, showPilotsWithKills, showCynoPilots, showFleetBoosters) {
+    var arr = input.slice(0);
+
+    if (name) {
+      arr = $.grep(arr, function (v) {return v.pilot.name.toLowerCase().indexOf(name.toLowerCase()) > -1});
+    }
+    if(showPilotsWithKills){
+      arr = $.grep(arr, function (v) {return v.killCount});
+    }
+    if (showCynoPilots) {
+      arr = $.grep(arr, function (v) {return v.flags && v.flags.cynoPilot});
+    }
+    if (showFleetBoosters) {
+      arr = $.grep(arr, function (v) {return v.flags && v.flags.fleetBoosters});
+    }
+
+    return arr;
+  };
+});
+
 app.directive('graphDoughnut', function ($timeout) {
   return {
     restrict: 'E',

@@ -1,6 +1,6 @@
 <div ng-controller="PilotStats">
   <div class="row">
-    <div class="col-lg-offset-4 col-lg-4">
+    <div class="col-lg-offset-4 col-lg-4 col-xs-10 col-xs-offset-1">
       <div class="jumbotron" style="padding: 30px;">
         <div class="row">
           <div class="link" ng-show="link"><a href="{{link}}">Current Search</a></div>
@@ -48,7 +48,36 @@
   </div>
 
   <div ng-show="statList && !error">
-    <div class="row" ng-repeat="pilotStats in statList">
+    <div class="row">
+      <div class="col-xs-10 col-xs-offset-1">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <form class="form-inline filters">
+              <div class="form-group">
+                <input type="text" class="form-control" id="name" ng-model="nameText" placeholder="Pilot Name">
+              </div>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" id="pilotsWithKills" ng-model="pilotsWithKills"> Has kills
+                </label>
+              </div>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" id="cynoPilots" ng-model="cynoPilots"> Cyno pilots
+                </label>
+              </div>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" id="fleetBoosters" ng-model="fleetBoosters"> Fleet boosters
+                </label>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" ng-repeat="pilotStats in statList | pilotFilter:nameText:pilotsWithKills:cynoPilots:fleetBoosters">
       <div class="col-lg-12">
         <div class="panel panel-default">
           <div class="panel-heading">

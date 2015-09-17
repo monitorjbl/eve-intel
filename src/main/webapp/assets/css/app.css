@@ -220,11 +220,11 @@ ul.alert-dropdown {
     margin-bottom: 10px;
 }
 
-.module-icon{
-    height:40px;
+.module-icon {
+    height: 40px;
 }
 
-.github img{
+.github img {
     height: 40px;
     top: 6px;
     right: 5px;
@@ -237,6 +237,10 @@ ul.alert-dropdown {
     right: 20px;
     width: 300px;
     z-index: 100;
+}
+
+.filters div{
+    margin-left: 10px;
 }
 
 .graph {
