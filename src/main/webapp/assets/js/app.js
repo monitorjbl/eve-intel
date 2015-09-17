@@ -10,25 +10,27 @@ var app = angular.module('eveintel', ['ngRoute', 'ui.bootstrap']).config(functio
 app.filter('pilotFilter', function () {
   return function (input, filterOpts) {
     if (input) {
-      console.log(filterOpts);
       var arr = input.slice(0);
 
-      if (filterOpts.pilotName) {
-        arr = $.grep(arr, function (v) {return v.pilot.name.toLowerCase().indexOf(filterOpts.pilotName.toLowerCase()) > -1});
-      }
-      if (filterOpts.allianceName) {
-        arr = $.grep(arr, function (v) {return v.pilot.corporation.alliance.name.toLowerCase().indexOf(filterOpts.allianceName.toLowerCase()) > -1});
-      }
-      if (filterOpts.pilotsWithKills) {
-        arr = $.grep(arr, function (v) {return v.killCount});
-      }
-      if (filterOpts.cynoPilots) {
-        arr = $.grep(arr, function (v) {return v.flags && v.flags.cynoPilot});
-      }
-      if (filterOpts.fleetBoosters) {
-        arr = $.grep(arr, function (v) {return v.flags && v.flags.fleetBooster});
-      }
-
+      arr = $.grep(arr, function (v) {
+        var show = true;
+        if (filterOpts.pilotName) {
+          show &= v.pilot.name.toLowerCase().indexOf(filterOpts.pilotName.toLowerCase()) > -1;
+        }
+        if (filterOpts.allianceName) {
+          show &= v.pilot.corporation.alliance.name.toLowerCase().indexOf(filterOpts.allianceName.toLowerCase()) > -1;
+        }
+        if (filterOpts.pilotsWithKills) {
+          show &= v.killCount > 0;
+        }
+        if (filterOpts.cynoPilots) {
+          show &= v.flags && v.flags.cynoPilot;
+        }
+        if (filterOpts.fleetBoosters) {
+          show &= v.flags && v.flags.fleetBooster;
+        }
+        return show;
+      });
       return arr;
     }
   };
