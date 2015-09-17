@@ -8,21 +8,25 @@ var app = angular.module('eveintel', ['ngRoute', 'ui.bootstrap']).config(functio
 });
 
 app.filter('pilotFilter', function () {
-  return function (input, name, showPilotsWithKills, showCynoPilots, showFleetBoosters) {
+  return function (input, filterOpts) {
     if (input) {
+      console.log(filterOpts);
       var arr = input.slice(0);
 
-      if (name) {
-        arr = $.grep(arr, function (v) {return v.pilot.name.toLowerCase().indexOf(name.toLowerCase()) > -1});
+      if (filterOpts.pilotName) {
+        arr = $.grep(arr, function (v) {return v.pilot.name.toLowerCase().indexOf(filterOpts.pilotName.toLowerCase()) > -1});
       }
-      if (showPilotsWithKills) {
+      if (filterOpts.allianceName) {
+        arr = $.grep(arr, function (v) {return v.pilot.corporation.alliance.name.toLowerCase().indexOf(filterOpts.allianceName.toLowerCase()) > -1});
+      }
+      if (filterOpts.pilotsWithKills) {
         arr = $.grep(arr, function (v) {return v.killCount});
       }
-      if (showCynoPilots) {
+      if (filterOpts.cynoPilots) {
         arr = $.grep(arr, function (v) {return v.flags && v.flags.cynoPilot});
       }
-      if (showFleetBoosters) {
-        arr = $.grep(arr, function (v) {return v.flags && v.flags.fleetBoosters});
+      if (filterOpts.fleetBoosters) {
+        arr = $.grep(arr, function (v) {return v.flags && v.flags.fleetBooster});
       }
 
       return arr;

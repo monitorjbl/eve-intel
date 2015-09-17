@@ -6,6 +6,7 @@ app.controller('PilotStats', function ($scope, $routeParams, $http, $timeout, $l
 
   $scope.inputType = 'single';
   $scope.loading = false;
+  $scope.filterOpts = {};
 
   $scope.search = function () {
     $log.debug('Searching');

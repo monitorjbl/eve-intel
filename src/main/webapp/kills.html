@@ -54,21 +54,24 @@
           <div class="panel-heading">
             <form class="form-inline filters">
               <div class="form-group">
-                <input type="text" class="form-control" id="name" ng-model="nameText" placeholder="Pilot Name">
+                <input type="text" class="form-control" ng-model="filterOpts.pilotName" placeholder="Pilot Name">
+              </div>
+              <div class="form-group">
+                <input type="text" class="form-control" ng-model="filterOpts.allianceName" placeholder="Alliance Name">
               </div>
               <div class="checkbox">
                 <label>
-                  <input type="checkbox" id="pilotsWithKills" ng-model="pilotsWithKills"> Has kills
+                  <input type="checkbox" id="pilotsWithKills" ng-model="filterOpts.pilotsWithKills"> Has kills
                 </label>
               </div>
               <div class="checkbox">
                 <label>
-                  <input type="checkbox" id="cynoPilots" ng-model="cynoPilots"> Cyno pilots
+                  <input type="checkbox" id="cynoPilots" ng-model="filterOpts.cynoPilots"> Cyno pilots
                 </label>
               </div>
               <div class="checkbox">
                 <label>
-                  <input type="checkbox" id="fleetBoosters" ng-model="fleetBoosters"> Fleet boosters
+                  <input type="checkbox" id="fleetBoosters" ng-model="filterOpts.fleetBoosters"> Fleet boosters
                 </label>
               </div>
             </form>
@@ -77,7 +80,7 @@
       </div>
     </div>
 
-    <div class="row" ng-repeat="pilotStats in statList | pilotFilter:nameText:pilotsWithKills:cynoPilots:fleetBoosters">
+    <div class="row" ng-repeat="pilotStats in statList | pilotFilter:filterOpts">
       <div class="col-lg-12">
         <div class="panel panel-default">
           <div class="panel-heading">
