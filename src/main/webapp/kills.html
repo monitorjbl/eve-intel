@@ -27,7 +27,6 @@
   </div>
 
 
-
   <div class="alert alert-info alert-dismissible loading-list" role="alert" ng-show="loading || loadingErrorsFound">
     <progressbar class="progress-striped active" type="{{loadingErrorsFound ? 'warning' : 'info'}}" animate="false"
                  value="(loadRequest.current/loadRequest.total)*100">
@@ -37,7 +36,8 @@
       {{name}}:
       <i ng-show="loadRequest.pilotsLoaded[name] == undefined" class="fa fa-spinner fa-spin"></i>
       <i ng-show="loadRequest.pilotsLoaded[name].loaded == false" class="fa fa-exclamation-circle error"
-         tooltip-placement="right" tooltip="{{loadRequest.pilotsLoaded[name].message}}" tooltip-append-to-body="true"></i>
+         tooltip-placement="right" tooltip="{{loadRequest.pilotsLoaded[name].message}}"
+         tooltip-append-to-body="true"></i>
     </div>
   </div>
 
@@ -69,7 +69,13 @@
             <div class="row stats-row">
               <div class="col-lg-1 text-center">
                 <img class="img-responsive img-rounded"
-                     ng-src="https://image.eveonline.com/Character/{{pilotStats.pilot.id}}_128.jpg">
+                     ng-src="https://image.eveonline.com/Character/{{pilotStats.pilot.id}}_128.jpg"/>
+                <img class="module-icon" src="https://image.eveonline.com/Type/21096_64.png"
+                     ng-show="pilotStats.flags.cynoPilot" popover-trigger="mouseenter" popover-placement="bottom"
+                     popover-append-to-body="true" popover="Possible hotdropper!"/>
+                <img class="module-icon" src="https://image.eveonline.com/Type/22227_64.png"
+                     ng-show="pilotStats.flags.fleetBooster" popover-trigger="mouseenter" popover-placement="bottom"
+                     popover-append-to-body="true" popover="Possible offgrid booster!"/>
               </div>
               <div class="col-lg-11">
                 <table class="table" ng-show="pilotStats.killCount">

@@ -13,6 +13,7 @@ import static com.google.common.collect.Lists.newArrayList;
 public class PilotStatistics implements Serializable {
   private Pilot pilot;
   private Integer killCount;
+  private Flags flags;
   private List<WeightedData<Region>> regions = new ArrayList<>();
   private Region tendencyRegion;
   private Region recentRegion;
@@ -35,6 +36,7 @@ public class PilotStatistics implements Serializable {
   private PilotStatistics(Builder builder) {
     pilot = builder.pilot;
     killCount = builder.killCount;
+    flags = builder.flags;
     regions = builder.regions;
     tendencyRegion = builder.tendencyRegion;
     recentRegion = builder.recentRegion;
@@ -65,6 +67,10 @@ public class PilotStatistics implements Serializable {
 
   public Integer getKillCount() {
     return killCount;
+  }
+
+  public Flags getFlags() {
+    return flags;
   }
 
   public List<WeightedData<Region>> getRegions() {
@@ -143,6 +149,7 @@ public class PilotStatistics implements Serializable {
   public static final class Builder {
     private Pilot pilot;
     private Integer killCount;
+    private Flags flags;
     private List<WeightedData<Region>> regions = newArrayList();
     private Region tendencyRegion;
     private Region recentRegion;
@@ -172,6 +179,11 @@ public class PilotStatistics implements Serializable {
 
     public Builder killCount(Integer killCount) {
       this.killCount = killCount;
+      return this;
+    }
+
+    public Builder flags(Flags flags) {
+      this.flags = flags;
       return this;
     }
 

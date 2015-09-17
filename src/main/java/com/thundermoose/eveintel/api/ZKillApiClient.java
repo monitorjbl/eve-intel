@@ -49,6 +49,17 @@ public class ZKillApiClient {
     return Lists.newArrayList(Iterables.transform(XmlUtils.xmlNodes(doc.getDocumentElement(), KILLS), transformKillmail));
   }
 
+  public List<Killmail> getLossmailsForPilot(Long pilotId, DateTime start) {
+    log.debug("ZKill API Request: retrieving lossmails for pilot [" + pilotId + "]");
+    String uri = LOSSES_FOR_PILOT
+        .replaceAll("#ID#", String.valueOf(pilotId))
+        .replaceAll("#START#", start.toString(QUERY_DATE));
+    log.debug(uri);
+    Document doc = apiCommon.readXml(uri);
+
+    return Lists.newArrayList(Iterables.transform(XmlUtils.xmlNodes(doc.getDocumentElement(), KILLS), transformKillmail));
+  }
+
   private List<Ship> getAttackers(Node n) {
     List<Ship> ships = new ArrayList<>();
     for(Node an : XmlUtils.xmlNodes((Element) n, ATTACKERS)) {
@@ -110,6 +121,7 @@ public class ZKillApiClient {
 
   public static final String BASE_URI = "https://zkillboard.com";
   public static final String KILLS_FOR_PILOT = BASE_URI + "/api/kills/characterID/#ID#/startTime/#START#/xml/";
+  public static final String LOSSES_FOR_PILOT = BASE_URI + "/api/losses/characterID/#ID#/startTime/#START#/xml/";
 
   public static final String KILLS = "/eveapi/result/rowset/row";
   public static final String KILL_ID = "killID";

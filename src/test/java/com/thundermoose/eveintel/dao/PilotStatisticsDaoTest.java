@@ -1,15 +1,9 @@
 package com.thundermoose.eveintel.dao;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.io.Resources;
-import com.thundermoose.eveintel.api.ApiCommon;
-import com.thundermoose.eveintel.api.EveStaticData;
-import com.thundermoose.eveintel.api.ZKillApiClient;
+import com.thundermoose.eveintel.model.DroppableItem;
+import com.thundermoose.eveintel.model.Flags;
 import com.thundermoose.eveintel.model.Killmail;
-import com.thundermoose.eveintel.model.TimeGraph;
-import com.thundermoose.eveintel.model.TimeGraphPoint;
-import org.joda.time.DateTime;
+import com.thundermoose.eveintel.model.Pilot;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.junit.Before;
@@ -18,9 +12,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.List;
+import static com.google.common.collect.Lists.newArrayList;
+import static com.thundermoose.eveintel.dao.PilotStatisticsDao.BOOSTER_MODULES;
+import static com.thundermoose.eveintel.dao.PilotStatisticsDao.CYNO_IDS;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class PilotStatisticsDaoTest {
   private static final DateTimeFormatter df = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss");
@@ -36,26 +32,82 @@ public class PilotStatisticsDaoTest {
   }
 
   @Test
-  public void test() throws IOException {
-    ZKillApiClient client = new ZKillApiClient(new EveStaticData(), new ApiCommon());
-    List<Killmail> mails = client.getKillmailsForPilot(353765550L, new DateTime().minusMonths(2));
-    mails.stream().forEach(km->System.out.println(km.getItems()));
+  public void should_be_cyno_pilot() {
+    Pilot p = Pilot.builder()
+        .losses(newArrayList(
+            Killmail.builder()
+                .items(newArrayList(new DroppableItem(CYNO_IDS.get(0), 20))).build(),
+            Killmail.builder()
+                .items(newArrayList(new DroppableItem(CYNO_IDS.get(1), 20))).build(),
+            Killmail.builder()
+                .items(newArrayList(new DroppableItem(1L, 20))).build(),
+            Killmail.builder()
+                .items(newArrayList(new DroppableItem(1L, 20))).build(),
+            Killmail.builder()
+                .items(newArrayList(new DroppableItem(1L, 20))).build()
+        )).build();
+
+    Flags flags = sut.findFlags(p);
+    assertTrue(flags.getCynoPilot());
   }
 
   @Test
-  public void testKillGraph() throws IOException, InterruptedException {
-    DateTime start = df.parseDateTime("2014-11-01T00:00:00");
-    DateTime finish = start.plusMonths(1);
-    List<Killmail> killmails = new ObjectMapper().readValue(Resources.getResource("kills.json").openStream(),
-        new TypeReference<List<Killmail>>() {
-        });
+  public void should_not_be_cyno_pilot() {
+    Pilot p = Pilot.builder()
+        .losses(newArrayList(
+            Killmail.builder()
+                .items(newArrayList(new DroppableItem(CYNO_IDS.get(0), 20))).build(),
+            Killmail.builder()
+                .items(newArrayList(new DroppableItem(1L, 20))).build(),
+            Killmail.builder()
+                .items(newArrayList(new DroppableItem(1L, 20))).build(),
+            Killmail.builder()
+                .items(newArrayList(new DroppableItem(1L, 20))).build(),
+            Killmail.builder()
+                .items(newArrayList(new DroppableItem(1L, 20))).build()
+        )).build();
 
-    TimeGraph graph = sut.killsPerDay(start, finish, killmails);
-    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-    for (TimeGraphPoint pt : graph.getData()) {
-      System.out.println("{x:" + pt.getX() + ",y:" + pt.getY() + "},");
-    }
+    Flags flags = sut.findFlags(p);
+    assertFalse(flags.getCynoPilot());
+  }
 
-    Thread.sleep(1000);
+  @Test
+  public void should_be_booster() {
+    Pilot p = Pilot.builder()
+        .losses(newArrayList(
+            Killmail.builder()
+                .items(newArrayList(new DroppableItem(BOOSTER_MODULES.get(0), 20))).build(),
+            Killmail.builder()
+                .items(newArrayList(new DroppableItem(1L, 20))).build(),
+            Killmail.builder()
+                .items(newArrayList(new DroppableItem(1L, 20))).build(),
+            Killmail.builder()
+                .items(newArrayList(new DroppableItem(1L, 20))).build(),
+            Killmail.builder()
+                .items(newArrayList(new DroppableItem(1L, 20))).build()
+        )).build();
+
+    Flags flags = sut.findFlags(p);
+    assertTrue(flags.getFleetBooster());
+  }
+
+  @Test
+  public void should_not_be_booster() {
+    Pilot p = Pilot.builder()
+        .losses(newArrayList(
+            Killmail.builder()
+                .items(newArrayList(new DroppableItem(2L, 20))).build(),
+            Killmail.builder()
+                .items(newArrayList(new DroppableItem(1L, 20))).build(),
+            Killmail.builder()
+                .items(newArrayList(new DroppableItem(1L, 20))).build(),
+            Killmail.builder()
+                .items(newArrayList(new DroppableItem(1L, 20))).build(),
+            Killmail.builder()
+                .items(newArrayList(new DroppableItem(1L, 20))).build()
+        )).build();
+
+    Flags flags = sut.findFlags(p);
+    assertFalse(flags.getFleetBooster());
   }
 }

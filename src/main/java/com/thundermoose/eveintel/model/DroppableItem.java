@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 @JsonDeserialize(builder = DroppableItem.Builder.class)
-public class DroppableItem implements NamedItem{
+public class DroppableItem implements NamedItem {
   private Long id;
   private Integer flag;
   private Long qtyDropped;
@@ -19,6 +19,11 @@ public class DroppableItem implements NamedItem{
     qtyDestroyed = builder.qtyDestroyed;
     singleton = builder.singleton;
     name = builder.name;
+  }
+
+  public DroppableItem(Long id, Integer flag) {
+    this.id = id;
+    this.flag = flag;
   }
 
   public static Builder builder() {return new Builder();}
@@ -92,7 +97,7 @@ public class DroppableItem implements NamedItem{
       return this;
     }
 
-    public Builder name(String name){
+    public Builder name(String name) {
       this.name = name;
       return this;
     }

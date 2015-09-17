@@ -16,12 +16,14 @@ public class Pilot implements NamedItem, Serializable {
   private Corporation corporation;
   @JsonIgnore
   private List<Killmail> kills = newArrayList();
+  private List<Killmail> losses = newArrayList();
 
   private Pilot(Builder builder) {
     id = builder.id;
     name = builder.name;
     corporation = builder.corporation;
     kills = builder.kills;
+    losses = builder.losses;
   }
 
   public static Builder builder() {
@@ -44,6 +46,10 @@ public class Pilot implements NamedItem, Serializable {
     return kills;
   }
 
+  public List<Killmail> getLosses() {
+    return losses;
+  }
+
   @Override
   public String toString() {
     return "Pilot{" +
@@ -56,7 +62,8 @@ public class Pilot implements NamedItem, Serializable {
     private Long id;
     private String name;
     private Corporation corporation;
-    private List<Killmail> kills;
+    private List<Killmail> kills = newArrayList();
+    private List<Killmail> losses = newArrayList();
 
     private Builder() {
     }
@@ -78,6 +85,11 @@ public class Pilot implements NamedItem, Serializable {
 
     public Builder kills(List<Killmail> kills) {
       this.kills = kills;
+      return this;
+    }
+
+    public Builder losses(List<Killmail> losses) {
+      this.losses = losses;
       return this;
     }
 

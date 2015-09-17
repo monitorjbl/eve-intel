@@ -1,12 +1,12 @@
 package com.thundermoose.eveintel;
 
+import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.events.S3Event;
 import com.amazonaws.services.s3.event.S3EventNotification.S3EventNotificationRecord;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.thundermoose.eveintel.fs.DiskFilesystem;
 import com.thundermoose.eveintel.fs.Filesystem;
 import com.thundermoose.eveintel.fs.S3Filesystem;
 import com.thundermoose.eveintel.service.PilotStatisticsService;
@@ -16,7 +16,6 @@ import org.slf4j.LoggerFactory;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
 import java.util.List;
 
 public class Loader {
@@ -72,9 +71,6 @@ public class Loader {
   }
 
   public static void main(String[] args) throws IOException {
-    Filesystem fs = new DiskFilesystem();
-    fs.write("/tmp/test/testing", new ByteArrayInputStream(new ObjectMapper().writeValueAsBytes(Arrays.asList("Ryshar", "The Mittani"))));
-    new Loader(fs, "/tmp/test/")
-        .load("/tmp/test/testing");
+    new Loader(new S3Filesystem("eve-intel-stats", new ProfileCredentialsProvider()), "pilot/").load(args[0]);
   }
 }

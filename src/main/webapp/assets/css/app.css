@@ -220,6 +220,10 @@ ul.alert-dropdown {
     margin-bottom: 10px;
 }
 
+.module-icon{
+    height:40px;
+}
+
 .github img{
     height: 40px;
     top: 6px;

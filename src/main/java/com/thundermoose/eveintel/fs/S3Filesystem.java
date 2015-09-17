@@ -1,5 +1,6 @@
 package com.thundermoose.eveintel.fs;
 
+import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.ClasspathPropertiesFileCredentialsProvider;
 import com.amazonaws.auth.SystemPropertiesCredentialsProvider;
 import com.amazonaws.services.s3.AmazonS3;
@@ -43,6 +44,11 @@ public class S3Filesystem implements Filesystem {
     this.bucketName = bucketName;
   }
 
+  public S3Filesystem(String bucketName, AWSCredentialsProvider credentialsProvider) {
+    s3client = new AmazonS3Client(credentialsProvider);
+    this.bucketName = bucketName;
+  }
+
   /**
    * Creates an S3-based filesystem using the credentials provided
    *
@@ -63,11 +69,11 @@ public class S3Filesystem implements Filesystem {
     File file = null;
     try {
       file = Files.createTempFile("", "").toFile();
-      try (FileOutputStream fos = new FileOutputStream(file)) {
+      try(FileOutputStream fos = new FileOutputStream(file)) {
         IOUtils.copy(data, fos);
       }
       s3client.putObject(new PutObjectRequest(bucketName, stripLeadingSlashes(filename), file).withCannedAcl(permissionSet));
-    } catch (IOException e) {
+    } catch(IOException e) {
       throw new RuntimeException(e);
     } finally {
       file.delete();
@@ -93,7 +99,7 @@ public class S3Filesystem implements Filesystem {
     try {
       s3client.getObjectMetadata(new GetObjectMetadataRequest(bucketName, stripLeadingSlashes(filename)));
       return true;
-    } catch (AmazonS3Exception e) {
+    } catch(AmazonS3Exception e) {
       return false;
     }
   }

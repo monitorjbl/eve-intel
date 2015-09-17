@@ -1,11 +1,10 @@
 package com.thundermoose.eveintel.dao;
 
-import com.google.common.base.Predicate;
 import com.google.common.collect.ComparisonChain;
-import com.google.common.collect.Iterables;
 import com.thundermoose.eveintel.model.Alliance;
 import com.thundermoose.eveintel.model.BarGraph;
 import com.thundermoose.eveintel.model.BarGraphPoint;
+import com.thundermoose.eveintel.model.Flags;
 import com.thundermoose.eveintel.model.Killmail;
 import com.thundermoose.eveintel.model.NamedItem;
 import com.thundermoose.eveintel.model.Pilot;
@@ -28,14 +27,27 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.TreeMap;
+import java.util.function.Predicate;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static java.util.stream.Collectors.toList;
 
 public class PilotStatisticsDao {
   private static final Logger log = LoggerFactory.getLogger(PilotStatisticsDao.class);
+  public static final Integer CARGO_FLAG = 5;
   public static final Long POD_ID = 670L;
   public static final Integer ROUNDING_SCALE = 8;
+  public static final List<Long> CYNO_IDS = newArrayList(21096L, 28646L);
+  public static final List<Long> BOOSTER_MODULES = newArrayList(
+      4262L, 4263L, 4264L, 4265L, 4266L, 4267L, 4268L, 4269L, 4270L, 4271L, 4272L, 4273L, 4280L,
+      4281L, 4282L, 4283L, 4284L, 4285L, 4286L, 4287L, 4288L, 4289L, 4290L, 4291L, 11017L, 11052L,
+      20069L, 20070L, 20124L, 20405L, 20406L, 20408L, 20409L, 20514L, 22227L, 22228L, 22299L, 22300L,
+      22301L, 22303L, 22304L, 22305L, 22306L, 22307L, 22308L, 22309L, 22310L, 22311L);
+
+  public static final Double CYNO_THRESHOLD = 0.25;
+  public static final Integer BOOSTER_THRESHOLD = 1;
 
   private final PilotDao pilotDao;
 
@@ -71,6 +83,7 @@ public class PilotStatisticsDao {
       return PilotStatistics.builder()
           .pilot(p)
           .killCount(killedShips.size())
+          .flags(findFlags(p))
           .killedShips(weightedKilledShips)
           .recentKilledShip(recency(killedShips))
           .tendencyKilledShip(tendency(weightedKilledShips))
@@ -132,6 +145,21 @@ public class PilotStatisticsDao {
         .collect(toList());
   }
 
+  Flags findFlags(Pilot p) {
+    return Flags.builder()
+        .cynoPilot(killsWithItemsFitted(p.getLosses(), CYNO_IDS) > CYNO_THRESHOLD * p.getLosses().size())
+        .fleetBooster(killsWithItemsFitted(p.getLosses(), BOOSTER_MODULES) >= BOOSTER_THRESHOLD)
+        .build();
+  }
+
+  Long killsWithItemsFitted(List<Killmail> killmails, List<Long> ids) {
+    return killmails.stream().filter(hadItemsFitted(ids)).count();
+  }
+
+  Predicate<Killmail> hadItemsFitted(List<Long> itemIds) {
+    return km -> km.getItems().stream().filter(i -> !i.getFlag().equals(CARGO_FLAG) && itemIds.contains(i.getId())).count() > 0;
+  }
+
   @SuppressWarnings("unchecked")
   <E extends NamedItem> List<WeightedData<E>> weight(List<E> items) {
     if(items.size() == 0) {
@@ -143,10 +171,11 @@ public class PilotStatisticsDao {
 
     //add up items with weights
     for(NamedItem ni : items) {
-      WeightedData data = findItem(weightedData, ni.getName());
-      if(data == null) {
+      Optional<WeightedData<E>> opt = findItem(weightedData, ni.getName());
+      if(!opt.isPresent()) {
         weightedData.add(new WeightedData(ni, unit, 1));
       } else {
+        WeightedData<E> data = opt.get();
         data.setWeight(add(data.getWeight(), unit));
         data.setCount(data.getCount() + 1);
       }
@@ -227,13 +256,8 @@ public class PilotStatisticsDao {
     return o1.getValue();
   }
 
-  private <E extends NamedItem> WeightedData<E> findItem(List<WeightedData<E>> data, final String name) {
-    return Iterables.find(data, new Predicate<WeightedData>() {
-      @Override
-      public boolean apply(WeightedData weightedData) {
-        return weightedData.getValue().getName().equals(name);
-      }
-    }, null);
+  private <E extends NamedItem> Optional<WeightedData<E>> findItem(List<WeightedData<E>> data, final String name) {
+    return data.stream().filter(wd -> wd.getValue().getName().equals(name)).findFirst();
   }
 
   private Double div(Double top, Double bottom) {
