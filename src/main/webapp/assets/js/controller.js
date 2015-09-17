@@ -8,7 +8,7 @@ app.controller('PilotStats', function ($scope, $routeParams, $http, $timeout, $l
   $scope.loading = false;
 
   $scope.search = function () {
-    $log.info('Searching');
+    $log.debug('Searching');
     $scope.requestLoad();
     $scope.loadPilots();
     $scope.link = 'http://' + getCurrentPath() + '#/' + encodeURIComponent($scope.pilotName);
