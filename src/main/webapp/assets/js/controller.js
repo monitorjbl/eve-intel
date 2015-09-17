@@ -49,6 +49,15 @@ app.controller('PilotStats', function ($scope, $routeParams, $http, $timeout, $l
       current: 0
     };
 
+    var addPilot = function (pilot) {
+      $scope.statList.push(pilot);
+      $scope.statList.sort(function (a, b) {
+        var aName = a.pilot.name.toLowerCase();
+        var bName = b.pilot.name.toLowerCase();
+        return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+      });
+    };
+
     var updatePilot = function (name, loaded, message) {
       $scope.loadRequest.pilotsLoaded[name] = {loaded: loaded, message: message};
       $scope.loadRequest.current = $scope.loadRequest.current + 1;
@@ -70,15 +79,15 @@ app.controller('PilotStats', function ($scope, $routeParams, $http, $timeout, $l
         $http.get(S3_URL + name).success(function (data) {
           $log.debug('Found details for ' + name);
 
-          if(typeof data == 'string'){
+          if (typeof data == 'string') {
             $log.error('Error loading details for ' + name);
             updatePilot(name, false, data);
           } else {
             updatePilot(name, true);
             if (data.killCount) {
-              $scope.statList.push(assignData(data));
+              addPilot(assignData(data));
             } else {
-              $scope.statList.push(data);
+              addPilot(data);
             }
           }
         }).error(function () {
