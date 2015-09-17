@@ -42,7 +42,9 @@ app.controller('PilotStats', function ($scope, $routeParams, $http, $timeout, $l
     delete $scope.loadingErrorsFound;
     $scope.loading = true;
 
-    var names = $scope.pilotName.toLowerCase().split('\n');
+    var names = $.unique($scope.pilotName.toLowerCase().split('\n'));
+    $scope.pilotName = names.join('\n');
+    
     $scope.loadRequest = {
       pilotNames: names,
       pilotsLoaded: {},
