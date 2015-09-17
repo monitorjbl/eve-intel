@@ -9,7 +9,7 @@ var app = angular.module('eveintel', ['ngRoute', 'ui.bootstrap']).config(functio
 
 app.filter('pilotFilter', function () {
   return function (input, name, showPilotsWithKills, showCynoPilots, showFleetBoosters) {
-    if (arr) {
+    if (input) {
       var arr = input.slice(0);
 
       if (name) {
