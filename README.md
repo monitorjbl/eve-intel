@@ -13,7 +13,7 @@ Most stats calculated are pretty self-explanatory. Some of the less obvious ones
 * Average fleet size: This is determined by taking the average count of assists on each killmail.
 * Most assisted alliance: This is determined by checking all of the pilots assisting any kills on the pilot's killboard.
 * Most flown ship: This is determined by checking all of the ships flown by the pilot on all of his kills.
-* Cyno pilot: If there are more than 2 losses on the pilot's killboard where a cyno was fitted to his ship, he is flagged.
+* Cyno pilot: If there are more than 2 losses on the pilot's killboard where a cyno or covert cyno was fitted to his ship, he is flagged.
 * Fleet booster: If there is 1 or more losses on the pilot's killboard where a fleet assist module was fitted to his ship, he is flagged.
 
 # History and Technical Stuff

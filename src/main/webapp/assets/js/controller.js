@@ -96,7 +96,7 @@ app.controller('PilotStats', function ($scope, $routeParams, $http, $timeout, $l
             $timeout(attempt, DELAY);
           } else {
             $log.error('Could not get details for ' + name + ', timed out');
-            updatePilot(name, false, 'Pilot data could not be found');
+            updatePilot(name, false, 'Timed out loading pilot data');
           }
         });
       }
