@@ -84,7 +84,7 @@ app.controller('PilotStats', function ($scope, $routeParams, $http, $timeout, $l
             updatePilot(name, false, data);
           } else {
             updatePilot(name, true);
-            if (data.killCount) {
+            if (data.killCount > 0) {
               addPilot(assignData(data));
             } else {
               addPilot(data);

@@ -103,6 +103,12 @@ public class PilotStatisticsDao {
           .killsPerHour(killsPerHour(p.getKills()))
           .averageFleetSize(averageFleetSize(p.getKills()))
           .build();
+    } else if(p.getLosses().size() > 0) {
+      return PilotStatistics.builder()
+          .pilot(p)
+          .killCount(0)
+          .flags(findFlags(p))
+          .build();
     } else {
       return PilotStatistics.builder().pilot(p).build();
     }
