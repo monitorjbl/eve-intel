@@ -12,6 +12,7 @@ app.controller('PilotStats', function ($scope, $routeParams, $http, $timeout, $l
 
   $scope.search = function () {
     $log.debug('Searching');
+    trackRequest('UserInitiated', 'Search', 'Start', $scope.pilotName);
     $scope.requestLoad();
     $scope.loadPilots();
     $scope.link = 'http://' + getCurrentPath() + '#/' + encodeURIComponent($scope.pilotName);
@@ -19,7 +20,11 @@ app.controller('PilotStats', function ($scope, $routeParams, $http, $timeout, $l
 
   $scope.requestLoad = function () {
     var payload = {pilots: $scope.pilotName.split('\n')};
-    $http.post(API_URL, payload);
+    $http.post(API_URL, payload).success(function () {
+      trackRequest('UserInitiated', 'RequestLoad', 'Success');
+    }).error(function () {
+      trackRequest('UserInitiated', 'RequestLoad', 'Failure');
+    });
   };
 
   $scope.sizeof = function (obj) {
@@ -87,6 +92,7 @@ app.controller('PilotStats', function ($scope, $routeParams, $http, $timeout, $l
           if (typeof data == 'string') {
             $log.error('Error loading details for ' + name);
             updatePilot(name, false, data);
+            trackRequest('UserInitiated', 'PilotRetrieval', 'Retrieve', {attempts: attempts, exists: false});
           } else {
             updatePilot(name, true);
             if (data.killCount > 0) {
@@ -94,7 +100,9 @@ app.controller('PilotStats', function ($scope, $routeParams, $http, $timeout, $l
             } else {
               addPilot(data);
             }
+            trackRequest('UserInitiated', 'PilotRetrieval', 'Retrieve', {attempts: attempts, exists: true});
           }
+
         }).error(function () {
           if (attempts++ < MAX_ATTEMPTS) {
             $log.info('No details found for ' + name + ', retrying');
@@ -102,6 +110,8 @@ app.controller('PilotStats', function ($scope, $routeParams, $http, $timeout, $l
           } else {
             $log.error('Could not get details for ' + name + ', timed out');
             updatePilot(name, false, 'Timed out loading pilot data');
+            trackRequest('UserInitiated', 'PilotRetrieval', 'Success', name);
+            trackRequest('UserInitiated', 'PilotRetrieval', 'Timeout', {attempts: attempts});
           }
         });
       }
@@ -137,6 +147,15 @@ app.controller('PilotStats', function ($scope, $routeParams, $http, $timeout, $l
 
   function generateRandomNumber(min, max) {
     return Math.floor(Math.random() * max) + min
+  }
+
+  function trackRequest(category, action, label, value) {
+    if (window.ga == undefined) {
+      $log.debug('Google Analytics is not loaded, retrying');
+      $timeout(function () {trackRequest(category, action, label, value)}, 100);
+    }
+    $log.debug('Logging event to Google Analytics');
+    ga('send', 'event', category, action, label, value);
   }
 
   if ($routeParams.pilot) {
