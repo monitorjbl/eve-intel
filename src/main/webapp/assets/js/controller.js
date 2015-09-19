@@ -1,8 +1,10 @@
 app.controller('PilotStats', function ($scope, $routeParams, $http, $timeout, $log) {
-  var MAX_ATTEMPTS = 20;
-  var DELAY = 3000;
-  var S3_URL = 'https://s3.amazonaws.com/eve-intel-stats/pilot/';
-  var API_URL = 'https://rpbwclxcdk.execute-api.us-east-1.amazonaws.com/prod/eveintel/load';
+  var MAX_ATTEMPTS = 24,
+      DELAY = 5000,
+      BACKOFF_MIN = 250,
+      BACKOFF_MAX = 1000,
+      S3_URL = 'https://s3.amazonaws.com/eve-intel-stats/pilot/',
+      API_URL = 'https://rpbwclxcdk.execute-api.us-east-1.amazonaws.com/prod/eveintel/load';
 
   $scope.inputType = 'single';
   $scope.loading = false;
@@ -44,7 +46,7 @@ app.controller('PilotStats', function ($scope, $routeParams, $http, $timeout, $l
 
     var names = $.unique($scope.pilotName.toLowerCase().split('\n'));
     $scope.pilotName = names.join('\n');
-    
+
     $scope.loadRequest = {
       pilotNames: names,
       pilotsLoaded: {},
@@ -96,7 +98,7 @@ app.controller('PilotStats', function ($scope, $routeParams, $http, $timeout, $l
         }).error(function () {
           if (attempts++ < MAX_ATTEMPTS) {
             $log.info('No details found for ' + name + ', retrying');
-            $timeout(attempt, DELAY);
+            $timeout(attempt, DELAY + generateRandomNumber(BACKOFF_MIN, BACKOFF_MAX));
           } else {
             $log.error('Could not get details for ' + name + ', timed out');
             updatePilot(name, false, 'Timed out loading pilot data');
@@ -108,7 +110,7 @@ app.controller('PilotStats', function ($scope, $routeParams, $http, $timeout, $l
     });
   };
 
-  var assignData = function (data) {
+  function assignData(data) {
     data.killedAlliancesGraph = convertToGraph(data.killedAlliances);
     data.assistedAlliancesGraph = convertToGraph(data.assistedAlliances);
     data.usedShipsGraph = convertToGraph(data.usedShips);
@@ -118,19 +120,23 @@ app.controller('PilotStats', function ($scope, $routeParams, $http, $timeout, $l
     data.killsPerHourGraph = data.killsPerHour;
     data.loadComplete = true;
     return data;
-  };
+  }
 
-  var convertToGraph = function (data) {
+  function convertToGraph(data) {
     return $.map(data, function (v) {
       return {
         value: v.count,
         label: v.value.name
       }
     });
-  };
+  }
 
   function getCurrentPath() {
     return location.hostname + (location.port != '' ? ':' + location.port : '') + location.pathname;
+  }
+
+  function generateRandomNumber(min, max) {
+    return Math.floor(Math.random() * max) + min
   }
 
   if ($routeParams.pilot) {

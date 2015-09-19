@@ -93,6 +93,7 @@
               <small>{{pilotStats.pilot.corporation.alliance.name}}</small>
             </div>
             <div class="pull-right">
+              <a href="https://zkillboard.com/character/{{pilotStats.pilot.id}}/" target="_blank">Killboard</a>
               <span class="badge"
                     ng-click="pilotStats.detail = pilotStats.killCount && !pilotStats.detail"
                     ng-class="{'badge-active':pilotStats.detail, 'badge-inactive':!pilotStats.detail}">
