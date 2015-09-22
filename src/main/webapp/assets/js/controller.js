@@ -92,7 +92,7 @@ app.controller('PilotStats', function ($scope, $routeParams, $http, $timeout, $l
           if (typeof data == 'string') {
             $log.error('Error loading details for ' + name);
             updatePilot(name, false, data);
-            trackRequest('UserInitiated', 'PilotRetrieval', 'Retrieve', {attempts: attempts, exists: false});
+            trackRequest('UserInitiated', 'PilotRetrieval', 'NotFound', {attempts: attempts});
           } else {
             updatePilot(name, true);
             if (data.killCount > 0) {
@@ -100,7 +100,7 @@ app.controller('PilotStats', function ($scope, $routeParams, $http, $timeout, $l
             } else {
               addPilot(data);
             }
-            trackRequest('UserInitiated', 'PilotRetrieval', 'Retrieve', {attempts: attempts, exists: true});
+            trackRequest('UserInitiated', 'PilotRetrieval', 'Success', {attempts: attempts});
           }
 
         }).error(function () {
@@ -110,7 +110,6 @@ app.controller('PilotStats', function ($scope, $routeParams, $http, $timeout, $l
           } else {
             $log.error('Could not get details for ' + name + ', timed out');
             updatePilot(name, false, 'Timed out loading pilot data');
-            trackRequest('UserInitiated', 'PilotRetrieval', 'Success', name);
             trackRequest('UserInitiated', 'PilotRetrieval', 'Timeout', {attempts: attempts});
           }
         });
